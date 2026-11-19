@@ -1,0 +1,3039 @@
+{
+"canCu": [
+{
+"id": "CC-01",
+"tt": 1,
+"loai": "Luật",
+"ten": "Luật Giáo dục đại học",
+"so": "125/2025/QH15",
+"ngay": "10/12/2025",
+"hieuLuc": "Hiệu lực 01/01/2026",
+"dungCho": "Mục tiêu GDĐH (TC 1.1, 1.2); Điều 33–36 về bảo đảm, kiểm định chất lượng",
+"doc": "https://pnt.edu.vn/Resources/Docs/SubDomain/khoaduoc/Lu%E1%BA%ADt%20Gi%C3%A1o%20d%E1%BB%A5c%20%C4%91%E1%BA%A1i%20h%E1%BB%8Dc%202025,%20s%E1%BB%91%20125_2025_QH15.pdf"
+},
+{
+"id": "CC-02",
+"tt": 2,
+"loai": "Luật",
+"ten": "Luật Giáo dục đại học 2012 (sửa đổi, bổ sung 2018)",
+"so": "08/2012/QH13; 34/2018/QH14",
+"ngay": "18/6/2012; 19/11/2018",
+"hieuLuc": "Hết hiệu lực 01/01/2026 – áp dụng cho giai đoạn 9/2023–12/2025",
+"dungCho": "Đối sánh mục tiêu CTĐT trong giai đoạn đánh giá",
+"doc": ""
+},
+{
+"id": "CC-03",
+"tt": 3,
+"loai": "Thông tư",
+"ten": "Quy định về kiểm định chất lượng CTĐT các trình độ của giáo dục đại học",
+"so": "04/2025/TT-BGDĐT",
+"ngay": "17/02/2025",
+"hieuLuc": "Hiệu lực 04/4/2025 – CĂN CỨ CHÍNH",
+"dungCho": "Công cụ TĐG: 8 tiêu chuẩn, 52 tiêu chí; Điều 13, 14, 17, 18; Phụ lục I biểu mẫu",
+"doc": "https://cdn.thuvienphapluat.vn/phap-luat/2022-2/PNHP/2025/01/15/TT-04.pdf"
+},
+{
+"id": "CC-04",
+"tt": 4,
+"loai": "Thông tư",
+"ten": "Phụ lục II – Hướng dẫn đánh giá chất lượng CTĐT (kèm TT 04/2025)",
+"so": "04/2025/TT-BGDĐT",
+"ngay": "17/02/2025",
+"hieuLuc": "Hiệu lực 04/4/2025",
+"dungCho": "Yêu cầu của từng tiêu chí và minh chứng gợi ý",
+"doc": "https://www.ttn.edu.vn/attachments/article/6209/2-2-phu-luc-ii-kem-theo-huong-dan-danh-gia-tieu-chi-17-02-2025-8346.pdf"
+},
+{
+"id": "CC-05",
+"tt": 5,
+"loai": "Dự thảo",
+"ten": "Dự thảo Thông tư sửa đổi, bổ sung TT 04/2025 (bản so sánh, thuyết minh)",
+"so": "Dự thảo",
+"ngay": "8/2026",
+"hieuLuc": "Chưa ban hành – theo dõi",
+"dungCho": "Có thể thay đổi Biểu 05 (mẫu báo cáo TĐG)",
+"doc": "https://www.ttn.edu.vn/attachments/article/7549/00.3__Bang_so_sanh__thuyet_minh_du_thao_Thong_tu.pdf"
+},
+{
+"id": "CC-06",
+"tt": 6,
+"loai": "Thông tư",
+"ten": "Quy định về chuẩn CTĐT; xây dựng, thẩm định và ban hành CTĐT các trình độ của GDĐH",
+"so": "17/2021/TT-BGDĐT",
+"ngay": "22/6/2021",
+"hieuLuc": "Bị thay thế bởi TT 54/2026 – áp dụng cho phần lớn giai đoạn đánh giá",
+"dungCho": "TC 1.3, 2.1, 2.2 (chuẩn đầu ra, khối lượng học tập)",
+"doc": "https://luatvietnam.vn/giao-duc/thong-tu-17-2021-tt-bgddt-chuan-chuong-trinh-dao-tao-giao-duc-dai-hoc-204157-d1.html"
+},
+{
+"id": "CC-07",
+"tt": 7,
+"loai": "Thông tư",
+"ten": "Quy định về chương trình đào tạo các trình độ của giáo dục đại học",
+"so": "54/2026/TT-BGDĐT",
+"ngay": "30/6/2026",
+"hieuLuc": "Hiệu lực 30/6/2026",
+"dungCho": "Rà soát CTĐT đáp ứng chuẩn CTĐT hiện hành",
+"doc": "https://thuvienphapluat.vn/van-ban/Giao-duc/Circular-54-2026-TT-BGDDT-training-programs-all-levels-higher-education-716007.aspx"
+},
+{
+"id": "CC-08",
+"tt": 8,
+"loai": "Thông tư",
+"ten": "Quy chế tuyển sinh và đào tạo trình độ thạc sĩ",
+"so": "23/2021/TT-BGDĐT",
+"ngay": "30/8/2021",
+"hieuLuc": "Hết hiệu lực 30/6/2026; vẫn áp dụng cho học viên trúng tuyển trước 30/6/2026",
+"dungCho": "TC 4, 6.1, 8.1 (đánh giá, luận văn/đề án, xét tốt nghiệp, tuyển sinh)",
+"doc": "https://thuvienphapluat.vn/van-ban/Giao-duc/Thong-tu-23-2021-TT-BGDDT-Quy-che-tuyen-sinh-va-dao-tao-trinh-do-thac-si-486650.aspx"
+},
+{
+"id": "CC-09",
+"tt": 9,
+"loai": "Thông tư",
+"ten": "Quy chế tuyển sinh và đào tạo sau đại học",
+"so": "53/2026/TT-BGDĐT",
+"ngay": "30/6/2026",
+"hieuLuc": "Áp dụng khóa tuyển sinh từ 01/01/2027",
+"dungCho": "Kế hoạch hành động, cải tiến (cập nhật quy chế Học viện)",
+"doc": "https://luatvietnam.vn/giao-duc/thong-tu-53-2026-tt-bgddt-quy-che-tuyen-sinh-va-dao-tao-sau-dai-hoc-moi-nhat-440236-d1.html"
+},
+{
+"id": "CC-10",
+"tt": 10,
+"loai": "Quyết định",
+"ten": "Phê duyệt Khung trình độ quốc gia Việt Nam",
+"so": "1982/QĐ-TTg",
+"ngay": "18/10/2016",
+"hieuLuc": "Đang áp dụng (xác minh lại)",
+"dungCho": "Đối sánh CĐR với bậc 7 (TC 1.3 – tiêu chí điều kiện)",
+"doc": ""
+},
+{
+"id": "CC-11",
+"tt": 11,
+"loai": "Quyết định",
+"ten": "Chuẩn CTĐT lĩnh vực Pháp luật trình độ đại học",
+"so": "678/QĐ-BGDĐT",
+"ngay": "14/3/2025",
+"hieuLuc": "Chỉ áp dụng trình độ đại học – tham khảo",
+"dungCho": "Tham khảo tính liên thông khi lập luận TC 1.3",
+"doc": "https://luatvietnam.vn/giao-duc/quyet-dinh-678-qd-bgddt-2025-chuan-chuong-trinh-dao-tao-linh-vuc-phap-luat-trinh-do-dai-hoc-393907-d1.html"
+},
+{
+"id": "CC-12",
+"tt": 12,
+"loai": "Thông tư",
+"ten": "Quy định về kiểm định chất lượng cơ sở giáo dục đại học",
+"so": "20/2026/TT-BGDĐT",
+"ngay": "31/3/2026",
+"hieuLuc": "Hiệu lực 15/5/2026",
+"dungCho": "Chỉ tham chiếu minh chứng dùng chung của Học viện",
+"doc": ""
+},
+{
+"id": "CC-13",
+"tt": 13,
+"loai": "Công văn",
+"ten": "Hướng dẫn tự đánh giá và đánh giá ngoài CTĐT",
+"so": "2085/QLCL-KĐCLGD",
+"ngay": "2020",
+"hieuLuc": "Ban hành theo TT 38/2013, 04/2016 (đã bị thay) – chỉ tham khảo kỹ thuật",
+"dungCho": "Kỹ thuật viết báo cáo, mã hóa minh chứng",
+"doc": "https://luatvietnam.vn/giao-duc/cong-van-2085-qlcl-kdclgd-cua-cuc-quan-ly-chat-luong-ve-viec-huong-dan-tu-danh-gia-va-danh-gia-ngoai-chuong-trinh-dao-tao-395470-d6.html"
+},
+{
+"id": "CC-14",
+"tt": 14,
+"loai": "Học viện",
+"ten": "Quyết định thành lập Hội đồng TĐG CTĐT ThS Luật HP&LHC",
+"so": "4153-QĐ/HVHCQTC",
+"ngay": "20/10/2026",
+"hieuLuc": "Hiệu lực từ ngày ký",
+"dungCho": "Tổ chức Hội đồng, Ban Thư ký, 06 nhóm công tác",
+"doc": ""
+},
+{
+"id": "CC-15",
+"tt": 15,
+"loai": "Học viện",
+"ten": "Kế hoạch tự đánh giá CTĐT ThS Luật HP&LHC (định hướng ứng dụng)",
+"so": "…-KH/HVHCQTC",
+"ngay": "11/2026",
+"hieuLuc": "",
+"dungCho": "Phân công, tiến độ, quy tắc mã minh chứng Hn.ab.cd.ef",
+"doc": ""
+}
+],
+"tieuChi": [
+{
+"ma": "1.1",
+"tieuChuan": 1,
+"tenTieuChuan": "Mục tiêu và chuẩn đầu ra của chương trình đào tạo",
+"ten": "Mục tiêu của CTĐT được xác định rõ ràng, phù hợp với sứ mạng, tầm nhìn, chiến lược của CSĐT và mục tiêu GDĐH theo Luật GDĐH",
+"dieuKien": false,
+"yeuCau": [
+"Mục tiêu phát biểu rõ, nêu năng lực NH kỳ vọng đạt được sau tốt nghiệp 1–3 năm, phù hợp định hướng đào tạo",
+"Được xây dựng, rà soát, điều chỉnh có ý kiến BLQ, trên cơ sở phân tích sự phù hợp với sứ mạng, tầm nhìn, chiến lược của CSĐT và mục tiêu GDĐH"
+],
+"goiY": [
+"Quy định/quy trình/hướng dẫn/công cụ xây dựng, phát triển mục tiêu CTĐT",
+"Văn bản tuyên bố mục tiêu chung, mục tiêu cụ thể và định hướng (ứng dụng) của CTĐT",
+"Văn bản tuyên bố sứ mạng, tầm nhìn của Học viện",
+"Chiến lược phát triển của Học viện",
+"Bảng đối sánh mục tiêu CTĐT với sứ mạng, tầm nhìn, chiến lược và mục tiêu GDĐH tại Luật GDĐH"
+],
+"nhom": "Nhóm 1 – Bà Nguyễn Thu An",
+"han": "02/4/2027"
+},
+{
+"ma": "1.2",
+"tieuChuan": 1,
+"tenTieuChuan": "Mục tiêu và chuẩn đầu ra của chương trình đào tạo",
+"ten": "Chuẩn đầu ra của CTĐT được xác định rõ ràng, phù hợp với mục tiêu CTĐT và được phổ biến đến các bên liên quan",
+"dieuKien": false,
+"yeuCau": [
+"CĐR được xây dựng, rà soát, điều chỉnh theo quy trình định trước, có BLQ tham gia",
+"CĐR phát biểu rõ, phù hợp mục tiêu CTĐT, sứ mạng, tầm nhìn, chiến lược",
+"CĐR được phổ biến đến BLQ; GV và NH hiểu rõ CĐR"
+],
+"goiY": [
+"Quy định/quy trình/hướng dẫn xây dựng CĐR (nguyên tắc SMART…)",
+"Văn bản công bố CĐR của CTĐT",
+"Bản mô tả CTĐT",
+"Bảng đối sánh CĐR với mục tiêu CTĐT, sứ mạng, tầm nhìn, chiến lược",
+"Website, tài liệu hội nghị, hội thảo, sinh hoạt đầu khóa giới thiệu CTĐT và CĐR"
+],
+"nhom": "Nhóm 1 – Bà Nguyễn Thu An",
+"han": "02/4/2027"
+},
+{
+"ma": "1.3",
+"tieuChuan": 1,
+"tenTieuChuan": "Mục tiêu và chuẩn đầu ra của chương trình đào tạo",
+"ten": "Chuẩn đầu ra của CTĐT phù hợp với Khung trình độ quốc gia Việt Nam, chuẩn CTĐT và quy định hiện hành; gồm CĐR chung và CĐR chuyên biệt",
+"dieuKien": true,
+"yeuCau": [
+"Khi xây dựng, rà soát CĐR có phân tích sự phù hợp với KTQG, chuẩn CTĐT và quy định hiện hành",
+"CĐR gồm CĐR chung (kiến thức, kỹ năng, năng lực học tập suốt đời) và CĐR chuyên biệt theo ngành"
+],
+"goiY": [
+"Các quy định, hướng dẫn được tham chiếu khi xây dựng CĐR",
+"Quy trình xây dựng CĐR có bước đối sánh với KTQG và chuẩn CTĐT",
+"Văn bản công bố CĐR của CTĐT",
+"Bảng phân loại CĐR chung – CĐR chuyên biệt",
+"Bảng đối sánh CĐR với Khung trình độ quốc gia bậc 7",
+"Báo cáo phân tích từng CĐR đáp ứng yêu cầu BLQ bên trong, bên ngoài"
+],
+"nhom": "Nhóm 1 – Bà Nguyễn Thu An",
+"han": "02/4/2027"
+},
+{
+"ma": "1.4",
+"tieuChuan": 1,
+"tenTieuChuan": "Mục tiêu và chuẩn đầu ra của chương trình đào tạo",
+"ten": "Chuẩn đầu ra của học phần rõ ràng, đo lường được và tương thích với CĐR của CTĐT",
+"dieuKien": false,
+"yeuCau": [
+"Có hướng dẫn xây dựng CĐR học phần; GV đủ năng lực tham gia",
+"GV tham gia xây dựng, điều chỉnh CTĐT và CĐR học phần",
+"CĐR từng học phần rõ ràng, đo lường được, tương thích CĐR CTĐT"
+],
+"goiY": [
+"Hướng dẫn xây dựng, phát triển CĐR học phần",
+"Bản mô tả CTĐT có ma trận CĐR học phần – CĐR CTĐT (mức đóng góp)",
+"Đề cương chi tiết học phần có ma trận CĐR",
+"Văn bản thể hiện tương thích CĐR bài học – CĐR học phần"
+],
+"nhom": "Nhóm 1 – Bà Nguyễn Thu An",
+"han": "02/4/2027"
+},
+{
+"ma": "1.5",
+"tieuChuan": 1,
+"tenTieuChuan": "Mục tiêu và chuẩn đầu ra của chương trình đào tạo",
+"ten": "Chuẩn đầu ra phản ánh yêu cầu của các bên liên quan, đặc biệt là bên liên quan bên ngoài",
+"dieuKien": false,
+"yeuCau": [
+"Quá trình xây dựng CĐR có thu thập, sử dụng ý kiến BLQ bên trong và bên ngoài",
+"Việc xác định, phân tích, sử dụng ý kiến BLQ có hệ thống"
+],
+"goiY": [
+"Quy trình xây dựng, phát triển CĐR CTĐT và CĐR học phần",
+"CSDL vị trí việc làm của ngành đào tạo và người tốt nghiệp",
+"Phiếu khảo sát, biên bản tọa đàm, bảng tổng hợp và tiếp thu ý kiến cơ quan sử dụng, tổ chức nghề nghiệp"
+],
+"nhom": "Nhóm 1 – Bà Nguyễn Thu An",
+"han": "02/4/2027"
+},
+{
+"ma": "1.6",
+"tieuChuan": 1,
+"tenTieuChuan": "Mục tiêu và chuẩn đầu ra của chương trình đào tạo",
+"ten": "Chuẩn đầu ra của CTĐT được đo lường, đánh giá tại thời điểm người học tốt nghiệp",
+"dieuKien": true,
+"yeuCau": [
+"Có quy trình, phương pháp đo lường mức đạt CĐR, triển khai nhất quán; có dữ liệu mức đạt CĐR tại thời điểm tốt nghiệp",
+"Phương pháp thu thập dữ liệu đa dạng; GV tham gia đo lường",
+"Có kế hoạch hành động cải tiến mức đạt CĐR học phần và CTĐT, có giám sát"
+],
+"goiY": [
+"Quy định/hướng dẫn/công cụ đo lường mức đạt CĐR học phần và CTĐT",
+"Kế hoạch đo lường mức đạt CĐR có phân công, phương thức triển khai",
+"Cách thức giám sát, đo lường mức đạt CĐR đến thời điểm tốt nghiệp",
+"Kết quả đo lường, đánh giá CĐR học phần và CĐR CTĐT",
+"Minh chứng đo lường định kỳ, có đối sánh và dùng để cải tiến"
+],
+"nhom": "Nhóm 1 – Bà Nguyễn Thu An",
+"han": "02/4/2027"
+},
+{
+"ma": "2.1",
+"tieuChuan": 2,
+"tenTieuChuan": "Cấu trúc và nội dung chương trình đào tạo",
+"ten": "Bản mô tả CTĐT và đề cương chi tiết học phần đầy đủ thông tin, cập nhật, được phê duyệt và công bố công khai",
+"dieuKien": false,
+"yeuCau": [
+"Bản mô tả CTĐT và ĐCCTHP đủ thông tin, thể hiện phương thức đào tạo, đúng quy định",
+"Được cập nhật",
+"Được phê duyệt, công bố công khai để BLQ dễ tiếp cận"
+],
+"goiY": [
+"Các bản mô tả CTĐT trong giai đoạn đánh giá (bản đầy đủ, bản tóm tắt)",
+"Hướng dẫn thiết kế CTĐT/ĐCCTHP kèm biểu mẫu",
+"Kế hoạch rà soát, đánh giá, cập nhật CTĐT",
+"Quyết định ban hành bản mô tả CTĐT và ĐCCTHP",
+"Đường dẫn website và hình thức công bố khác"
+],
+"nhom": "Nhóm 1 – Bà Nguyễn Thu An",
+"han": "02/4/2027"
+},
+{
+"ma": "2.2",
+"tieuChuan": 2,
+"tenTieuChuan": "Cấu trúc và nội dung chương trình đào tạo",
+"ten": "Cấu trúc, nội dung CTĐT bảo đảm NH đạt CĐR; khối lượng học tập phù hợp quy định",
+"dieuKien": true,
+"yeuCau": [
+"CTĐT có lộ trình giúp NH đạt CĐR",
+"Khối lượng học tập phù hợp quy định",
+"GV hiểu và áp dụng ma trận học phần – CĐR CTĐT"
+],
+"goiY": [
+"Bản mô tả CTĐT và ĐCCTHP được phê duyệt",
+"Ma trận phân nhiệm CĐR cho tất cả học phần",
+"Bảng liên hệ CĐR – phương pháp dạy học – kiểm tra đánh giá",
+"Kế hoạch giảng dạy toàn khóa",
+"Bảng đối sánh khối lượng học tập với quy chế đào tạo thạc sĩ (TT 23/2021) và KTQG",
+"Phương pháp xác định khối lượng học tập của học phần và CTĐT"
+],
+"nhom": "Nhóm 1 – Bà Nguyễn Thu An",
+"han": "02/4/2027"
+},
+{
+"ma": "2.3",
+"tieuChuan": 2,
+"tenTieuChuan": "Cấu trúc và nội dung chương trình đào tạo",
+"ten": "Cấu trúc, nội dung CTĐT được thiết kế dựa trên phản hồi, nhu cầu của BLQ, đặc biệt BLQ bên ngoài",
+"dieuKien": false,
+"yeuCau": [
+"Thiết kế dựa trên phản hồi BLQ, đặc biệt bên ngoài",
+"Có sử dụng kết quả đối sánh với CTĐT khác",
+"Phản ánh mục tiêu và định hướng đào tạo"
+],
+"goiY": [
+"Quy định, kế hoạch thiết kế, phát triển CTĐT",
+"Quy trình thu thập thông tin phản hồi và nhu cầu BLQ",
+"Bản tổng hợp, tiếp thu ý kiến BLQ về CĐR, cấu trúc, nội dung CTĐT",
+"Phiếu, dữ liệu, báo cáo khảo sát; biên bản họp, báo cáo phân tích",
+"Ý kiến chuyên môn về đào tạo trực tuyến (nếu có)"
+],
+"nhom": "Nhóm 1 – Bà Nguyễn Thu An",
+"han": "02/4/2027"
+},
+{
+"ma": "2.4",
+"tieuChuan": 2,
+"tenTieuChuan": "Cấu trúc và nội dung chương trình đào tạo",
+"ten": "Đóng góp của từng học phần vào việc đạt CĐR của CTĐT rõ ràng",
+"dieuKien": true,
+"yeuCau": [
+"Đóng góp của từng học phần phù hợp, rõ ràng",
+"Có sử dụng ý kiến BLQ về đóng góp của từng học phần khi rà soát, cập nhật"
+],
+"goiY": [
+"Bản mô tả CTĐT",
+"Ma trận học phần – CĐR bảo đảm mọi CĐR được phân bổ đầy đủ",
+"ĐCCTHP của tất cả học phần",
+"Lộ trình đạt CĐR CTĐT",
+"Bản tổng hợp ý kiến BLQ về đóng góp của từng học phần"
+],
+"nhom": "Nhóm 1 – Bà Nguyễn Thu An",
+"han": "02/4/2027"
+},
+{
+"ma": "2.5",
+"tieuChuan": 2,
+"tenTieuChuan": "Cấu trúc và nội dung chương trình đào tạo",
+"ten": "CTĐT có cấu trúc logic, trình tự hợp lý, linh hoạt và tích hợp",
+"dieuKien": false,
+"yeuCau": [
+"Học phần liên kết logic, trình tự từ cơ sở đến chuyên sâu",
+"Có tính linh hoạt, tích hợp",
+"Được rà soát, đối sánh qua các lần cập nhật"
+],
+"goiY": [
+"Hướng dẫn thiết kế CTĐT (cấu trúc, linh hoạt, tích hợp)",
+"Kế hoạch học tập toàn khóa (sơ đồ cây học phần)",
+"Các phiên bản bản mô tả CTĐT trong giai đoạn",
+"Báo cáo đối sánh cấu trúc qua các lần cập nhật"
+],
+"nhom": "Nhóm 1 – Bà Nguyễn Thu An",
+"han": "02/4/2027"
+},
+{
+"ma": "2.6",
+"tieuChuan": 2,
+"tenTieuChuan": "Cấu trúc và nội dung chương trình đào tạo",
+"ten": "CTĐT thể hiện rõ học phần bắt buộc, tự chọn và các thành phần; cho phép lựa chọn theo định hướng nghề nghiệp",
+"dieuKien": false,
+"yeuCau": [
+"Thể hiện rõ học phần bắt buộc, tự chọn, lý thuyết, thực hành, trực tuyến, trải nghiệm, NCKH",
+"Cho phép NH lựa chọn theo định hướng nghề nghiệp (nếu có)"
+],
+"goiY": [
+"Hướng dẫn thiết kế CTĐT xác định các loại học phần",
+"Các phiên bản bản mô tả CTĐT thể hiện định hướng nghề nghiệp",
+"Phân tích định hướng nghề nghiệp (ứng dụng) của CTĐT"
+],
+"nhom": "Nhóm 1 – Bà Nguyễn Thu An",
+"han": "02/4/2027"
+},
+{
+"ma": "2.7",
+"tieuChuan": 2,
+"tenTieuChuan": "Cấu trúc và nội dung chương trình đào tạo",
+"ten": "Cấu trúc, nội dung CTĐT được định kỳ rà soát, đánh giá, cải tiến; bảo đảm cập nhật, đáp ứng thị trường lao động",
+"dieuKien": false,
+"yeuCau": [
+"Có quy định, quy trình rà soát, cải tiến CTĐT",
+"Rà soát định kỳ, phân tích đáp ứng thị trường lao động, sử dụng kết quả đánh giá"
+],
+"goiY": [
+"Quy định, kế hoạch rà soát, cải tiến CTĐT",
+"Hồ sơ rà soát CTĐT",
+"Quy trình thu thập phản hồi BLQ khi rà soát",
+"Báo cáo phân tích, đối sánh quy trình rà soát",
+"Báo cáo phân tích nhu cầu thị trường lao động và mức đáp ứng của CTĐT"
+],
+"nhom": "Nhóm 1 – Bà Nguyễn Thu An",
+"han": "02/4/2027"
+},
+{
+"ma": "3.1",
+"tieuChuan": 3,
+"tenTieuChuan": "Hoạt động dạy và học",
+"ten": "Triết lý giáo dục được tuyên bố rõ ràng, phổ biến đến BLQ và chuyển tải vào hoạt động dạy và học",
+"dieuKien": false,
+"yeuCau": [
+"Được tuyên bố rõ",
+"Được phổ biến đến BLQ, đặc biệt bên trong",
+"Được chuyển tải vào dạy và học"
+],
+"goiY": [
+"Văn bản tuyên bố triết lý giáo dục của Học viện/CTĐT",
+"Văn bản, hình ảnh phổ biến triết lý",
+"Chính sách, hướng dẫn triển khai triết lý vào dạy học",
+"ĐCCTHP, bài giảng thể hiện triết lý",
+"Báo cáo hoạt động ngoại khóa thể hiện triết lý"
+],
+"nhom": "Nhóm 2 – Bà Vũ Thị Thu Hằng",
+"han": "02/4/2027"
+},
+{
+"ma": "3.2",
+"tieuChuan": 3,
+"tenTieuChuan": "Hoạt động dạy và học",
+"ten": "Hoạt động dạy và học được thiết kế, triển khai tương thích với CĐR của CTĐT và học phần (kể cả trực tuyến)",
+"dieuKien": true,
+"yeuCau": [
+"Có hướng dẫn thiết kế hoạt động dạy học tương thích CĐR; GV có năng lực triển khai",
+"Hoạt động dạy học giúp NH đạt CĐR CTĐT",
+"Hoạt động dạy học từng học phần tương thích CĐR học phần",
+"Dạy học trực tuyến (nếu có) tương thích CĐR như trực tiếp"
+],
+"goiY": [
+"Hướng dẫn thiết kế hoạt động dạy học theo CĐR",
+"Tài liệu tập huấn, bồi dưỡng về thiết kế dạy học theo CĐR",
+"Tài liệu hội thảo, tọa đàm chia sẻ kinh nghiệm",
+"Ma trận học phần – CĐR CTĐT",
+"Bản thiết kế, phân tích hoạt động dạy học với CĐR",
+"Đề cương chi tiết học phần",
+"Báo cáo, biên bản BLQ góp ý về sự tương thích"
+],
+"nhom": "Nhóm 2 – Bà Vũ Thị Thu Hằng",
+"han": "02/4/2027"
+},
+{
+"ma": "3.3",
+"tieuChuan": 3,
+"tenTieuChuan": "Hoạt động dạy và học",
+"ten": "Hoạt động dạy và học thúc đẩy học tập chủ động, phương pháp học tập và học tập suốt đời",
+"dieuKien": false,
+"yeuCau": [
+"Thể hiện học tập chủ động",
+"Thúc đẩy phương pháp học tập và học tập suốt đời",
+"Dạy học trực tuyến bảo đảm tương tác hiệu quả"
+],
+"goiY": [
+"Kế hoạch, tài liệu hướng dẫn học tập chủ động",
+"Tài liệu hướng dẫn tương tác, học tập trực tuyến",
+"Minh chứng hoạt động học tập chủ động (seminar, tình huống, diễn án…)",
+"Minh chứng hoạt động thúc đẩy học tập suốt đời",
+"Báo cáo BLQ góp ý",
+"Báo cáo cải tiến hoạt động dạy học"
+],
+"nhom": "Nhóm 2 – Bà Vũ Thị Thu Hằng",
+"han": "02/4/2027"
+},
+{
+"ma": "3.4",
+"tieuChuan": 3,
+"tenTieuChuan": "Hoạt động dạy và học",
+"ten": "Hoạt động dạy và học thúc đẩy ý tưởng mới, sáng kiến, đổi mới sáng tạo và tinh thần khởi nghiệp",
+"dieuKien": false,
+"yeuCau": [
+"Thúc đẩy NH đưa ra ý tưởng mới, sáng kiến, đổi mới sáng tạo",
+"Thúc đẩy tinh thần khởi nghiệp"
+],
+"goiY": [
+"Thống kê ý tưởng, sáng kiến, sản phẩm sáng tạo của học viên",
+"Báo cáo, biên bản BLQ góp ý về thúc đẩy đổi mới sáng tạo, khởi nghiệp"
+],
+"nhom": "Nhóm 2 – Bà Vũ Thị Thu Hằng",
+"han": "02/4/2027"
+},
+{
+"ma": "3.5",
+"tieuChuan": 3,
+"tenTieuChuan": "Hoạt động dạy và học",
+"ten": "Quá trình dạy và học được thường xuyên rà soát, đánh giá, cải tiến",
+"dieuKien": false,
+"yeuCau": [
+"Có quy định/kế hoạch rà soát, cải tiến dạy học, có phân tích tương thích với CĐR",
+"Rà soát định kỳ",
+"Sử dụng kết quả rà soát để cải tiến"
+],
+"goiY": [
+"Quy định/kế hoạch rà soát, cải tiến quá trình dạy học",
+"Khảo sát BLQ bên trong về quy định, kế hoạch",
+"Văn bản rà soát, cải tiến theo kế hoạch",
+"Tài liệu về phần mềm đào tạo trực tuyến (nếu có)",
+"Báo cáo phân tích cải tiến dạy học"
+],
+"nhom": "Nhóm 2 – Bà Vũ Thị Thu Hằng",
+"han": "02/4/2027"
+},
+{
+"ma": "4.1",
+"tieuChuan": 4,
+"tenTieuChuan": "Đánh giá kết quả học tập",
+"ten": "Phương pháp đánh giá kết quả học tập đa dạng, phù hợp phương thức đào tạo và tương thích với CĐR",
+"dieuKien": false,
+"yeuCau": [
+"Có quy định/quy trình hướng dẫn thiết kế phương pháp đánh giá tương thích CĐR; GV có năng lực triển khai",
+"Phương pháp đánh giá đa dạng, phù hợp phương thức đào tạo",
+"Được phổ biến đến BLQ, đặc biệt NH"
+],
+"goiY": [
+"Quy định, kế hoạch về đánh giá đầu vào, đánh giá quá trình, đánh giá đầu ra",
+"Hướng dẫn thiết kế phương pháp đánh giá, ra đề thi tương thích CĐR",
+"ĐCCTHP thể hiện sự đa dạng, tương thích của phương pháp đánh giá"
+],
+"nhom": "Nhóm 2 – Bà Vũ Thị Thu Hằng",
+"han": "02/4/2027"
+},
+{
+"ma": "4.2",
+"tieuChuan": 4,
+"tenTieuChuan": "Đánh giá kết quả học tập",
+"ten": "Có chính sách, quy định rõ ràng về đánh giá kết quả học tập, liêm chính học thuật và phúc khảo",
+"dieuKien": false,
+"yeuCau": [
+"Có chính sách, quy định rõ cho mọi phương thức đào tạo",
+"Được phổ biến đến NH",
+"Triển khai nhất quán"
+],
+"goiY": [
+"Quy định đánh giá kết quả học tập, phúc khảo, liêm chính học thuật",
+"Hình thức công khai (website, bản mô tả CTĐT, sổ tay học viên)",
+"Sổ tay học viên, sổ tay giảng viên",
+"Ý kiến phản hồi của GV, học viên, cựu học viên, cán bộ quản lý về việc thực hiện"
+],
+"nhom": "Nhóm 2 – Bà Vũ Thị Thu Hằng",
+"han": "02/4/2027"
+},
+{
+"ma": "4.3",
+"tieuChuan": 4,
+"tenTieuChuan": "Đánh giá kết quả học tập",
+"ten": "Tiêu chuẩn, quy trình đánh giá, xét công nhận kết quả học tập, xét tốt nghiệp được phổ biến và thực hiện nhất quán",
+"dieuKien": false,
+"yeuCau": [
+"Được phổ biến đến NH",
+"Triển khai nhất quán"
+],
+"goiY": [
+"Quy định, quy trình đánh giá, công nhận kết quả học tập, xét tốt nghiệp",
+"Kế hoạch theo học kỳ, năm học có phân công",
+"Hình thức công khai tiêu chuẩn, thủ tục",
+"Báo cáo kết quả đánh giá, xét công nhận, xét tốt nghiệp",
+"Ý kiến phản hồi của BLQ"
+],
+"nhom": "Nhóm 2 – Bà Vũ Thị Thu Hằng",
+"han": "02/4/2027"
+},
+{
+"ma": "4.4",
+"tieuChuan": 4,
+"tenTieuChuan": "Đánh giá kết quả học tập",
+"ten": "Phương pháp, tiêu chí, rubric, thang điểm đánh giá bảo đảm độ giá trị, độ tin cậy và công bằng",
+"dieuKien": false,
+"yeuCau": [
+"Phương pháp, tiêu chí đánh giá thể hiện qua kế hoạch đánh giá học phần, bảo đảm giá trị, tin cậy, công bằng",
+"Có rubric, thang điểm chi tiết, công bố đến NH",
+"GV có năng lực thiết kế rubric",
+"Đánh giá trực tuyến bảo mật đề, chống gian lận"
+],
+"goiY": [
+"Quy định về phương pháp đánh giá",
+"Rubric bài thi cuối kỳ học phần, luận văn/đề án tốt nghiệp",
+"Kế hoạch đánh giá học phần trực tuyến (nếu có)",
+"Kế hoạch đánh giá học phần, luận văn có phân công",
+"Dữ liệu chấm thi, phúc khảo, phúc tra"
+],
+"nhom": "Nhóm 2 – Bà Vũ Thị Thu Hằng",
+"han": "02/4/2027"
+},
+{
+"ma": "4.5",
+"tieuChuan": 4,
+"tenTieuChuan": "Đánh giá kết quả học tập",
+"ten": "Phương pháp đánh giá đo lường được mức độ đạt CĐR của học phần và của CTĐT",
+"dieuKien": true,
+"yeuCau": [
+"Đo lường được mức đạt CĐR từng học phần cho mọi phương thức đào tạo",
+"Đo lường được mức đạt CĐR CTĐT cho mọi phương thức đào tạo"
+],
+"goiY": [
+"Quy định/công cụ đánh giá bảo đảm đo lường CĐR",
+"Kế hoạch đánh giá đo lường CĐR có phân công",
+"Báo cáo phân tích phương pháp đánh giá tương thích CĐR",
+"Báo cáo phân tích mức tương thích của đề thi với CĐR",
+"Báo cáo phân tích phổ điểm, độ phân hóa đề thi các học phần"
+],
+"nhom": "Nhóm 2 – Bà Vũ Thị Thu Hằng",
+"han": "02/4/2027"
+},
+{
+"ma": "4.6",
+"tieuChuan": 4,
+"tenTieuChuan": "Đánh giá kết quả học tập",
+"ten": "Kết quả đánh giá được phản hồi kịp thời, giúp NH cải thiện việc học tập",
+"dieuKien": false,
+"yeuCau": [
+"Kết quả được phản hồi kịp thời",
+"NH cải thiện việc học nhờ phản hồi"
+],
+"goiY": [
+"Quy định về thời hạn công bố, phản hồi kết quả",
+"Ý kiến học viên, cựu học viên về tính kịp thời",
+"Phản hồi của GV về kết quả học tập",
+"Hình thức thông báo kết quả (bảng điểm, tài khoản hệ thống)"
+],
+"nhom": "Nhóm 2 – Bà Vũ Thị Thu Hằng",
+"han": "02/4/2027"
+},
+{
+"ma": "4.7",
+"tieuChuan": 4,
+"tenTieuChuan": "Đánh giá kết quả học tập",
+"ten": "Hoạt động đánh giá kết quả học tập và các quy định về đánh giá được định kỳ rà soát, cải tiến",
+"dieuKien": false,
+"yeuCau": [
+"Có quy định, quy trình rà soát định kỳ (tương thích CĐR, giá trị, tin cậy, rubric, khả năng đo lường CĐR), có BLQ tham gia",
+"Định kỳ rà soát, cải tiến để đáp ứng BLQ"
+],
+"goiY": [
+"Các quy định về đánh giá đã ban hành (qua các phiên bản)",
+"Kết quả lấy ý kiến BLQ định kỳ về đánh giá",
+"Kế hoạch rà soát, cải tiến quy định đánh giá",
+"Báo cáo phân tích khả năng đo lường CĐR",
+"Website cập nhật quy định đánh giá"
+],
+"nhom": "Nhóm 2 – Bà Vũ Thị Thu Hằng",
+"han": "02/4/2027"
+},
+{
+"ma": "5.1",
+"tieuChuan": 5,
+"tenTieuChuan": "Đội ngũ giảng viên, nghiên cứu viên",
+"ten": "Kế hoạch phát triển đội ngũ giảng viên, nghiên cứu viên",
+"dieuKien": false,
+"yeuCau": [
+"Có kế hoạch cụ thể, khả thi theo lộ trình, với chính sách, biện pháp phù hợp",
+"Thực hiện đúng kế hoạch, bảo đảm số lượng và chất lượng"
+],
+"goiY": [
+"Hướng dẫn, kế hoạch ngắn/dài hạn phát triển đội ngũ",
+"CSDL giảng viên, nghiên cứu viên",
+"Thống kê tỷ lệ NH/GV quy đổi hằng năm",
+"Thống kê kinh phí phát triển đội ngũ",
+"Báo cáo tổng kết thực hiện kế hoạch"
+],
+"nhom": "Nhóm 3 – Bà Nguyễn Thị Hoàn",
+"han": "26/3/2027 (dùng chung); 02/4/2027"
+},
+{
+"ma": "5.2",
+"tieuChuan": 5,
+"tenTieuChuan": "Đội ngũ giảng viên, nghiên cứu viên",
+"ten": "Số lượng và chất lượng đội ngũ giảng viên, nghiên cứu viên đáp ứng yêu cầu thực hiện CTĐT theo quy định",
+"dieuKien": true,
+"yeuCau": [
+"Số lượng đáp ứng các phương thức đào tạo theo quy định",
+"Chất lượng đáp ứng yêu cầu thực hiện CTĐT",
+"Đo lường, giám sát khối lượng công việc",
+"Sử dụng kết quả giám sát để cải tiến"
+],
+"goiY": [
+"Quy định chế độ làm việc, định mức công việc",
+"Bảng trích ngang thông tin GV, NCV",
+"Thống kê giờ thừa/thiếu (giảng dạy, NCKH, phục vụ cộng đồng)",
+"Bản mô tả vị trí việc làm; hồ sơ cán bộ",
+"Báo cáo cải tiến dựa trên kết quả giám sát"
+],
+"nhom": "Nhóm 3 – Bà Nguyễn Thị Hoàn",
+"han": "26/3/2027 (dùng chung); 02/4/2027"
+},
+{
+"ma": "5.3",
+"tieuChuan": 5,
+"tenTieuChuan": "Đội ngũ giảng viên, nghiên cứu viên",
+"ten": "Năng lực của đội ngũ giảng viên, nghiên cứu viên được xác định, đánh giá và thông tin tới các bên liên quan",
+"dieuKien": false,
+"yeuCau": [
+"Có văn bản xác định năng lực",
+"Thực hiện đánh giá năng lực",
+"Thông tin kết quả đến các bên liên quan"
+],
+"goiY": [
+"Bản mô tả vị trí việc làm",
+"Quy định, kế hoạch đánh giá năng lực (bộ chỉ số)",
+"CSDL, kết quả đánh giá năng lực",
+"Thông báo kết quả",
+"Hoạt động cải tiến dựa trên kết quả đánh giá"
+],
+"nhom": "Nhóm 3 – Bà Nguyễn Thị Hoàn",
+"han": "26/3/2027 (dùng chung); 02/4/2027"
+},
+{
+"ma": "5.4",
+"tieuChuan": 5,
+"tenTieuChuan": "Đội ngũ giảng viên, nghiên cứu viên",
+"ten": "Giảng viên, nghiên cứu viên được phân công nhiệm vụ phù hợp với trình độ, năng lực và kinh nghiệm",
+"dieuKien": false,
+"yeuCau": [
+"Phân công phù hợp",
+"Có tham khảo ý kiến GV, NCV",
+"Thông báo nhiệm vụ đến các bên liên quan"
+],
+"goiY": [
+"Bảng mô tả công việc",
+"Lý lịch trích ngang",
+"Kết quả khảo sát mức độ hài lòng của GV",
+"Đánh giá của NH/bộ môn về thực hiện nhiệm vụ"
+],
+"nhom": "Nhóm 3 – Bà Nguyễn Thị Hoàn",
+"han": "26/3/2027 (dùng chung); 02/4/2027"
+},
+{
+"ma": "5.5",
+"tieuChuan": 5,
+"tenTieuChuan": "Đội ngũ giảng viên, nghiên cứu viên",
+"ten": "Bổ nhiệm/thăng tiến dựa trên đánh giá năng lực, kết quả giảng dạy, NCKH và phục vụ cộng đồng",
+"dieuKien": false,
+"yeuCau": [
+"Có hệ thống đánh giá năng lực (quy định, điều kiện, trình tự)",
+"Bổ nhiệm/thăng tiến dựa trên kết quả đánh giá"
+],
+"goiY": [
+"Quy định bổ nhiệm/thăng tiến",
+"Hồ sơ bổ nhiệm/thăng hạng",
+"Văn bản quy hoạch đội ngũ",
+"Khảo sát mức độ hài lòng về bổ nhiệm/thăng tiến"
+],
+"nhom": "Nhóm 3 – Bà Nguyễn Thị Hoàn",
+"han": "26/3/2027 (dùng chung); 02/4/2027"
+},
+{
+"ma": "5.6",
+"tieuChuan": 5,
+"tenTieuChuan": "Đội ngũ giảng viên, nghiên cứu viên",
+"ten": "Trách nhiệm, quyền hạn, nghĩa vụ của giảng viên, nghiên cứu viên được xác định rõ và phổ biến",
+"dieuKien": false,
+"yeuCau": [
+"Quy định phù hợp pháp luật và cơ quan quản lý cấp trên",
+"Phổ biến hiệu quả để GV hiểu và thực hiện"
+],
+"goiY": [
+"Văn bản quy định",
+"Sổ tay, thông báo, hội nghị quán triệt",
+"Báo cáo đánh giá viên chức hằng năm",
+"Ý kiến phản hồi của GV, NCV"
+],
+"nhom": "Nhóm 3 – Bà Nguyễn Thị Hoàn",
+"han": "26/3/2027 (dùng chung); 02/4/2027"
+},
+{
+"ma": "5.7",
+"tieuChuan": 5,
+"tenTieuChuan": "Đội ngũ giảng viên, nghiên cứu viên",
+"ten": "Nhu cầu đào tạo, bồi dưỡng của giảng viên, nghiên cứu viên được xác định có hệ thống và được đáp ứng",
+"dieuKien": false,
+"yeuCau": [
+"Xác định nhu cầu bồi dưỡng",
+"Lập, thực hiện kế hoạch bảo đảm mọi GV được tham gia",
+"Đánh giá kết quả hằng năm và cải tiến"
+],
+"goiY": [
+"Quy trình xác định nhu cầu",
+"Kế hoạch, kết quả khảo sát nhu cầu",
+"Quyết định cử đi đào tạo; văn bằng, chứng chỉ",
+"Thống kê danh sách, kinh phí",
+"Báo cáo tổng kết hằng năm"
+],
+"nhom": "Nhóm 3 – Bà Nguyễn Thị Hoàn",
+"han": "26/3/2027 (dùng chung); 02/4/2027"
+},
+{
+"ma": "5.8",
+"tieuChuan": 5,
+"tenTieuChuan": "Đội ngũ giảng viên, nghiên cứu viên",
+"ten": "Đánh giá chất lượng giảng dạy, NCKH, phục vụ cộng đồng của GV, NCV, kể cả khen thưởng, công nhận, theo quy định",
+"dieuKien": false,
+"yeuCau": [
+"Có quy định, tiêu chí đánh giá",
+"Thực hiện đánh giá",
+"Dùng kết quả để khen thưởng, công nhận; GV được thông tin kết quả"
+],
+"goiY": [
+"Quy định đánh giá",
+"Kế hoạch triển khai",
+"Báo cáo kết quả đánh giá",
+"Quy định thi đua khen thưởng",
+"Quyết định khen thưởng, kỷ luật trong chu kỳ"
+],
+"nhom": "Nhóm 3 – Bà Nguyễn Thị Hoàn",
+"han": "26/3/2027 (dùng chung); 02/4/2027"
+},
+{
+"ma": "6.1",
+"tieuChuan": 6,
+"tenTieuChuan": "Các dịch vụ hỗ trợ người học",
+"ten": "Chính sách, tiêu chí, quy trình tuyển sinh được xác định rõ theo yêu cầu CTĐT, công bố công khai và cập nhật",
+"dieuKien": true,
+"yeuCau": [
+"Chính sách, tiêu chí, quy trình rõ ràng, đúng quy định",
+"Được đánh giá, cập nhật có BLQ tham gia",
+"Công bố công khai"
+],
+"goiY": [
+"Đề án/thông báo tuyển sinh hằng năm",
+"Quy chế, kế hoạch tuyển sinh",
+"Quyết định mở ngành/giao đào tạo",
+"CSDL kết quả tuyển sinh",
+"Báo cáo dự báo nhu cầu nhân lực",
+"Website, tờ rơi tuyển sinh",
+"Báo cáo tổng kết tuyển sinh"
+],
+"nhom": "Nhóm 4 – Ông Lê Như Phong",
+"han": "26/3/2027"
+},
+{
+"ma": "6.2",
+"tieuChuan": 6,
+"tenTieuChuan": "Các dịch vụ hỗ trợ người học",
+"ten": "Năng lực đội ngũ cung cấp dịch vụ hỗ trợ được xác định trong tuyển dụng, phân công và được đánh giá",
+"dieuKien": false,
+"yeuCau": [
+"Năng lực xác định trong tiêu chí tuyển dụng",
+"Phân công theo năng lực",
+"Đánh giá năng lực phù hợp vị trí"
+],
+"goiY": [
+"Tiêu chí tuyển dụng",
+"Bản mô tả công việc",
+"Thông báo tuyển dụng, phân công",
+"Kết quả đánh giá hằng năm",
+"Ý kiến phản hồi BLQ bên trong"
+],
+"nhom": "Nhóm 4 – Ông Lê Như Phong",
+"han": "26/3/2027"
+},
+{
+"ma": "6.3",
+"tieuChuan": 6,
+"tenTieuChuan": "Các dịch vụ hỗ trợ người học",
+"ten": "Kế hoạch ngắn hạn, dài hạn về dịch vụ hỗ trợ người học được xây dựng, triển khai",
+"dieuKien": false,
+"yeuCau": [
+"Kế hoạch rõ theo loại dịch vụ, có phụ trách, tiến độ, chỉ tiêu",
+"Triển khai đầy đủ, chất lượng",
+"Bồi dưỡng đội ngũ cung cấp dịch vụ"
+],
+"goiY": [
+"Kế hoạch dài hạn, ngắn hạn",
+"Văn bản phân công đơn vị phụ trách",
+"Thống kê kinh phí trong chu kỳ",
+"Báo cáo tổng kết",
+"Ý kiến phản hồi của NH"
+],
+"nhom": "Nhóm 4 – Ông Lê Như Phong",
+"han": "26/3/2027"
+},
+{
+"ma": "6.4",
+"tieuChuan": 6,
+"tenTieuChuan": "Các dịch vụ hỗ trợ người học",
+"ten": "Hệ thống quản lý đào tạo giám sát tiến độ, kết quả, khối lượng học tập; phản hồi, khắc phục kịp thời",
+"dieuKien": false,
+"yeuCau": [
+"Hệ thống ghi nhận tiến độ, kết quả, khối lượng học tập",
+"Các đơn vị phối hợp hiệu quả",
+"Phản hồi kịp thời giúp NH cải thiện"
+],
+"goiY": [
+"Quyết định phân công đơn vị theo dõi tiến độ",
+"Quy chế đào tạo, kiểm tra đánh giá",
+"Quy định cố vấn học tập",
+"CSDL tiến độ học tập (học lại, ngừng học, thôi học)",
+"Ý kiến phản hồi của NH"
+],
+"nhom": "Nhóm 4 – Ông Lê Như Phong",
+"han": "26/3/2027"
+},
+{
+"ma": "6.5",
+"tieuChuan": 6,
+"tenTieuChuan": "Các dịch vụ hỗ trợ người học",
+"ten": "Tư vấn học tập, hoạt động ngoại khóa, cuộc thi và dịch vụ hỗ trợ khác giúp cải thiện học tập, tăng khả năng có việc làm",
+"dieuKien": false,
+"yeuCau": [
+"Triển khai các hoạt động hỗ trợ",
+"Có kế hoạch rõ ràng",
+"Sử dụng nền tảng số hỗ trợ",
+"Thông tin đầy đủ, dễ tiếp cận"
+],
+"goiY": [
+"Quy định triển khai",
+"Kế hoạch hoạt động",
+"Nền tảng số hỗ trợ",
+"CSDL hoạt động và việc làm của người tốt nghiệp",
+"Ý kiến phản hồi của NH"
+],
+"nhom": "Nhóm 4 – Ông Lê Như Phong",
+"han": "26/3/2027"
+},
+{
+"ma": "6.6",
+"tieuChuan": 6,
+"tenTieuChuan": "Các dịch vụ hỗ trợ người học",
+"ten": "Dịch vụ hỗ trợ người học được định kỳ đánh giá, đối sánh và cải tiến",
+"dieuKien": false,
+"yeuCau": [
+"Có quy định, tiêu chí đánh giá, đối sánh định kỳ",
+"Thực hiện kế hoạch",
+"Dùng kết quả để cải tiến"
+],
+"goiY": [
+"Quy định đánh giá chất lượng dịch vụ",
+"CSDL đánh giá và đối sánh",
+"Báo cáo kết quả cải tiến",
+"Ý kiến phản hồi BLQ bên trong"
+],
+"nhom": "Nhóm 4 – Ông Lê Như Phong",
+"han": "26/3/2027"
+},
+{
+"ma": "7.1",
+"tieuChuan": 7,
+"tenTieuChuan": "Cơ sở hạ tầng, cơ sở vật chất và trang thiết bị",
+"ten": "Hệ thống phòng làm việc, phòng học, phòng chức năng và trang thiết bị phù hợp",
+"dieuKien": false,
+"yeuCau": [
+"Có chính sách bảo đảm chất lượng CSVC",
+"Đủ phòng (kể cả phòng học trực tuyến), bảo đảm diện tích/NH",
+"Trang thiết bị đáp ứng"
+],
+"goiY": [
+"Thống kê diện tích, tỷ lệ diện tích/NH",
+"Sơ đồ hệ thống phòng",
+"Sổ theo dõi sử dụng phòng",
+"Danh mục CSVC, trang thiết bị",
+"Kế hoạch mua sắm, nâng cấp",
+"Kinh phí đầu tư",
+"Ý kiến NH, GV"
+],
+"nhom": "Nhóm 5 – Bà Nguyễn Thị Phong Lan",
+"han": "26/3/2027"
+},
+{
+"ma": "7.2",
+"tieuChuan": 7,
+"tenTieuChuan": "Cơ sở hạ tầng, cơ sở vật chất và trang thiết bị",
+"ten": "Phòng thí nghiệm, phòng thực hành và trang thiết bị đầy đủ, cập nhật, sử dụng hiệu quả",
+"dieuKien": false,
+"yeuCau": [
+"Đủ trang thiết bị theo CTĐT",
+"Đạt chuẩn an toàn, được bảo dưỡng, nâng cấp",
+"Phần mềm có bản quyền"
+],
+"goiY": [
+"Sơ đồ phòng thực hành (phòng xử án giả định…)",
+"Sổ theo dõi sử dụng",
+"Danh mục thiết bị",
+"Quy định sử dụng phòng",
+"Kinh phí",
+"Thông tin phần mềm",
+"Ý kiến NH, GV"
+],
+"nhom": "Nhóm 5 – Bà Nguyễn Thị Phong Lan",
+"han": "26/3/2027"
+},
+{
+"ma": "7.3",
+"tieuChuan": 7,
+"tenTieuChuan": "Cơ sở hạ tầng, cơ sở vật chất và trang thiết bị",
+"ten": "Thư viện, thư viện số và nguồn học liệu được cập nhật, đáp ứng nhu cầu đào tạo, NCKH",
+"dieuKien": true,
+"yeuCau": [
+"Có chính sách, hệ thống bảo đảm chất lượng thư viện",
+"Học liệu được cập nhật",
+"Học liệu số đáp ứng nhu cầu, tuân thủ bản quyền"
+],
+"goiY": [
+"Sơ đồ thư viện",
+"Danh mục giáo trình, tài liệu theo ĐCCTHP và số lượng cập nhật hằng năm",
+"Quy định sử dụng thư viện số",
+"Thống kê lượt sử dụng",
+"Chứng từ đầu tư",
+"Ý kiến NH, GV"
+],
+"nhom": "Nhóm 5 – Bà Nguyễn Thị Phong Lan",
+"han": "26/3/2027"
+},
+{
+"ma": "7.4",
+"tieuChuan": 7,
+"tenTieuChuan": "Cơ sở hạ tầng, cơ sở vật chất và trang thiết bị",
+"ten": "Hệ thống CNTT, hạ tầng mạng, máy tính dễ tiếp cận, đáp ứng nhu cầu",
+"dieuKien": false,
+"yeuCau": [
+"CNTT, phần mềm, mạng, học trực tuyến đáp ứng",
+"Có hướng dẫn công nghệ cho NH trực tuyến"
+],
+"goiY": [
+"Thống kê hạ tầng CNTT",
+"Trang thông tin điện tử",
+"Sơ đồ phòng họp trực tuyến",
+"Phân tích mức đáp ứng",
+"Ý kiến người dùng",
+"Cẩm nang học trực tuyến"
+],
+"nhom": "Nhóm 5 – Bà Nguyễn Thị Phong Lan",
+"han": "26/3/2027"
+},
+{
+"ma": "7.5",
+"tieuChuan": 7,
+"tenTieuChuan": "Cơ sở hạ tầng, cơ sở vật chất và trang thiết bị",
+"ten": "Môi trường tâm lý, xã hội, cảnh quan thuận lợi cho đào tạo, NCKH",
+"dieuKien": false,
+"yeuCau": [
+"Môi trường thân thiện",
+"Môi trường trực tuyến thoải mái, hiệu quả",
+"Cảnh quan thuận lợi"
+],
+"goiY": [
+"Sơ đồ khuôn viên",
+"Nội quy, quy tắc ứng xử",
+"Phương tiện giao tiếp trực tuyến",
+"Hoạt động đoàn thể, ngoại khóa",
+"Ngân sách",
+"Ý kiến phản hồi"
+],
+"nhom": "Nhóm 5 – Bà Nguyễn Thị Phong Lan",
+"han": "26/3/2027"
+},
+{
+"ma": "7.6",
+"tieuChuan": 7,
+"tenTieuChuan": "Cơ sở hạ tầng, cơ sở vật chất và trang thiết bị",
+"ten": "Tiêu chuẩn môi trường, sức khỏe, an toàn được xác định, triển khai, lưu ý nhóm người học đặc thù",
+"dieuKien": false,
+"yeuCau": [
+"Có quy định, kế hoạch về môi trường, sức khỏe, an toàn",
+"Bảo đảm an toàn cả trong đào tạo trực tuyến"
+],
+"goiY": [
+"Văn bản quy định",
+"Hoạt động PCCC, an ninh, y tế",
+"Chăm sóc sức khỏe NH, viên chức",
+"CSVC cho nhóm đặc thù",
+"Ý kiến các nhóm NH"
+],
+"nhom": "Nhóm 5 – Bà Nguyễn Thị Phong Lan",
+"han": "26/3/2027"
+},
+{
+"ma": "7.7",
+"tieuChuan": 7,
+"tenTieuChuan": "Cơ sở hạ tầng, cơ sở vật chất và trang thiết bị",
+"ten": "Năng lực đội ngũ hỗ trợ CSVC, trang thiết bị được xác định và đánh giá",
+"dieuKien": false,
+"yeuCau": [
+"Xác định năng lực, tiêu chí đánh giá",
+"Đánh giá định kỳ"
+],
+"goiY": [
+"Quy định năng lực",
+"Bản mô tả công việc",
+"Kế hoạch, kết quả đánh giá định kỳ",
+"Hồ sơ, lý lịch",
+"Ý kiến BLQ bên trong"
+],
+"nhom": "Nhóm 5 – Bà Nguyễn Thị Phong Lan",
+"han": "26/3/2027"
+},
+{
+"ma": "7.8",
+"tieuChuan": 7,
+"tenTieuChuan": "Cơ sở hạ tầng, cơ sở vật chất và trang thiết bị",
+"ten": "Chất lượng CSVC phục vụ CTĐT được định kỳ đánh giá và cải tiến",
+"dieuKien": false,
+"yeuCau": [
+"Có quy định, tiêu chí, thực hiện đánh giá",
+"Định kỳ nâng cấp",
+"Tích hợp công nghệ mới cho đào tạo trực tuyến"
+],
+"goiY": [
+"Kế hoạch, hoạt động đánh giá",
+"Ý kiến NH, GV, cán bộ quản lý",
+"Thống kê thay đổi CSVC",
+"Báo cáo nghiên cứu công nghệ mới",
+"Kinh phí nâng cấp"
+],
+"nhom": "Nhóm 5 – Bà Nguyễn Thị Phong Lan",
+"han": "26/3/2027"
+},
+{
+"ma": "8.1",
+"tieuChuan": 8,
+"tenTieuChuan": "Đầu ra và kết quả đầu ra",
+"ten": "Tỷ lệ tốt nghiệp, thôi học, thời gian tốt nghiệp trung bình được xác lập, giám sát, đối sánh để cải tiến",
+"dieuKien": false,
+"yeuCau": [
+"Xác lập, giám sát, đối sánh trong và ngoài CSĐT theo từng năm",
+"Triển khai hằng năm theo quy trình, có đơn vị phụ trách"
+],
+"goiY": [
+"Văn bản giao nhiệm vụ lập CSDL",
+"Quyết định trúng tuyển, thôi học, tốt nghiệp",
+"Biên bản Hội đồng xét tốt nghiệp",
+"CSDL được cập nhật",
+"Tiêu chí chọn CSDL đối sánh",
+"Báo cáo tổng kết, phân tích nguyên nhân, giải pháp"
+],
+"nhom": "Nhóm 6 – Bà Vũ Thị Cẩm Tú",
+"han": "02/4/2027"
+},
+{
+"ma": "8.2",
+"tieuChuan": 8,
+"tenTieuChuan": "Đầu ra và kết quả đầu ra",
+"ten": "Tỷ lệ việc làm (kể cả tự tạo việc làm, khởi nghiệp, học nâng cao) được xác lập, giám sát, đối sánh để cải tiến",
+"dieuKien": true,
+"yeuCau": [
+"Xác lập, giám sát, đối sánh trong và ngoài CSĐT theo năm để cải tiến"
+],
+"goiY": [
+"Văn bản giao nhiệm vụ lập CSDL",
+"Trích xuất CSDL việc làm các năm",
+"Tiêu chí chọn CSDL đối sánh",
+"Báo cáo tổng kết, phân tích; kế hoạch cải tiến",
+"Phiếu, báo cáo khảo sát người tốt nghiệp"
+],
+"nhom": "Nhóm 6 – Bà Vũ Thị Cẩm Tú",
+"han": "02/4/2027"
+},
+{
+"ma": "8.3",
+"tieuChuan": 8,
+"tenTieuChuan": "Đầu ra và kết quả đầu ra",
+"ten": "Hoạt động NCKH, sản phẩm sáng tạo của NH, GV, NCV được xác lập, giám sát, đối sánh để cải tiến",
+"dieuKien": false,
+"yeuCau": [
+"Xác lập, giám sát, đối sánh so với mục tiêu đã đề ra"
+],
+"goiY": [
+"Quy định hoạt động NCKH",
+"Kế hoạch khoa học công nghệ",
+"CSDL công bố và tiêu chí đối sánh",
+"Báo cáo tổng kết, biên bản phân tích"
+],
+"nhom": "Nhóm 6 – Bà Vũ Thị Cẩm Tú",
+"han": "02/4/2027"
+},
+{
+"ma": "8.4",
+"tieuChuan": 8,
+"tenTieuChuan": "Đầu ra và kết quả đầu ra",
+"ten": "Dữ liệu về mức độ NH đạt CĐR của CTĐT được xác lập, giám sát để cải tiến",
+"dieuKien": false,
+"yeuCau": [
+"Xác lập, giám sát, đối sánh qua từng năm dữ liệu mức đạt CĐR"
+],
+"goiY": [
+"Văn bản công bố CĐR",
+"Kế hoạch đo lường",
+"CSDL mức đạt CĐR",
+"Biên bản, báo cáo đo lường, đối sánh",
+"Biên bản họp về cải tiến"
+],
+"nhom": "Nhóm 6 – Bà Vũ Thị Cẩm Tú",
+"han": "02/4/2027"
+},
+{
+"ma": "8.5",
+"tieuChuan": 8,
+"tenTieuChuan": "Đầu ra và kết quả đầu ra",
+"ten": "Mức độ hài lòng của các bên liên quan được xác lập, giám sát, đối sánh để cải tiến",
+"dieuKien": false,
+"yeuCau": [
+"Xác lập, giám sát, đối sánh trong và ngoài CSĐT"
+],
+"goiY": [
+"Quy trình lấy ý kiến BLQ",
+"Kế hoạch lấy ý kiến và đối sánh",
+"CSDL mức độ hài lòng",
+"Báo cáo khảo sát hằng năm, phân tích",
+"Văn bản chỉ đạo cải tiến"
+],
+"nhom": "Nhóm 6 – Bà Vũ Thị Cẩm Tú",
+"han": "02/4/2027"
+}
+],
+"minhChung": [
+{
+"id": "MC-0001",
+"tieuChi": "1.1",
+"loai": "MC",
+"ma": "H1.01.01.01",
+"ten": "Quy định/quy trình/hướng dẫn/công cụ xây dựng, phát triển mục tiêu CTĐT"
+},
+{
+"id": "MC-0002",
+"tieuChi": "1.1",
+"loai": "MC",
+"ma": "H1.01.01.02",
+"ten": "Văn bản tuyên bố mục tiêu chung, mục tiêu cụ thể và định hướng (ứng dụng) của CTĐT"
+},
+{
+"id": "MC-0003",
+"tieuChi": "1.1",
+"loai": "MC",
+"ma": "H1.01.01.03",
+"ten": "Văn bản tuyên bố sứ mạng, tầm nhìn của Học viện"
+},
+{
+"id": "MC-0004",
+"tieuChi": "1.1",
+"loai": "MC",
+"ma": "H1.01.01.04",
+"ten": "Chiến lược phát triển của Học viện"
+},
+{
+"id": "MC-0005",
+"tieuChi": "1.1",
+"loai": "MC",
+"ma": "H1.01.01.05",
+"ten": "Bảng đối sánh mục tiêu CTĐT với sứ mạng, tầm nhìn, chiến lược và mục tiêu GDĐH tại Luật GDĐH"
+},
+{
+"id": "MC-0006",
+"tieuChi": "1.2",
+"loai": "MC",
+"ma": "H1.01.02.01",
+"ten": "Quy định/quy trình/hướng dẫn xây dựng CĐR (nguyên tắc SMART…)"
+},
+{
+"id": "MC-0007",
+"tieuChi": "1.2",
+"loai": "MC",
+"ma": "H1.01.02.02",
+"ten": "Văn bản công bố CĐR của CTĐT"
+},
+{
+"id": "MC-0008",
+"tieuChi": "1.2",
+"loai": "MC",
+"ma": "H1.01.02.03",
+"ten": "Bản mô tả CTĐT"
+},
+{
+"id": "MC-0009",
+"tieuChi": "1.2",
+"loai": "MC",
+"ma": "H1.01.02.04",
+"ten": "Bảng đối sánh CĐR với mục tiêu CTĐT, sứ mạng, tầm nhìn, chiến lược"
+},
+{
+"id": "MC-0010",
+"tieuChi": "1.2",
+"loai": "MC",
+"ma": "H1.01.02.05",
+"ten": "Website, tài liệu hội nghị, hội thảo, sinh hoạt đầu khóa giới thiệu CTĐT và CĐR"
+},
+{
+"id": "MC-0011",
+"tieuChi": "1.3",
+"loai": "MC",
+"ma": "H1.01.03.01",
+"ten": "Các quy định, hướng dẫn được tham chiếu khi xây dựng CĐR"
+},
+{
+"id": "MC-0012",
+"tieuChi": "1.3",
+"loai": "MC",
+"ma": "H1.01.03.02",
+"ten": "Quy trình xây dựng CĐR có bước đối sánh với KTQG và chuẩn CTĐT"
+},
+{
+"id": "MC-0013",
+"tieuChi": "1.3",
+"loai": "MC",
+"ma": "H1.01.03.03",
+"ten": "Văn bản công bố CĐR của CTĐT"
+},
+{
+"id": "MC-0014",
+"tieuChi": "1.3",
+"loai": "MC",
+"ma": "H1.01.03.04",
+"ten": "Bảng phân loại CĐR chung – CĐR chuyên biệt"
+},
+{
+"id": "MC-0015",
+"tieuChi": "1.3",
+"loai": "MC",
+"ma": "H1.01.03.05",
+"ten": "Bảng đối sánh CĐR với Khung trình độ quốc gia bậc 7"
+},
+{
+"id": "MC-0016",
+"tieuChi": "1.3",
+"loai": "MC",
+"ma": "H1.01.03.06",
+"ten": "Báo cáo phân tích từng CĐR đáp ứng yêu cầu BLQ bên trong, bên ngoài"
+},
+{
+"id": "MC-0017",
+"tieuChi": "1.4",
+"loai": "MC",
+"ma": "H1.01.04.01",
+"ten": "Hướng dẫn xây dựng, phát triển CĐR học phần"
+},
+{
+"id": "MC-0018",
+"tieuChi": "1.4",
+"loai": "MC",
+"ma": "H1.01.04.02",
+"ten": "Bản mô tả CTĐT có ma trận CĐR học phần – CĐR CTĐT (mức đóng góp)"
+},
+{
+"id": "MC-0019",
+"tieuChi": "1.4",
+"loai": "MC",
+"ma": "H1.01.04.03",
+"ten": "Đề cương chi tiết học phần có ma trận CĐR"
+},
+{
+"id": "MC-0020",
+"tieuChi": "1.4",
+"loai": "MC",
+"ma": "H1.01.04.04",
+"ten": "Văn bản thể hiện tương thích CĐR bài học – CĐR học phần"
+},
+{
+"id": "MC-0021",
+"tieuChi": "1.5",
+"loai": "MC",
+"ma": "H1.01.05.01",
+"ten": "Quy trình xây dựng, phát triển CĐR CTĐT và CĐR học phần"
+},
+{
+"id": "MC-0022",
+"tieuChi": "1.5",
+"loai": "MC",
+"ma": "H1.01.05.02",
+"ten": "CSDL vị trí việc làm của ngành đào tạo và người tốt nghiệp"
+},
+{
+"id": "MC-0023",
+"tieuChi": "1.5",
+"loai": "MC",
+"ma": "H1.01.05.03",
+"ten": "Phiếu khảo sát, biên bản tọa đàm, bảng tổng hợp và tiếp thu ý kiến cơ quan sử dụng, tổ chức nghề nghiệp"
+},
+{
+"id": "MC-0024",
+"tieuChi": "1.6",
+"loai": "MC",
+"ma": "H1.01.06.01",
+"ten": "Quy định/hướng dẫn/công cụ đo lường mức đạt CĐR học phần và CTĐT"
+},
+{
+"id": "MC-0025",
+"tieuChi": "1.6",
+"loai": "MC",
+"ma": "H1.01.06.02",
+"ten": "Kế hoạch đo lường mức đạt CĐR có phân công, phương thức triển khai"
+},
+{
+"id": "MC-0026",
+"tieuChi": "1.6",
+"loai": "MC",
+"ma": "H1.01.06.03",
+"ten": "Cách thức giám sát, đo lường mức đạt CĐR đến thời điểm tốt nghiệp"
+},
+{
+"id": "MC-0027",
+"tieuChi": "1.6",
+"loai": "MC",
+"ma": "H1.01.06.04",
+"ten": "Kết quả đo lường, đánh giá CĐR học phần và CĐR CTĐT"
+},
+{
+"id": "MC-0028",
+"tieuChi": "1.6",
+"loai": "MC",
+"ma": "H1.01.06.05",
+"ten": "Minh chứng đo lường định kỳ, có đối sánh và dùng để cải tiến"
+},
+{
+"id": "MC-0029",
+"tieuChi": "2.1",
+"loai": "MC",
+"ma": "H2.02.01.01",
+"ten": "Các bản mô tả CTĐT trong giai đoạn đánh giá (bản đầy đủ, bản tóm tắt)"
+},
+{
+"id": "MC-0030",
+"tieuChi": "2.1",
+"loai": "MC",
+"ma": "H2.02.01.02",
+"ten": "Hướng dẫn thiết kế CTĐT/ĐCCTHP kèm biểu mẫu"
+},
+{
+"id": "MC-0031",
+"tieuChi": "2.1",
+"loai": "MC",
+"ma": "H2.02.01.03",
+"ten": "Kế hoạch rà soát, đánh giá, cập nhật CTĐT"
+},
+{
+"id": "MC-0032",
+"tieuChi": "2.1",
+"loai": "MC",
+"ma": "H2.02.01.04",
+"ten": "Quyết định ban hành bản mô tả CTĐT và ĐCCTHP"
+},
+{
+"id": "MC-0033",
+"tieuChi": "2.1",
+"loai": "MC",
+"ma": "H2.02.01.05",
+"ten": "Đường dẫn website và hình thức công bố khác"
+},
+{
+"id": "MC-0034",
+"tieuChi": "2.2",
+"loai": "MC",
+"ma": "H2.02.02.01",
+"ten": "Bản mô tả CTĐT và ĐCCTHP được phê duyệt"
+},
+{
+"id": "MC-0035",
+"tieuChi": "2.2",
+"loai": "MC",
+"ma": "H2.02.02.02",
+"ten": "Ma trận phân nhiệm CĐR cho tất cả học phần"
+},
+{
+"id": "MC-0036",
+"tieuChi": "2.2",
+"loai": "MC",
+"ma": "H2.02.02.03",
+"ten": "Bảng liên hệ CĐR – phương pháp dạy học – kiểm tra đánh giá"
+},
+{
+"id": "MC-0037",
+"tieuChi": "2.2",
+"loai": "MC",
+"ma": "H2.02.02.04",
+"ten": "Kế hoạch giảng dạy toàn khóa"
+},
+{
+"id": "MC-0038",
+"tieuChi": "2.2",
+"loai": "MC",
+"ma": "H2.02.02.05",
+"ten": "Bảng đối sánh khối lượng học tập với quy chế đào tạo thạc sĩ (TT 23/2021) và KTQG"
+},
+{
+"id": "MC-0039",
+"tieuChi": "2.2",
+"loai": "MC",
+"ma": "H2.02.02.06",
+"ten": "Phương pháp xác định khối lượng học tập của học phần và CTĐT"
+},
+{
+"id": "MC-0040",
+"tieuChi": "2.3",
+"loai": "MC",
+"ma": "H2.02.03.01",
+"ten": "Quy định, kế hoạch thiết kế, phát triển CTĐT"
+},
+{
+"id": "MC-0041",
+"tieuChi": "2.3",
+"loai": "MC",
+"ma": "H2.02.03.02",
+"ten": "Quy trình thu thập thông tin phản hồi và nhu cầu BLQ"
+},
+{
+"id": "MC-0042",
+"tieuChi": "2.3",
+"loai": "MC",
+"ma": "H2.02.03.03",
+"ten": "Bản tổng hợp, tiếp thu ý kiến BLQ về CĐR, cấu trúc, nội dung CTĐT"
+},
+{
+"id": "MC-0043",
+"tieuChi": "2.3",
+"loai": "MC",
+"ma": "H2.02.03.04",
+"ten": "Phiếu, dữ liệu, báo cáo khảo sát; biên bản họp, báo cáo phân tích"
+},
+{
+"id": "MC-0044",
+"tieuChi": "2.3",
+"loai": "MC",
+"ma": "H2.02.03.05",
+"ten": "Ý kiến chuyên môn về đào tạo trực tuyến (nếu có)"
+},
+{
+"id": "MC-0045",
+"tieuChi": "2.4",
+"loai": "MC",
+"ma": "H2.02.04.01",
+"ten": "Bản mô tả CTĐT"
+},
+{
+"id": "MC-0046",
+"tieuChi": "2.4",
+"loai": "MC",
+"ma": "H2.02.04.02",
+"ten": "Ma trận học phần – CĐR bảo đảm mọi CĐR được phân bổ đầy đủ"
+},
+{
+"id": "MC-0047",
+"tieuChi": "2.4",
+"loai": "MC",
+"ma": "H2.02.04.03",
+"ten": "ĐCCTHP của tất cả học phần"
+},
+{
+"id": "MC-0048",
+"tieuChi": "2.4",
+"loai": "MC",
+"ma": "H2.02.04.04",
+"ten": "Lộ trình đạt CĐR CTĐT"
+},
+{
+"id": "MC-0049",
+"tieuChi": "2.4",
+"loai": "MC",
+"ma": "H2.02.04.05",
+"ten": "Bản tổng hợp ý kiến BLQ về đóng góp của từng học phần"
+},
+{
+"id": "MC-0050",
+"tieuChi": "2.5",
+"loai": "MC",
+"ma": "H2.02.05.01",
+"ten": "Hướng dẫn thiết kế CTĐT (cấu trúc, linh hoạt, tích hợp)"
+},
+{
+"id": "MC-0051",
+"tieuChi": "2.5",
+"loai": "MC",
+"ma": "H2.02.05.02",
+"ten": "Kế hoạch học tập toàn khóa (sơ đồ cây học phần)"
+},
+{
+"id": "MC-0052",
+"tieuChi": "2.5",
+"loai": "MC",
+"ma": "H2.02.05.03",
+"ten": "Các phiên bản bản mô tả CTĐT trong giai đoạn"
+},
+{
+"id": "MC-0053",
+"tieuChi": "2.5",
+"loai": "MC",
+"ma": "H2.02.05.04",
+"ten": "Báo cáo đối sánh cấu trúc qua các lần cập nhật"
+},
+{
+"id": "MC-0054",
+"tieuChi": "2.6",
+"loai": "MC",
+"ma": "H2.02.06.01",
+"ten": "Hướng dẫn thiết kế CTĐT xác định các loại học phần"
+},
+{
+"id": "MC-0055",
+"tieuChi": "2.6",
+"loai": "MC",
+"ma": "H2.02.06.02",
+"ten": "Các phiên bản bản mô tả CTĐT thể hiện định hướng nghề nghiệp"
+},
+{
+"id": "MC-0056",
+"tieuChi": "2.6",
+"loai": "MC",
+"ma": "H2.02.06.03",
+"ten": "Phân tích định hướng nghề nghiệp (ứng dụng) của CTĐT"
+},
+{
+"id": "MC-0057",
+"tieuChi": "2.7",
+"loai": "MC",
+"ma": "H2.02.07.01",
+"ten": "Quy định, kế hoạch rà soát, cải tiến CTĐT"
+},
+{
+"id": "MC-0058",
+"tieuChi": "2.7",
+"loai": "MC",
+"ma": "H2.02.07.02",
+"ten": "Hồ sơ rà soát CTĐT"
+},
+{
+"id": "MC-0059",
+"tieuChi": "2.7",
+"loai": "MC",
+"ma": "H2.02.07.03",
+"ten": "Quy trình thu thập phản hồi BLQ khi rà soát"
+},
+{
+"id": "MC-0060",
+"tieuChi": "2.7",
+"loai": "MC",
+"ma": "H2.02.07.04",
+"ten": "Báo cáo phân tích, đối sánh quy trình rà soát"
+},
+{
+"id": "MC-0061",
+"tieuChi": "2.7",
+"loai": "MC",
+"ma": "H2.02.07.05",
+"ten": "Báo cáo phân tích nhu cầu thị trường lao động và mức đáp ứng của CTĐT"
+},
+{
+"id": "MC-0062",
+"tieuChi": "3.1",
+"loai": "MC",
+"ma": "H3.03.01.01",
+"ten": "Văn bản tuyên bố triết lý giáo dục của Học viện/CTĐT"
+},
+{
+"id": "MC-0063",
+"tieuChi": "3.1",
+"loai": "MC",
+"ma": "H3.03.01.02",
+"ten": "Văn bản, hình ảnh phổ biến triết lý"
+},
+{
+"id": "MC-0064",
+"tieuChi": "3.1",
+"loai": "MC",
+"ma": "H3.03.01.03",
+"ten": "Chính sách, hướng dẫn triển khai triết lý vào dạy học"
+},
+{
+"id": "MC-0065",
+"tieuChi": "3.1",
+"loai": "MC",
+"ma": "H3.03.01.04",
+"ten": "ĐCCTHP, bài giảng thể hiện triết lý"
+},
+{
+"id": "MC-0066",
+"tieuChi": "3.1",
+"loai": "MC",
+"ma": "H3.03.01.05",
+"ten": "Báo cáo hoạt động ngoại khóa thể hiện triết lý"
+},
+{
+"id": "MC-0067",
+"tieuChi": "3.2",
+"loai": "MC",
+"ma": "H3.03.02.01",
+"ten": "Hướng dẫn thiết kế hoạt động dạy học theo CĐR"
+},
+{
+"id": "MC-0068",
+"tieuChi": "3.2",
+"loai": "MC",
+"ma": "H3.03.02.02",
+"ten": "Tài liệu tập huấn, bồi dưỡng về thiết kế dạy học theo CĐR"
+},
+{
+"id": "MC-0069",
+"tieuChi": "3.2",
+"loai": "MC",
+"ma": "H3.03.02.03",
+"ten": "Tài liệu hội thảo, tọa đàm chia sẻ kinh nghiệm"
+},
+{
+"id": "MC-0070",
+"tieuChi": "3.2",
+"loai": "MC",
+"ma": "H3.03.02.04",
+"ten": "Ma trận học phần – CĐR CTĐT"
+},
+{
+"id": "MC-0071",
+"tieuChi": "3.2",
+"loai": "MC",
+"ma": "H3.03.02.05",
+"ten": "Bản thiết kế, phân tích hoạt động dạy học với CĐR"
+},
+{
+"id": "MC-0072",
+"tieuChi": "3.2",
+"loai": "MC",
+"ma": "H3.03.02.06",
+"ten": "Đề cương chi tiết học phần"
+},
+{
+"id": "MC-0073",
+"tieuChi": "3.2",
+"loai": "MC",
+"ma": "H3.03.02.07",
+"ten": "Báo cáo, biên bản BLQ góp ý về sự tương thích"
+},
+{
+"id": "MC-0074",
+"tieuChi": "3.3",
+"loai": "MC",
+"ma": "H3.03.03.01",
+"ten": "Kế hoạch, tài liệu hướng dẫn học tập chủ động"
+},
+{
+"id": "MC-0075",
+"tieuChi": "3.3",
+"loai": "MC",
+"ma": "H3.03.03.02",
+"ten": "Tài liệu hướng dẫn tương tác, học tập trực tuyến"
+},
+{
+"id": "MC-0076",
+"tieuChi": "3.3",
+"loai": "MC",
+"ma": "H3.03.03.03",
+"ten": "Minh chứng hoạt động học tập chủ động (seminar, tình huống, diễn án…)"
+},
+{
+"id": "MC-0077",
+"tieuChi": "3.3",
+"loai": "MC",
+"ma": "H3.03.03.04",
+"ten": "Minh chứng hoạt động thúc đẩy học tập suốt đời"
+},
+{
+"id": "MC-0078",
+"tieuChi": "3.3",
+"loai": "MC",
+"ma": "H3.03.03.05",
+"ten": "Báo cáo BLQ góp ý"
+},
+{
+"id": "MC-0079",
+"tieuChi": "3.3",
+"loai": "MC",
+"ma": "H3.03.03.06",
+"ten": "Báo cáo cải tiến hoạt động dạy học"
+},
+{
+"id": "MC-0080",
+"tieuChi": "3.4",
+"loai": "MC",
+"ma": "H3.03.04.01",
+"ten": "Thống kê ý tưởng, sáng kiến, sản phẩm sáng tạo của học viên"
+},
+{
+"id": "MC-0081",
+"tieuChi": "3.4",
+"loai": "MC",
+"ma": "H3.03.04.02",
+"ten": "Báo cáo, biên bản BLQ góp ý về thúc đẩy đổi mới sáng tạo, khởi nghiệp"
+},
+{
+"id": "MC-0082",
+"tieuChi": "3.5",
+"loai": "MC",
+"ma": "H3.03.05.01",
+"ten": "Quy định/kế hoạch rà soát, cải tiến quá trình dạy học"
+},
+{
+"id": "MC-0083",
+"tieuChi": "3.5",
+"loai": "MC",
+"ma": "H3.03.05.02",
+"ten": "Khảo sát BLQ bên trong về quy định, kế hoạch"
+},
+{
+"id": "MC-0084",
+"tieuChi": "3.5",
+"loai": "MC",
+"ma": "H3.03.05.03",
+"ten": "Văn bản rà soát, cải tiến theo kế hoạch"
+},
+{
+"id": "MC-0085",
+"tieuChi": "3.5",
+"loai": "MC",
+"ma": "H3.03.05.04",
+"ten": "Tài liệu về phần mềm đào tạo trực tuyến (nếu có)"
+},
+{
+"id": "MC-0086",
+"tieuChi": "3.5",
+"loai": "MC",
+"ma": "H3.03.05.05",
+"ten": "Báo cáo phân tích cải tiến dạy học"
+},
+{
+"id": "MC-0087",
+"tieuChi": "4.1",
+"loai": "MC",
+"ma": "H4.04.01.01",
+"ten": "Quy định, kế hoạch về đánh giá đầu vào, đánh giá quá trình, đánh giá đầu ra"
+},
+{
+"id": "MC-0088",
+"tieuChi": "4.1",
+"loai": "MC",
+"ma": "H4.04.01.02",
+"ten": "Hướng dẫn thiết kế phương pháp đánh giá, ra đề thi tương thích CĐR"
+},
+{
+"id": "MC-0089",
+"tieuChi": "4.1",
+"loai": "MC",
+"ma": "H4.04.01.03",
+"ten": "ĐCCTHP thể hiện sự đa dạng, tương thích của phương pháp đánh giá"
+},
+{
+"id": "MC-0090",
+"tieuChi": "4.2",
+"loai": "MC",
+"ma": "H4.04.02.01",
+"ten": "Quy định đánh giá kết quả học tập, phúc khảo, liêm chính học thuật"
+},
+{
+"id": "MC-0091",
+"tieuChi": "4.2",
+"loai": "MC",
+"ma": "H4.04.02.02",
+"ten": "Hình thức công khai (website, bản mô tả CTĐT, sổ tay học viên)"
+},
+{
+"id": "MC-0092",
+"tieuChi": "4.2",
+"loai": "MC",
+"ma": "H4.04.02.03",
+"ten": "Sổ tay học viên, sổ tay giảng viên"
+},
+{
+"id": "MC-0093",
+"tieuChi": "4.2",
+"loai": "MC",
+"ma": "H4.04.02.04",
+"ten": "Ý kiến phản hồi của GV, học viên, cựu học viên, cán bộ quản lý về việc thực hiện"
+},
+{
+"id": "MC-0094",
+"tieuChi": "4.3",
+"loai": "MC",
+"ma": "H4.04.03.01",
+"ten": "Quy định, quy trình đánh giá, công nhận kết quả học tập, xét tốt nghiệp"
+},
+{
+"id": "MC-0095",
+"tieuChi": "4.3",
+"loai": "MC",
+"ma": "H4.04.03.02",
+"ten": "Kế hoạch theo học kỳ, năm học có phân công"
+},
+{
+"id": "MC-0096",
+"tieuChi": "4.3",
+"loai": "MC",
+"ma": "H4.04.03.03",
+"ten": "Hình thức công khai tiêu chuẩn, thủ tục"
+},
+{
+"id": "MC-0097",
+"tieuChi": "4.3",
+"loai": "MC",
+"ma": "H4.04.03.04",
+"ten": "Báo cáo kết quả đánh giá, xét công nhận, xét tốt nghiệp"
+},
+{
+"id": "MC-0098",
+"tieuChi": "4.3",
+"loai": "MC",
+"ma": "H4.04.03.05",
+"ten": "Ý kiến phản hồi của BLQ"
+},
+{
+"id": "MC-0099",
+"tieuChi": "4.4",
+"loai": "MC",
+"ma": "H4.04.04.01",
+"ten": "Quy định về phương pháp đánh giá"
+},
+{
+"id": "MC-0100",
+"tieuChi": "4.4",
+"loai": "MC",
+"ma": "H4.04.04.02",
+"ten": "Rubric bài thi cuối kỳ học phần, luận văn/đề án tốt nghiệp"
+},
+{
+"id": "MC-0101",
+"tieuChi": "4.4",
+"loai": "MC",
+"ma": "H4.04.04.03",
+"ten": "Kế hoạch đánh giá học phần trực tuyến (nếu có)"
+},
+{
+"id": "MC-0102",
+"tieuChi": "4.4",
+"loai": "MC",
+"ma": "H4.04.04.04",
+"ten": "Kế hoạch đánh giá học phần, luận văn có phân công"
+},
+{
+"id": "MC-0103",
+"tieuChi": "4.4",
+"loai": "MC",
+"ma": "H4.04.04.05",
+"ten": "Dữ liệu chấm thi, phúc khảo, phúc tra"
+},
+{
+"id": "MC-0104",
+"tieuChi": "4.5",
+"loai": "MC",
+"ma": "H4.04.05.01",
+"ten": "Quy định/công cụ đánh giá bảo đảm đo lường CĐR"
+},
+{
+"id": "MC-0105",
+"tieuChi": "4.5",
+"loai": "MC",
+"ma": "H4.04.05.02",
+"ten": "Kế hoạch đánh giá đo lường CĐR có phân công"
+},
+{
+"id": "MC-0106",
+"tieuChi": "4.5",
+"loai": "MC",
+"ma": "H4.04.05.03",
+"ten": "Báo cáo phân tích phương pháp đánh giá tương thích CĐR"
+},
+{
+"id": "MC-0107",
+"tieuChi": "4.5",
+"loai": "MC",
+"ma": "H4.04.05.04",
+"ten": "Báo cáo phân tích mức tương thích của đề thi với CĐR"
+},
+{
+"id": "MC-0108",
+"tieuChi": "4.5",
+"loai": "MC",
+"ma": "H4.04.05.05",
+"ten": "Báo cáo phân tích phổ điểm, độ phân hóa đề thi các học phần"
+},
+{
+"id": "MC-0109",
+"tieuChi": "4.6",
+"loai": "MC",
+"ma": "H4.04.06.01",
+"ten": "Quy định về thời hạn công bố, phản hồi kết quả"
+},
+{
+"id": "MC-0110",
+"tieuChi": "4.6",
+"loai": "MC",
+"ma": "H4.04.06.02",
+"ten": "Ý kiến học viên, cựu học viên về tính kịp thời"
+},
+{
+"id": "MC-0111",
+"tieuChi": "4.6",
+"loai": "MC",
+"ma": "H4.04.06.03",
+"ten": "Phản hồi của GV về kết quả học tập"
+},
+{
+"id": "MC-0112",
+"tieuChi": "4.6",
+"loai": "MC",
+"ma": "H4.04.06.04",
+"ten": "Hình thức thông báo kết quả (bảng điểm, tài khoản hệ thống)"
+},
+{
+"id": "MC-0113",
+"tieuChi": "4.7",
+"loai": "MC",
+"ma": "H4.04.07.01",
+"ten": "Các quy định về đánh giá đã ban hành (qua các phiên bản)"
+},
+{
+"id": "MC-0114",
+"tieuChi": "4.7",
+"loai": "MC",
+"ma": "H4.04.07.02",
+"ten": "Kết quả lấy ý kiến BLQ định kỳ về đánh giá"
+},
+{
+"id": "MC-0115",
+"tieuChi": "4.7",
+"loai": "MC",
+"ma": "H4.04.07.03",
+"ten": "Kế hoạch rà soát, cải tiến quy định đánh giá"
+},
+{
+"id": "MC-0116",
+"tieuChi": "4.7",
+"loai": "MC",
+"ma": "H4.04.07.04",
+"ten": "Báo cáo phân tích khả năng đo lường CĐR"
+},
+{
+"id": "MC-0117",
+"tieuChi": "4.7",
+"loai": "MC",
+"ma": "H4.04.07.05",
+"ten": "Website cập nhật quy định đánh giá"
+},
+{
+"id": "MC-0118",
+"tieuChi": "5.1",
+"loai": "MC",
+"ma": "H5.05.01.01",
+"ten": "Hướng dẫn, kế hoạch ngắn/dài hạn phát triển đội ngũ"
+},
+{
+"id": "MC-0119",
+"tieuChi": "5.1",
+"loai": "MC",
+"ma": "H5.05.01.02",
+"ten": "CSDL giảng viên, nghiên cứu viên"
+},
+{
+"id": "MC-0120",
+"tieuChi": "5.1",
+"loai": "MC",
+"ma": "H5.05.01.03",
+"ten": "Thống kê tỷ lệ NH/GV quy đổi hằng năm"
+},
+{
+"id": "MC-0121",
+"tieuChi": "5.1",
+"loai": "MC",
+"ma": "H5.05.01.04",
+"ten": "Thống kê kinh phí phát triển đội ngũ"
+},
+{
+"id": "MC-0122",
+"tieuChi": "5.1",
+"loai": "MC",
+"ma": "H5.05.01.05",
+"ten": "Báo cáo tổng kết thực hiện kế hoạch"
+},
+{
+"id": "MC-0123",
+"tieuChi": "5.2",
+"loai": "MC",
+"ma": "H5.05.02.01",
+"ten": "Quy định chế độ làm việc, định mức công việc"
+},
+{
+"id": "MC-0124",
+"tieuChi": "5.2",
+"loai": "MC",
+"ma": "H5.05.02.02",
+"ten": "Bảng trích ngang thông tin GV, NCV"
+},
+{
+"id": "MC-0125",
+"tieuChi": "5.2",
+"loai": "MC",
+"ma": "H5.05.02.03",
+"ten": "Thống kê giờ thừa/thiếu (giảng dạy, NCKH, phục vụ cộng đồng)"
+},
+{
+"id": "MC-0126",
+"tieuChi": "5.2",
+"loai": "MC",
+"ma": "H5.05.02.04",
+"ten": "Bản mô tả vị trí việc làm; hồ sơ cán bộ"
+},
+{
+"id": "MC-0127",
+"tieuChi": "5.2",
+"loai": "MC",
+"ma": "H5.05.02.05",
+"ten": "Báo cáo cải tiến dựa trên kết quả giám sát"
+},
+{
+"id": "MC-0128",
+"tieuChi": "5.3",
+"loai": "MC",
+"ma": "H5.05.03.01",
+"ten": "Bản mô tả vị trí việc làm"
+},
+{
+"id": "MC-0129",
+"tieuChi": "5.3",
+"loai": "MC",
+"ma": "H5.05.03.02",
+"ten": "Quy định, kế hoạch đánh giá năng lực (bộ chỉ số)"
+},
+{
+"id": "MC-0130",
+"tieuChi": "5.3",
+"loai": "MC",
+"ma": "H5.05.03.03",
+"ten": "CSDL, kết quả đánh giá năng lực"
+},
+{
+"id": "MC-0131",
+"tieuChi": "5.3",
+"loai": "MC",
+"ma": "H5.05.03.04",
+"ten": "Thông báo kết quả"
+},
+{
+"id": "MC-0132",
+"tieuChi": "5.3",
+"loai": "MC",
+"ma": "H5.05.03.05",
+"ten": "Hoạt động cải tiến dựa trên kết quả đánh giá"
+},
+{
+"id": "MC-0133",
+"tieuChi": "5.4",
+"loai": "MC",
+"ma": "H5.05.04.01",
+"ten": "Bảng mô tả công việc"
+},
+{
+"id": "MC-0134",
+"tieuChi": "5.4",
+"loai": "MC",
+"ma": "H5.05.04.02",
+"ten": "Lý lịch trích ngang"
+},
+{
+"id": "MC-0135",
+"tieuChi": "5.4",
+"loai": "MC",
+"ma": "H5.05.04.03",
+"ten": "Kết quả khảo sát mức độ hài lòng của GV"
+},
+{
+"id": "MC-0136",
+"tieuChi": "5.4",
+"loai": "MC",
+"ma": "H5.05.04.04",
+"ten": "Đánh giá của NH/bộ môn về thực hiện nhiệm vụ"
+},
+{
+"id": "MC-0137",
+"tieuChi": "5.5",
+"loai": "MC",
+"ma": "H5.05.05.01",
+"ten": "Quy định bổ nhiệm/thăng tiến"
+},
+{
+"id": "MC-0138",
+"tieuChi": "5.5",
+"loai": "MC",
+"ma": "H5.05.05.02",
+"ten": "Hồ sơ bổ nhiệm/thăng hạng"
+},
+{
+"id": "MC-0139",
+"tieuChi": "5.5",
+"loai": "MC",
+"ma": "H5.05.05.03",
+"ten": "Văn bản quy hoạch đội ngũ"
+},
+{
+"id": "MC-0140",
+"tieuChi": "5.5",
+"loai": "MC",
+"ma": "H5.05.05.04",
+"ten": "Khảo sát mức độ hài lòng về bổ nhiệm/thăng tiến"
+},
+{
+"id": "MC-0141",
+"tieuChi": "5.6",
+"loai": "MC",
+"ma": "H5.05.06.01",
+"ten": "Văn bản quy định"
+},
+{
+"id": "MC-0142",
+"tieuChi": "5.6",
+"loai": "MC",
+"ma": "H5.05.06.02",
+"ten": "Sổ tay, thông báo, hội nghị quán triệt"
+},
+{
+"id": "MC-0143",
+"tieuChi": "5.6",
+"loai": "MC",
+"ma": "H5.05.06.03",
+"ten": "Báo cáo đánh giá viên chức hằng năm"
+},
+{
+"id": "MC-0144",
+"tieuChi": "5.6",
+"loai": "MC",
+"ma": "H5.05.06.04",
+"ten": "Ý kiến phản hồi của GV, NCV"
+},
+{
+"id": "MC-0145",
+"tieuChi": "5.7",
+"loai": "MC",
+"ma": "H5.05.07.01",
+"ten": "Quy trình xác định nhu cầu"
+},
+{
+"id": "MC-0146",
+"tieuChi": "5.7",
+"loai": "MC",
+"ma": "H5.05.07.02",
+"ten": "Kế hoạch, kết quả khảo sát nhu cầu"
+},
+{
+"id": "MC-0147",
+"tieuChi": "5.7",
+"loai": "MC",
+"ma": "H5.05.07.03",
+"ten": "Quyết định cử đi đào tạo; văn bằng, chứng chỉ"
+},
+{
+"id": "MC-0148",
+"tieuChi": "5.7",
+"loai": "MC",
+"ma": "H5.05.07.04",
+"ten": "Thống kê danh sách, kinh phí"
+},
+{
+"id": "MC-0149",
+"tieuChi": "5.7",
+"loai": "MC",
+"ma": "H5.05.07.05",
+"ten": "Báo cáo tổng kết hằng năm"
+},
+{
+"id": "MC-0150",
+"tieuChi": "5.8",
+"loai": "MC",
+"ma": "H5.05.08.01",
+"ten": "Quy định đánh giá"
+},
+{
+"id": "MC-0151",
+"tieuChi": "5.8",
+"loai": "MC",
+"ma": "H5.05.08.02",
+"ten": "Kế hoạch triển khai"
+},
+{
+"id": "MC-0152",
+"tieuChi": "5.8",
+"loai": "MC",
+"ma": "H5.05.08.03",
+"ten": "Báo cáo kết quả đánh giá"
+},
+{
+"id": "MC-0153",
+"tieuChi": "5.8",
+"loai": "MC",
+"ma": "H5.05.08.04",
+"ten": "Quy định thi đua khen thưởng"
+},
+{
+"id": "MC-0154",
+"tieuChi": "5.8",
+"loai": "MC",
+"ma": "H5.05.08.05",
+"ten": "Quyết định khen thưởng, kỷ luật trong chu kỳ"
+},
+{
+"id": "MC-0155",
+"tieuChi": "6.1",
+"loai": "MC",
+"ma": "H6.06.01.01",
+"ten": "Đề án/thông báo tuyển sinh hằng năm"
+},
+{
+"id": "MC-0156",
+"tieuChi": "6.1",
+"loai": "MC",
+"ma": "H6.06.01.02",
+"ten": "Quy chế, kế hoạch tuyển sinh"
+},
+{
+"id": "MC-0157",
+"tieuChi": "6.1",
+"loai": "MC",
+"ma": "H6.06.01.03",
+"ten": "Quyết định mở ngành/giao đào tạo"
+},
+{
+"id": "MC-0158",
+"tieuChi": "6.1",
+"loai": "MC",
+"ma": "H6.06.01.04",
+"ten": "CSDL kết quả tuyển sinh"
+},
+{
+"id": "MC-0159",
+"tieuChi": "6.1",
+"loai": "MC",
+"ma": "H6.06.01.05",
+"ten": "Báo cáo dự báo nhu cầu nhân lực"
+},
+{
+"id": "MC-0160",
+"tieuChi": "6.1",
+"loai": "MC",
+"ma": "H6.06.01.06",
+"ten": "Website, tờ rơi tuyển sinh"
+},
+{
+"id": "MC-0161",
+"tieuChi": "6.1",
+"loai": "MC",
+"ma": "H6.06.01.07",
+"ten": "Báo cáo tổng kết tuyển sinh"
+},
+{
+"id": "MC-0162",
+"tieuChi": "6.2",
+"loai": "MC",
+"ma": "H6.06.02.01",
+"ten": "Tiêu chí tuyển dụng"
+},
+{
+"id": "MC-0163",
+"tieuChi": "6.2",
+"loai": "MC",
+"ma": "H6.06.02.02",
+"ten": "Bản mô tả công việc"
+},
+{
+"id": "MC-0164",
+"tieuChi": "6.2",
+"loai": "MC",
+"ma": "H6.06.02.03",
+"ten": "Thông báo tuyển dụng, phân công"
+},
+{
+"id": "MC-0165",
+"tieuChi": "6.2",
+"loai": "MC",
+"ma": "H6.06.02.04",
+"ten": "Kết quả đánh giá hằng năm"
+},
+{
+"id": "MC-0166",
+"tieuChi": "6.2",
+"loai": "MC",
+"ma": "H6.06.02.05",
+"ten": "Ý kiến phản hồi BLQ bên trong"
+},
+{
+"id": "MC-0167",
+"tieuChi": "6.3",
+"loai": "MC",
+"ma": "H6.06.03.01",
+"ten": "Kế hoạch dài hạn, ngắn hạn"
+},
+{
+"id": "MC-0168",
+"tieuChi": "6.3",
+"loai": "MC",
+"ma": "H6.06.03.02",
+"ten": "Văn bản phân công đơn vị phụ trách"
+},
+{
+"id": "MC-0169",
+"tieuChi": "6.3",
+"loai": "MC",
+"ma": "H6.06.03.03",
+"ten": "Thống kê kinh phí trong chu kỳ"
+},
+{
+"id": "MC-0170",
+"tieuChi": "6.3",
+"loai": "MC",
+"ma": "H6.06.03.04",
+"ten": "Báo cáo tổng kết"
+},
+{
+"id": "MC-0171",
+"tieuChi": "6.3",
+"loai": "MC",
+"ma": "H6.06.03.05",
+"ten": "Ý kiến phản hồi của NH"
+},
+{
+"id": "MC-0172",
+"tieuChi": "6.4",
+"loai": "MC",
+"ma": "H6.06.04.01",
+"ten": "Quyết định phân công đơn vị theo dõi tiến độ"
+},
+{
+"id": "MC-0173",
+"tieuChi": "6.4",
+"loai": "MC",
+"ma": "H6.06.04.02",
+"ten": "Quy chế đào tạo, kiểm tra đánh giá"
+},
+{
+"id": "MC-0174",
+"tieuChi": "6.4",
+"loai": "MC",
+"ma": "H6.06.04.03",
+"ten": "Quy định cố vấn học tập"
+},
+{
+"id": "MC-0175",
+"tieuChi": "6.4",
+"loai": "MC",
+"ma": "H6.06.04.04",
+"ten": "CSDL tiến độ học tập (học lại, ngừng học, thôi học)"
+},
+{
+"id": "MC-0176",
+"tieuChi": "6.4",
+"loai": "MC",
+"ma": "H6.06.04.05",
+"ten": "Ý kiến phản hồi của NH"
+},
+{
+"id": "MC-0177",
+"tieuChi": "6.5",
+"loai": "MC",
+"ma": "H6.06.05.01",
+"ten": "Quy định triển khai"
+},
+{
+"id": "MC-0178",
+"tieuChi": "6.5",
+"loai": "MC",
+"ma": "H6.06.05.02",
+"ten": "Kế hoạch hoạt động"
+},
+{
+"id": "MC-0179",
+"tieuChi": "6.5",
+"loai": "MC",
+"ma": "H6.06.05.03",
+"ten": "Nền tảng số hỗ trợ"
+},
+{
+"id": "MC-0180",
+"tieuChi": "6.5",
+"loai": "MC",
+"ma": "H6.06.05.04",
+"ten": "CSDL hoạt động và việc làm của người tốt nghiệp"
+},
+{
+"id": "MC-0181",
+"tieuChi": "6.5",
+"loai": "MC",
+"ma": "H6.06.05.05",
+"ten": "Ý kiến phản hồi của NH"
+},
+{
+"id": "MC-0182",
+"tieuChi": "6.6",
+"loai": "MC",
+"ma": "H6.06.06.01",
+"ten": "Quy định đánh giá chất lượng dịch vụ"
+},
+{
+"id": "MC-0183",
+"tieuChi": "6.6",
+"loai": "MC",
+"ma": "H6.06.06.02",
+"ten": "CSDL đánh giá và đối sánh"
+},
+{
+"id": "MC-0184",
+"tieuChi": "6.6",
+"loai": "MC",
+"ma": "H6.06.06.03",
+"ten": "Báo cáo kết quả cải tiến"
+},
+{
+"id": "MC-0185",
+"tieuChi": "6.6",
+"loai": "MC",
+"ma": "H6.06.06.04",
+"ten": "Ý kiến phản hồi BLQ bên trong"
+},
+{
+"id": "MC-0186",
+"tieuChi": "7.1",
+"loai": "MC",
+"ma": "H7.07.01.01",
+"ten": "Thống kê diện tích, tỷ lệ diện tích/NH"
+},
+{
+"id": "MC-0187",
+"tieuChi": "7.1",
+"loai": "MC",
+"ma": "H7.07.01.02",
+"ten": "Sơ đồ hệ thống phòng"
+},
+{
+"id": "MC-0188",
+"tieuChi": "7.1",
+"loai": "MC",
+"ma": "H7.07.01.03",
+"ten": "Sổ theo dõi sử dụng phòng"
+},
+{
+"id": "MC-0189",
+"tieuChi": "7.1",
+"loai": "MC",
+"ma": "H7.07.01.04",
+"ten": "Danh mục CSVC, trang thiết bị"
+},
+{
+"id": "MC-0190",
+"tieuChi": "7.1",
+"loai": "MC",
+"ma": "H7.07.01.05",
+"ten": "Kế hoạch mua sắm, nâng cấp"
+},
+{
+"id": "MC-0191",
+"tieuChi": "7.1",
+"loai": "MC",
+"ma": "H7.07.01.06",
+"ten": "Kinh phí đầu tư"
+},
+{
+"id": "MC-0192",
+"tieuChi": "7.1",
+"loai": "MC",
+"ma": "H7.07.01.07",
+"ten": "Ý kiến NH, GV"
+},
+{
+"id": "MC-0193",
+"tieuChi": "7.2",
+"loai": "MC",
+"ma": "H7.07.02.01",
+"ten": "Sơ đồ phòng thực hành (phòng xử án giả định…)"
+},
+{
+"id": "MC-0194",
+"tieuChi": "7.2",
+"loai": "MC",
+"ma": "H7.07.02.02",
+"ten": "Sổ theo dõi sử dụng"
+},
+{
+"id": "MC-0195",
+"tieuChi": "7.2",
+"loai": "MC",
+"ma": "H7.07.02.03",
+"ten": "Danh mục thiết bị"
+},
+{
+"id": "MC-0196",
+"tieuChi": "7.2",
+"loai": "MC",
+"ma": "H7.07.02.04",
+"ten": "Quy định sử dụng phòng"
+},
+{
+"id": "MC-0197",
+"tieuChi": "7.2",
+"loai": "MC",
+"ma": "H7.07.02.05",
+"ten": "Kinh phí"
+},
+{
+"id": "MC-0198",
+"tieuChi": "7.2",
+"loai": "MC",
+"ma": "H7.07.02.06",
+"ten": "Thông tin phần mềm"
+},
+{
+"id": "MC-0199",
+"tieuChi": "7.2",
+"loai": "MC",
+"ma": "H7.07.02.07",
+"ten": "Ý kiến NH, GV"
+},
+{
+"id": "MC-0200",
+"tieuChi": "7.3",
+"loai": "MC",
+"ma": "H7.07.03.01",
+"ten": "Sơ đồ thư viện"
+},
+{
+"id": "MC-0201",
+"tieuChi": "7.3",
+"loai": "MC",
+"ma": "H7.07.03.02",
+"ten": "Danh mục giáo trình, tài liệu theo ĐCCTHP và số lượng cập nhật hằng năm"
+},
+{
+"id": "MC-0202",
+"tieuChi": "7.3",
+"loai": "MC",
+"ma": "H7.07.03.03",
+"ten": "Quy định sử dụng thư viện số"
+},
+{
+"id": "MC-0203",
+"tieuChi": "7.3",
+"loai": "MC",
+"ma": "H7.07.03.04",
+"ten": "Thống kê lượt sử dụng"
+},
+{
+"id": "MC-0204",
+"tieuChi": "7.3",
+"loai": "MC",
+"ma": "H7.07.03.05",
+"ten": "Chứng từ đầu tư"
+},
+{
+"id": "MC-0205",
+"tieuChi": "7.3",
+"loai": "MC",
+"ma": "H7.07.03.06",
+"ten": "Ý kiến NH, GV"
+},
+{
+"id": "MC-0206",
+"tieuChi": "7.4",
+"loai": "MC",
+"ma": "H7.07.04.01",
+"ten": "Thống kê hạ tầng CNTT"
+},
+{
+"id": "MC-0207",
+"tieuChi": "7.4",
+"loai": "MC",
+"ma": "H7.07.04.02",
+"ten": "Trang thông tin điện tử"
+},
+{
+"id": "MC-0208",
+"tieuChi": "7.4",
+"loai": "MC",
+"ma": "H7.07.04.03",
+"ten": "Sơ đồ phòng họp trực tuyến"
+},
+{
+"id": "MC-0209",
+"tieuChi": "7.4",
+"loai": "MC",
+"ma": "H7.07.04.04",
+"ten": "Phân tích mức đáp ứng"
+},
+{
+"id": "MC-0210",
+"tieuChi": "7.4",
+"loai": "MC",
+"ma": "H7.07.04.05",
+"ten": "Ý kiến người dùng"
+},
+{
+"id": "MC-0211",
+"tieuChi": "7.4",
+"loai": "MC",
+"ma": "H7.07.04.06",
+"ten": "Cẩm nang học trực tuyến"
+},
+{
+"id": "MC-0212",
+"tieuChi": "7.5",
+"loai": "MC",
+"ma": "H7.07.05.01",
+"ten": "Sơ đồ khuôn viên"
+},
+{
+"id": "MC-0213",
+"tieuChi": "7.5",
+"loai": "MC",
+"ma": "H7.07.05.02",
+"ten": "Nội quy, quy tắc ứng xử"
+},
+{
+"id": "MC-0214",
+"tieuChi": "7.5",
+"loai": "MC",
+"ma": "H7.07.05.03",
+"ten": "Phương tiện giao tiếp trực tuyến"
+},
+{
+"id": "MC-0215",
+"tieuChi": "7.5",
+"loai": "MC",
+"ma": "H7.07.05.04",
+"ten": "Hoạt động đoàn thể, ngoại khóa"
+},
+{
+"id": "MC-0216",
+"tieuChi": "7.5",
+"loai": "MC",
+"ma": "H7.07.05.05",
+"ten": "Ngân sách"
+},
+{
+"id": "MC-0217",
+"tieuChi": "7.5",
+"loai": "MC",
+"ma": "H7.07.05.06",
+"ten": "Ý kiến phản hồi"
+},
+{
+"id": "MC-0218",
+"tieuChi": "7.6",
+"loai": "MC",
+"ma": "H7.07.06.01",
+"ten": "Văn bản quy định"
+},
+{
+"id": "MC-0219",
+"tieuChi": "7.6",
+"loai": "MC",
+"ma": "H7.07.06.02",
+"ten": "Hoạt động PCCC, an ninh, y tế"
+},
+{
+"id": "MC-0220",
+"tieuChi": "7.6",
+"loai": "MC",
+"ma": "H7.07.06.03",
+"ten": "Chăm sóc sức khỏe NH, viên chức"
+},
+{
+"id": "MC-0221",
+"tieuChi": "7.6",
+"loai": "MC",
+"ma": "H7.07.06.04",
+"ten": "CSVC cho nhóm đặc thù"
+},
+{
+"id": "MC-0222",
+"tieuChi": "7.6",
+"loai": "MC",
+"ma": "H7.07.06.05",
+"ten": "Ý kiến các nhóm NH"
+},
+{
+"id": "MC-0223",
+"tieuChi": "7.7",
+"loai": "MC",
+"ma": "H7.07.07.01",
+"ten": "Quy định năng lực"
+},
+{
+"id": "MC-0224",
+"tieuChi": "7.7",
+"loai": "MC",
+"ma": "H7.07.07.02",
+"ten": "Bản mô tả công việc"
+},
+{
+"id": "MC-0225",
+"tieuChi": "7.7",
+"loai": "MC",
+"ma": "H7.07.07.03",
+"ten": "Kế hoạch, kết quả đánh giá định kỳ"
+},
+{
+"id": "MC-0226",
+"tieuChi": "7.7",
+"loai": "MC",
+"ma": "H7.07.07.04",
+"ten": "Hồ sơ, lý lịch"
+},
+{
+"id": "MC-0227",
+"tieuChi": "7.7",
+"loai": "MC",
+"ma": "H7.07.07.05",
+"ten": "Ý kiến BLQ bên trong"
+},
+{
+"id": "MC-0228",
+"tieuChi": "7.8",
+"loai": "MC",
+"ma": "H7.07.08.01",
+"ten": "Kế hoạch, hoạt động đánh giá"
+},
+{
+"id": "MC-0229",
+"tieuChi": "7.8",
+"loai": "MC",
+"ma": "H7.07.08.02",
+"ten": "Ý kiến NH, GV, cán bộ quản lý"
+},
+{
+"id": "MC-0230",
+"tieuChi": "7.8",
+"loai": "MC",
+"ma": "H7.07.08.03",
+"ten": "Thống kê thay đổi CSVC"
+},
+{
+"id": "MC-0231",
+"tieuChi": "7.8",
+"loai": "MC",
+"ma": "H7.07.08.04",
+"ten": "Báo cáo nghiên cứu công nghệ mới"
+},
+{
+"id": "MC-0232",
+"tieuChi": "7.8",
+"loai": "MC",
+"ma": "H7.07.08.05",
+"ten": "Kinh phí nâng cấp"
+},
+{
+"id": "MC-0233",
+"tieuChi": "8.1",
+"loai": "MC",
+"ma": "H8.08.01.01",
+"ten": "Văn bản giao nhiệm vụ lập CSDL"
+},
+{
+"id": "MC-0234",
+"tieuChi": "8.1",
+"loai": "MC",
+"ma": "H8.08.01.02",
+"ten": "Quyết định trúng tuyển, thôi học, tốt nghiệp"
+},
+{
+"id": "MC-0235",
+"tieuChi": "8.1",
+"loai": "MC",
+"ma": "H8.08.01.03",
+"ten": "Biên bản Hội đồng xét tốt nghiệp"
+},
+{
+"id": "MC-0236",
+"tieuChi": "8.1",
+"loai": "MC",
+"ma": "H8.08.01.04",
+"ten": "CSDL được cập nhật"
+},
+{
+"id": "MC-0237",
+"tieuChi": "8.1",
+"loai": "MC",
+"ma": "H8.08.01.05",
+"ten": "Tiêu chí chọn CSDL đối sánh"
+},
+{
+"id": "MC-0238",
+"tieuChi": "8.1",
+"loai": "MC",
+"ma": "H8.08.01.06",
+"ten": "Báo cáo tổng kết, phân tích nguyên nhân, giải pháp"
+},
+{
+"id": "MC-0239",
+"tieuChi": "8.2",
+"loai": "MC",
+"ma": "H8.08.02.01",
+"ten": "Văn bản giao nhiệm vụ lập CSDL"
+},
+{
+"id": "MC-0240",
+"tieuChi": "8.2",
+"loai": "MC",
+"ma": "H8.08.02.02",
+"ten": "Trích xuất CSDL việc làm các năm"
+},
+{
+"id": "MC-0241",
+"tieuChi": "8.2",
+"loai": "MC",
+"ma": "H8.08.02.03",
+"ten": "Tiêu chí chọn CSDL đối sánh"
+},
+{
+"id": "MC-0242",
+"tieuChi": "8.2",
+"loai": "MC",
+"ma": "H8.08.02.04",
+"ten": "Báo cáo tổng kết, phân tích; kế hoạch cải tiến"
+},
+{
+"id": "MC-0243",
+"tieuChi": "8.2",
+"loai": "MC",
+"ma": "H8.08.02.05",
+"ten": "Phiếu, báo cáo khảo sát người tốt nghiệp"
+},
+{
+"id": "MC-0244",
+"tieuChi": "8.3",
+"loai": "MC",
+"ma": "H8.08.03.01",
+"ten": "Quy định hoạt động NCKH"
+},
+{
+"id": "MC-0245",
+"tieuChi": "8.3",
+"loai": "MC",
+"ma": "H8.08.03.02",
+"ten": "Kế hoạch khoa học công nghệ"
+},
+{
+"id": "MC-0246",
+"tieuChi": "8.3",
+"loai": "MC",
+"ma": "H8.08.03.03",
+"ten": "CSDL công bố và tiêu chí đối sánh"
+},
+{
+"id": "MC-0247",
+"tieuChi": "8.3",
+"loai": "MC",
+"ma": "H8.08.03.04",
+"ten": "Báo cáo tổng kết, biên bản phân tích"
+},
+{
+"id": "MC-0248",
+"tieuChi": "8.4",
+"loai": "MC",
+"ma": "H8.08.04.01",
+"ten": "Văn bản công bố CĐR"
+},
+{
+"id": "MC-0249",
+"tieuChi": "8.4",
+"loai": "MC",
+"ma": "H8.08.04.02",
+"ten": "Kế hoạch đo lường"
+},
+{
+"id": "MC-0250",
+"tieuChi": "8.4",
+"loai": "MC",
+"ma": "H8.08.04.03",
+"ten": "CSDL mức đạt CĐR"
+},
+{
+"id": "MC-0251",
+"tieuChi": "8.4",
+"loai": "MC",
+"ma": "H8.08.04.04",
+"ten": "Biên bản, báo cáo đo lường, đối sánh"
+},
+{
+"id": "MC-0252",
+"tieuChi": "8.4",
+"loai": "MC",
+"ma": "H8.08.04.05",
+"ten": "Biên bản họp về cải tiến"
+},
+{
+"id": "MC-0253",
+"tieuChi": "8.5",
+"loai": "MC",
+"ma": "H8.08.05.01",
+"ten": "Quy trình lấy ý kiến BLQ"
+},
+{
+"id": "MC-0254",
+"tieuChi": "8.5",
+"loai": "MC",
+"ma": "H8.08.05.02",
+"ten": "Kế hoạch lấy ý kiến và đối sánh"
+},
+{
+"id": "MC-0255",
+"tieuChi": "8.5",
+"loai": "MC",
+"ma": "H8.08.05.03",
+"ten": "CSDL mức độ hài lòng"
+},
+{
+"id": "MC-0256",
+"tieuChi": "8.5",
+"loai": "MC",
+"ma": "H8.08.05.04",
+"ten": "Báo cáo khảo sát hằng năm, phân tích"
+},
+{
+"id": "MC-0257",
+"tieuChi": "8.5",
+"loai": "MC",
+"ma": "H8.08.05.05",
+"ten": "Văn bản chỉ đạo cải tiến"
+}
+]
+}

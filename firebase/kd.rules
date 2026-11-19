@@ -1,0 +1,48 @@
+    // ===== KDTHS - Kiểm định CTĐT ThS Luật HP&LHC (19/11/2026) =====
+    // Khối này do trang kiem-dinh-ths-lhplhc tự chèn/thay qua Firebase Rules API (nút "Cập nhật quy tắc" trong Cài đặt).
+    // Dùng hàm chung isAdmin(), signedIn() ở đầu tệp; không đụng phần PNW, PND, PNL. Đổi quy tắc thì tăng số phiên bản dưới đây.
+    match /kd_rules_v/{v} { allow get: if v == '20261119a'; }
+    function kdEm() { return request.auth.token.get('email', '').lower(); }
+    function kdTvPath() { return /databases/$(database)/documents/kd_tv/$(kdEm()); }
+    function kdTv() {
+      return signedIn() && request.auth.token.get('email_verified', false) == true
+        && exists(kdTvPath()) && get(kdTvPath()).data.get('khoa', false) != true;
+    }
+    function kdVai() { return get(kdTvPath()).data.get('vai', 'xem'); }
+    function kdDoc() { return isAdmin() || kdTv(); }
+    function kdUp() { return isAdmin() || (kdTv() && kdVai() in ['thanhvien', 'thuky']); }
+    function kdTk() { return isAdmin() || (kdTv() && kdVai() == 'thuky'); }
+    function kdDiff() { return request.resource.data.diff(resource.data).affectedKeys(); }
+    function kdTTOk() {
+      return !kdDiff().hasAny(['trangThai'])
+        || request.resource.data.trangThai in ['Chưa có', 'Đã tải – chờ rà soát'];
+    }
+
+    match /kd_cfg/{id} { allow read: if kdDoc(); allow write: if kdTk(); }
+    match /kd_tv/{em} {
+      allow get: if signedIn() && (kdEm() == em || kdTk());
+      allow list, write: if kdTk();
+    }
+    match /kd_tc/{id} { allow read: if kdDoc(); allow write: if kdTk(); }
+    match /kd_cc/{id} {
+      allow read: if kdDoc();
+      allow create, delete: if kdTk();
+      allow update: if kdTk() || (kdUp() && resource.data.get('link', '') == ''
+        && kdDiff().hasOnly(['link', 'fileId', 'nguoi', 'email', 'tg']));
+    }
+    match /kd_mc/{id} {
+      allow read: if kdDoc();
+      allow create: if kdTk() || (kdUp() && request.resource.data.loai == 'TP'
+        && request.resource.data.trangThai == 'Đã tải – chờ rà soát'
+        && request.resource.data.email == kdEm());
+      allow update: if kdTk() || (kdUp()
+        && kdDiff().hasOnly(['ten', 'soNgay', 'noi', 'dungChung', 'link', 'fileId', 'nguoi', 'email', 'tg', 'trangThai'])
+        && kdTTOk()
+        && (resource.data.get('link', '') == '' || !kdDiff().hasAny(['link', 'fileId'])));
+      allow delete: if kdTk();
+    }
+    match /kd_log/{id} {
+      allow create: if kdDoc() && request.resource.data.email == kdEm();
+      allow read: if kdTk();
+    }
+    // Hết khối KDTHS
