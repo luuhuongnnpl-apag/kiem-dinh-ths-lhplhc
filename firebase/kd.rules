@@ -1,11 +1,12 @@
     // ===== KDTHS - Kiểm định CTĐT ThS Luật HP&LHC (19/11/2026) =====
     // Khối này do trang kiem-dinh-ths-lhplhc tự chèn/thay qua Firebase Rules API (nút "Cập nhật quy tắc" trong Cài đặt).
     // Dùng hàm chung isAdmin(), signedIn() ở đầu tệp; không đụng phần PNW, PND, PNL. Đổi quy tắc thì tăng số phiên bản dưới đây.
-    match /kd_rules_v/{v} { allow get: if v == '20261119a'; }
+    match /kd_rules_v/{v} { allow get: if v == '20261119b'; }
     function kdEm() { return request.auth.token.get('email', '').lower(); }
     function kdTvPath() { return /databases/$(database)/documents/kd_tv/$(kdEm()); }
     function kdTv() {
-      return signedIn() && request.auth.token.get('email_verified', false) == true
+      return signedIn()
+        && (request.auth.token.get('email_verified', false) == true || kdEm().matches('^[a-z0-9._-]+@taikhoan[.]kd$'))
         && exists(kdTvPath()) && get(kdTvPath()).data.get('khoa', false) != true;
     }
     function kdVai() { return get(kdTvPath()).data.get('vai', 'xem'); }
@@ -22,6 +23,10 @@
     match /kd_tv/{em} {
       allow get: if signedIn() && (kdEm() == em || kdTk());
       allow list, write: if kdTk();
+      // Chính chủ (đang dùng, chưa khóa): đăng ký Gmail (chờ duyệt) hoặc xóa mật khẩu ban đầu sau khi đổi mật khẩu
+      allow update: if kdTv() && kdEm() == em && (
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['gmail', 'gmailTT', 'gmailTg']) && request.resource.data.gmailTT == 'cho')
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['mkBanDau']) && request.resource.data.mkBanDau == ''));
     }
     match /kd_tc/{id} { allow read: if kdDoc(); allow write: if kdTk(); }
     match /kd_cc/{id} {

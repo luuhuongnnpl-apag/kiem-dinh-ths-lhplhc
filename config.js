@@ -14,7 +14,7 @@ window.KD_CONFIG = {
   ADMIN_UID: "smoIpuX7qseqTeu9nToc9RYigku1",
   ADMIN_EMAILS: ["luuhuong.dhnv@gmail.com", "luuhuong.nnpl@gmail.com"],
   // Phiên bản khối quy tắc — phải trùng số trong firebase/kd.rules
-  RULES_V: "20261119a",
+  RULES_V: "20261119b",
   TEN_THU_MUC: "MINH CHUNG - TDG CTDT ThS LHP&LHC",
   MAX_MB: 50
 };

@@ -36,6 +36,9 @@ async function log(viec, id, chiTiet) {
 function nguoi() { return (S.tv && S.tv.ten) || (S.user && S.user.displayName) || em(); }
 
 /* ---------- Đăng nhập ---------- */
+const ACCT_DOMAIN = "taikhoan.kd";
+const isTkAcct = () => em().endsWith("@" + ACCT_DOMAIN);
+const tenDN = e => String(e || "").endsWith("@" + ACCT_DOMAIN) ? String(e).split("@")[0] : "";
 function provider(scopeDrive) {
   const p = new firebase.auth.GoogleAuthProvider();
   if (scopeDrive) p.addScope(DRIVE_SCOPE);
@@ -50,19 +53,38 @@ async function login() {
     if (r.credential && r.credential.accessToken) saveTok(r.credential.accessToken);
   } catch (e) { if (errBox) errBox.textContent = errMsg(e); }
 }
+async function loginTk() {
+  const errBox = document.getElementById("lgErr");
+  const u = (document.getElementById("lgUser").value || "").trim().toLowerCase(), p = document.getElementById("lgPass").value || "";
+  if (!u || !p) { errBox.textContent = "Nhập tên đăng nhập và mật khẩu."; return; }
+  if (!/^[a-z0-9._-]{3,40}$/.test(u)) { errBox.textContent = "Tên đăng nhập chỉ gồm chữ không dấu, số, dấu chấm, gạch."; return; }
+  errBox.textContent = ""; busy("Đang đăng nhập…");
+  try { await auth.signInWithEmailAndPassword(u + "@" + ACCT_DOMAIN, p); }
+  catch (e) {
+    busy();
+    const c = e && e.code || "";
+    errBox.textContent = /wrong-password|user-not-found|invalid-credential|invalid-login/.test(c) ? "Tên đăng nhập hoặc mật khẩu không đúng." : c === "auth/too-many-requests" ? "Nhập sai nhiều lần, thử lại sau ít phút." : errMsg(e);
+  }
+}
 function renderLogin(msg) {
   app.innerHTML = `<div class="login"><h2>CSDL minh chứng</h2>
     <div class="meta">Tự đánh giá CTĐT thạc sĩ ngành Luật Hiến pháp và Luật Hành chính (định hướng ứng dụng) – Học viện Hành chính và Quản trị công · Thông tư 04/2025/TT-BGDĐT</div>
-    <p style="font-size:14px">Đăng nhập bằng tài khoản Google đã đăng ký với Ban Thư ký. Lần đầu Google có thể báo “ứng dụng chưa được xác minh”: bấm <b>Nâng cao</b> → <b>Đi tới…</b> để cấp quyền lưu tệp vào thư mục minh chứng.</p>
+    <label>Tên đăng nhập</label><input type="text" id="lgUser" autocomplete="username" placeholder="Do Ban Thư ký cấp">
+    <label>Mật khẩu</label><input type="password" id="lgPass" autocomplete="current-password" style="width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:6px;font:inherit">
     <div class="err" id="lgErr">${esc(msg || "")}</div>
-    <div class="row" style="justify-content:flex-start">${S.user ? `<button class="b" id="lgOut">Đăng xuất ${esc(em())}</button>` : ""}<button class="b pri" id="lgBtn">Đăng nhập bằng Google</button></div></div>`;
+    <div class="row" style="justify-content:flex-start"><button class="b pri" id="lgTk">Đăng nhập</button>
+      <span class="meta" style="margin:4px 6px">hoặc</span><button class="b" id="lgBtn">Đăng nhập bằng Google</button>
+      ${S.user ? `<button class="b" id="lgOut">Thoát ${esc(em())}</button>` : ""}</div>
+    <div class="meta" style="margin-top:10px">Đăng nhập Google dành cho người được cấp quyền bằng Gmail hoặc đã liên kết Gmail trong mục Tài khoản. Lần đầu Google có thể báo “ứng dụng chưa được xác minh”: bấm <b>Nâng cao</b> → <b>Đi tới…</b>.</div></div>`;
   document.getElementById("lgBtn").onclick = login;
+  document.getElementById("lgTk").onclick = loginTk;
+  document.getElementById("lgPass").onkeydown = e => { if (e.key === "Enter") loginTk(); };
   const o = document.getElementById("lgOut"); if (o) o.onclick = () => auth.signOut();
 }
 
 auth.onAuthStateChanged(async u => {
   S.unsub.forEach(f => f()); S.unsub = []; S.loaded = false;
-  S.user = u; S.admin = isAdminUser(u); S.tv = null; S.role = "";
+  S.user = u; S.admin = isAdminUser(u); S.tv = null; S.role = ""; saveTok(S.tok && u ? S.tok : null, 3500);
   if (!u) return renderLogin();
   busy("Đang kiểm tra quyền…");
   try {
@@ -71,7 +93,7 @@ auth.onAuthStateChanged(async u => {
     catch (e) { if (!S.admin) throw e; }
     if (S.admin) S.role = "thuky";
     else if (tv && !tv.khoa) S.role = tv.vai || "xem";
-    else { busy(); return renderLogin("Tài khoản " + u.email + " chưa được Ban Thư ký cấp quyền (hoặc đã bị khóa). Gửi email này cho Ban Thư ký để được thêm vào danh sách."); }
+    else { busy(); return renderLogin(isTkAcct() ? "Tài khoản đã bị khóa. Liên hệ Ban Thư ký." : "Tài khoản Google " + u.email + " chưa được Ban Thư ký cấp quyền (hoặc đã bị khóa)."); }
     S.tv = tv;
     await start();
   } catch (e) { busy(); renderLogin(errMsg(e)); }
@@ -104,19 +126,21 @@ function tienDo(ma) {
   const m = mcOf(ma).filter(r => r.trangThai !== TT.BO);
   return { co: m.filter(coTep).length, tong: m.length, dat: m.filter(r => r.trangThai === TT.DAT).length };
 }
+function tienDoStd(n) { const o = { co: 0, tong: 0, dat: 0 }; S.tc.filter(t => t.tieuChuan === n).forEach(t => { const p = tienDo(t.ma); o.co += p.co; o.tong += p.tong; o.dat += p.dat; }); return o; }
 const stCls = s => "st st" + Math.max(0, DS_TT.indexOf(s));
 
 /* ---------- Khung ---------- */
 function render() {
-  const tabs = [["tc", "Tiêu chí & minh chứng"], ["cc", "Căn cứ pháp lý"], ["th", "Tổng hợp & xuất danh mục"]];
+  const tabs = [["tc", "Tiêu chí & minh chứng"], ["th", "Danh mục tổng"], ["cc", "Căn cứ pháp lý"]];
   if (isTk()) tabs.push(["tv", "Thành viên"]);
   if (S.admin) tabs.push(["cd", "Cài đặt"]);
+  tabs.push(["tk", "Tài khoản của tôi"]);
   const ready = S.loaded;
   app.innerHTML = `<header><h1>CSDL minh chứng – TĐG CTĐT thạc sĩ ngành Luật HP&amp;LHC<small>Thông tư 04/2025/TT-BGDĐT · 8 tiêu chuẩn · 52 tiêu chí · giai đoạn 01/9/2023 – 30/8/2026</small></h1>
     <span class="who">${esc(nguoi())} · ${S.admin ? "Quản trị" : esc(VAI[S.role] || S.role)}</span>
     ${S.cfg && S.cfg.rootUrl ? `<a class="b" style="background:#fff;text-decoration:none" href="${esc(S.cfg.rootUrl)}" target="_blank" rel="noopener">Thư mục Drive</a>` : ""}
     <button class="b" id="lo" style="background:#fff">Đăng xuất</button></header>
-    <nav>${tabs.filter(t => ready || t[0] === "cd").map(t => `<button data-t="${t[0]}" class="${S.tab === t[0] ? "on" : ""}">${t[1]}</button>`).join("")}
+    <nav>${tabs.filter(t => ready || t[0] === "cd" || t[0] === "tk").map(t => `<button data-t="${t[0]}" class="${S.tab === t[0] ? "on" : ""}">${t[1]}</button>`).join("")}
     ${ready ? `<input id="q" placeholder="Tìm minh chứng, văn bản, mã…" value="${esc(S.q)}">` : ""}</nav><main id="main"></main>`;
   app.querySelectorAll("nav button").forEach(b => b.onclick = () => { S.tab = b.dataset.t; S.q = ""; render(); });
   document.getElementById("lo").onclick = () => auth.signOut();
@@ -126,6 +150,7 @@ function render() {
 function renderMain() {
   const m = document.getElementById("main"); if (!m) return;
   if (S.tab === "cd") return renderCaiDat(m);
+  if (S.tab === "tk") return renderTaiKhoan(m);
   if (!S.loaded) { m.innerHTML = `<section class="content">Đang tải dữ liệu…</section>`; return; }
   if (S.q.trim()) return renderSearch(m);
   if (S.tab === "cc") return renderCanCu(m);
@@ -138,23 +163,41 @@ function renderMain() {
 function renderTieuChiTab(m) {
   let side = "", last = 0;
   S.tc.forEach(t => {
-    if (t.tieuChuan !== last) { last = t.tieuChuan; side += `<div class="std">Tiêu chuẩn ${t.tieuChuan}. ${esc(t.tenTieuChuan)}</div>`; }
+    if (t.tieuChuan !== last) {
+      last = t.tieuChuan; const p = tienDoStd(last);
+      side += `<a class="std${S.tcSel === "TC" + last ? " on" : ""}" data-tc="TC${last}" title="Xem toàn bộ tiêu chuẩn ${last}"><span class="n">Tiêu chuẩn ${last}. ${esc(t.tenTieuChuan)}</span><span class="p">${p.co}/${p.tong}</span></a>`;
+    }
     const p = tienDo(t.ma);
     side += `<a data-tc="${esc(t.ma)}" class="${S.tcSel === t.ma ? "on" : ""}"><b>${esc(t.ma)}</b><span class="n">${t.dieuKien ? '<span class="badge">ĐK</span>' : ""}</span><span class="p">${p.co}/${p.tong}</span></a>`;
   });
   m.innerHTML = `<aside>${side}</aside><section class="content" id="sec"></section>`;
-  m.querySelectorAll("aside a").forEach(a => a.onclick = () => { S.tcSel = a.dataset.tc; renderMain(); });
-  const sec = document.getElementById("sec"), t = tcOf(S.tcSel);
-  if (!t) { sec.textContent = "Không có dữ liệu."; return; }
+  m.querySelectorAll("aside a").forEach(a => a.onclick = () => { S.tcSel = a.dataset.tc; renderMain(); if (window.scrollY > 0) window.scrollTo(0, 0); });
+  const sec = document.getElementById("sec");
+  if (/^TC\d$/.test(S.tcSel)) {
+    const n = Number(S.tcSel.slice(2)), list = S.tc.filter(t => t.tieuChuan === n), p = tienDoStd(n), pc = p.tong ? Math.round(p.co * 100 / p.tong) : 0;
+    sec.innerHTML = `<h2>Tiêu chuẩn ${n}. ${esc(list[0] ? list[0].tenTieuChuan : "")}</h2>
+      <div class="meta">${esc(list[0] ? list[0].nhom : "")} · Hạn: ${esc(list[0] ? list[0].han : "")} · ${list.length} tiêu chí · Có tệp ${p.co}/${p.tong} minh chứng (${pc}%) · Đạt ${p.dat}</div>
+      <div class="bar" style="max-width:420px"><i style="width:${pc}%"></i></div>
+      <div class="meta">Chuyển nhanh: ${list.map(t => `<a class="f" href="#k${esc(t.ma)}" data-jump="${esc(t.ma)}">${esc(t.ma)}</a>`).join(" · ")}</div>
+      ${list.map(t => `<div id="k${esc(t.ma)}" style="margin-top:22px;padding-top:10px;border-top:2px solid var(--navy)">${critBlock(t, false)}</div>`).join("")}`;
+    sec.querySelectorAll("[data-jump]").forEach(a => a.onclick = e => { e.preventDefault(); const el = document.getElementById("k" + a.dataset.jump); if (el && el.scrollIntoView) el.scrollIntoView({ behavior: "smooth" }); });
+  } else {
+    const t = tcOf(S.tcSel);
+    if (!t) { sec.textContent = "Không có dữ liệu."; return; }
+    sec.innerHTML = `<div class="meta"><a class="f" href="#" data-std="TC${t.tieuChuan}">← Xem toàn bộ Tiêu chuẩn ${t.tieuChuan}</a></div>` + critBlock(t, true);
+    sec.querySelector("[data-std]").onclick = e => { e.preventDefault(); S.tcSel = e.target.dataset.std; renderMain(); };
+  }
+  bindActions(sec);
+}
+function critBlock(t, single) {
   const p = tienDo(t.ma), li = (arr, tag) => `<${tag}>${(arr || []).map(x => `<li>${esc(x)}</li>`).join("")}</${tag}>`;
-  sec.innerHTML = `<h2>Tiêu chí ${esc(t.ma)} ${t.dieuKien ? '<span class="badge">Tiêu chí điều kiện</span>' : ""}</h2>
+  return `<h2 style="${single ? "" : "font-size:16px"}">Tiêu chí ${esc(t.ma)} ${t.dieuKien ? '<span class="badge">Tiêu chí điều kiện</span>' : ""}</h2>
     <div style="font-weight:600;margin-bottom:4px">${esc(t.ten)}</div>
-    <div class="meta">Tiêu chuẩn ${t.tieuChuan}. ${esc(t.tenTieuChuan)} · ${esc(t.nhom)} · Hạn: ${esc(t.han)} · Có tệp ${p.co}/${p.tong} minh chứng · Đạt ${p.dat}</div>
+    <div class="meta">${single ? `Tiêu chuẩn ${t.tieuChuan}. ${esc(t.tenTieuChuan)} · ${esc(t.nhom)} · Hạn: ${esc(t.han)} · ` : ""}Có tệp ${p.co}/${p.tong} minh chứng · Đạt ${p.dat}</div>
     <details><summary>Yêu cầu của tiêu chí (Phụ lục II TT 04/2025)</summary>${li(t.yeuCau, "ol")}</details>
     <details><summary>Minh chứng gợi ý (Phụ lục II TT 04/2025)</summary>${li(t.goiY, "ul")}</details>
     ${tableMC(mcOf(t.ma))}
-    ${isTk() ? `<div class="row" style="justify-content:flex-start"><button class="b pri" data-a="newmc">+ Thêm minh chứng cho tiêu chí ${esc(t.ma)}</button></div>` : ""}`;
-  bindActions(sec);
+    ${isTk() ? `<div class="row" style="justify-content:flex-start;margin-top:8px"><button class="b pri" data-a="newmc" data-tc="${esc(t.ma)}">+ Thêm minh chứng cho tiêu chí ${esc(t.ma)}</button></div>` : ""}`;
 }
 function tableMC(mcs) {
   let h = `<table><thead><tr><th style="width:110px">Mã minh chứng</th><th>Tên minh chứng / văn bản</th><th style="width:150px">Số, ngày ban hành / thời điểm</th><th style="width:130px">Nơi ban hành</th><th style="width:80px">Dùng chung</th><th style="width:50px">Tệp</th><th style="width:120px">Trạng thái</th><th style="width:210px">Ghi chú / Tải lên</th></tr></thead><tbody>`;
@@ -198,47 +241,74 @@ function renderCanCu(m) {
   bindActions(m);
 }
 
-/* ---------- Tổng hợp ---------- */
-function renderTongHop(m) {
-  const std = {};
-  S.tc.forEach(t => {
-    const p = tienDo(t.ma), k = t.tieuChuan;
-    std[k] = std[k] || { ten: t.tenTieuChuan, nhom: t.nhom, co: 0, tong: 0, dat: 0 };
-    std[k].co += p.co; std[k].tong += p.tong; std[k].dat += p.dat;
-  });
-  let h = `<section class="content"><h2>Tổng hợp tiến độ thu thập minh chứng</h2>
-    <div class="row" style="justify-content:flex-start;margin:0 0 12px"><button class="b pri" id="csv">⬇ Xuất danh mục minh chứng (Excel – CSV)</button></div><div class="cards">`;
-  Object.keys(std).forEach(k => {
-    const s = std[k], pc = s.tong ? Math.round(s.co * 100 / s.tong) : 0;
-    h += `<div class="card"><b>Tiêu chuẩn ${k}</b><div style="font-size:12.5px">${esc(s.ten)}</div><div class="bar"><i style="width:${pc}%"></i></div>
-      <div class="meta" style="margin:0">Có tệp ${s.co}/${s.tong} (${pc}%) · Đạt ${s.dat}<br>${esc(s.nhom)}</div></div>`;
-  });
-  h += `</div><h3>Minh chứng còn thiếu ở 10 tiêu chí điều kiện</h3>`;
-  let any = false;
-  S.tc.filter(t => t.dieuKien).forEach(t => {
-    const thieu = mcOf(t.ma).filter(r => r.trangThai !== TT.BO && (!coTep(r) || r.trangThai === TT.BOSUNG));
-    if (!thieu.length) return; any = true;
-    h += `<div class="hit" data-go="${esc(t.ma)}"><b>${esc(t.ma)}</b> – còn ${thieu.length} minh chứng: ${thieu.map(r => esc(r.ma) + " " + esc(r.ten)).join("; ")}</div>`;
-  });
-  if (!any) h += `<div class="meta">Các tiêu chí điều kiện đã có đủ tệp minh chứng.</div>`;
-  m.innerHTML = h + "</section>";
-  m.querySelectorAll("[data-go]").forEach(d => d.onclick = () => { S.tab = "tc"; S.tcSel = d.dataset.go; render(); });
-  document.getElementById("csv").onclick = exportCsv;
+/* ---------- Danh mục tổng ---------- */
+const TINH = { thieu: "Chưa tải lên", cho: "Chờ rà soát", bosung: "Cần bổ sung", dat: "Đạt", bo: "Không dùng" };
+function tinhTrang(r) {
+  if (r.trangThai === TT.BO) return "bo";
+  if (r.trangThai === TT.BOSUNG) return "bosung";
+  if (!coTep(r)) return "thieu";
+  return r.trangThai === TT.DAT ? "dat" : "cho";
 }
-function exportCsv() {
+const TINH_CLS = { thieu: "st st3", cho: "st st1", bosung: "st st3", dat: "st st2", bo: "st st4" };
+function locDanhMuc() {
+  const F = S.loc;
+  return S.tc.filter(t => (!F.std || String(t.tieuChuan) === F.std) && (!F.dk || t.dieuKien) && (!F.nhom || t.nhom === F.nhom))
+    .map(t => ({ t, rows: mcOf(t.ma).filter(r => { const k = tinhTrang(r); return F.tt === "all" ? k !== "bo" : k === F.tt; }) }))
+    .filter(g => g.rows.length);
+}
+function renderTongHop(m) {
+  S.loc = S.loc || { std: "", tt: "thieu", dk: false, nhom: "" };
+  const F = S.loc, all = S.mc.filter(r => r.loai === "MC"), dem = {};
+  Object.keys(TINH).forEach(k => dem[k] = 0); all.forEach(r => dem[tinhTrang(r)]++);
+  const std = {};
+  S.tc.forEach(t => { const p = tienDo(t.ma), k = t.tieuChuan; std[k] = std[k] || { ten: t.tenTieuChuan, nhom: t.nhom, co: 0, tong: 0, dat: 0 }; std[k].co += p.co; std[k].tong += p.tong; std[k].dat += p.dat; });
+  const nhoms = [...new Set(S.tc.map(t => t.nhom))];
+  const groups = locDanhMuc(), n = groups.reduce((a, g) => a + g.rows.length, 0);
+  let h = `<section class="content"><h2>Danh mục tổng minh chứng</h2>
+    <div class="cards">${Object.keys(std).map(k => { const s = std[k], pc = s.tong ? Math.round(s.co * 100 / s.tong) : 0;
+      return `<div class="card" data-std="${k}" style="cursor:pointer;${F.std === k ? "border-color:var(--blue);box-shadow:0 0 0 2px var(--pale)" : ""}"><b>Tiêu chuẩn ${k}</b> <span class="meta">· ${esc(s.nhom)}</span><div style="font-size:12.5px">${esc(s.ten)}</div><div class="bar"><i style="width:${pc}%"></i></div><div class="meta" style="margin:0">Có tệp ${s.co}/${s.tong} (${pc}%) · Đạt ${s.dat} · <b style="color:var(--bad)">thiếu ${s.tong - s.co}</b></div></div>`; }).join("")}</div>
+    <div class="panel" style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+      <div><label>Tình trạng</label><select id="lTt"><option value="all">Tất cả (${all.length - dem.bo})</option>${["thieu", "cho", "bosung", "dat", "bo"].map(k => `<option value="${k}"${F.tt === k ? " selected" : ""}>${TINH[k]} (${dem[k]})</option>`).join("")}</select></div>
+      <div><label>Tiêu chuẩn</label><select id="lStd"><option value="">Tất cả</option>${Object.keys(std).map(k => `<option value="${k}"${F.std === k ? " selected" : ""}>Tiêu chuẩn ${k}</option>`).join("")}</select></div>
+      <div><label>Nhóm phụ trách</label><select id="lNhom"><option value="">Tất cả</option>${nhoms.map(x => `<option${F.nhom === x ? " selected" : ""}>${esc(x)}</option>`).join("")}</select></div>
+      <label style="display:flex;gap:6px;align-items:center;margin:0 0 8px"><input type="checkbox" id="lDk"${F.dk ? " checked" : ""}> Chỉ 10 tiêu chí điều kiện</label>
+      <div style="margin-left:auto" class="act"><button class="b" id="csvLoc">⬇ Xuất danh sách đang lọc</button><button class="b pri" id="csv">⬇ Xuất toàn bộ danh mục</button></div></div>
+    <div class="meta">Đang hiện <b>${n}</b> minh chứng${F.tt !== "all" ? ` “${TINH[F.tt]}”` : ""} thuộc ${groups.length} tiêu chí. Bấm mã tiêu chí để mở và tải tệp.</div>
+    <table><thead><tr><th style="width:70px">Tiêu chí</th><th style="width:110px">Mã minh chứng</th><th>Tên minh chứng</th><th style="width:80px">Văn bản</th><th style="width:130px">Tình trạng</th><th style="width:170px">Người tải / thời gian</th><th style="width:180px">Ghi chú rà soát</th></tr></thead><tbody>`;
+  groups.forEach(g => {
+    h += `<tr class="mc"><td colspan="7"><a class="f" href="#" data-go="${esc(g.t.ma)}">Tiêu chí ${esc(g.t.ma)}</a> ${g.t.dieuKien ? '<span class="badge">ĐK</span>' : ""} <span class="meta">– ${esc(g.t.ten)} · ${g.rows.length} minh chứng</span></td></tr>`;
+    g.rows.forEach(r => {
+      const k = tinhTrang(r), vb = kids(r.id).length, ng = r.nguoi ? r.nguoi + " · " + r.tg : (kids(r.id).filter(x => x.nguoi).map(x => x.nguoi).slice(-1)[0] || "");
+      h += `<tr><td>${esc(r.tieuChi)}</td><td class="ma" style="font-weight:600">${esc(r.ma)}</td><td>${esc(r.ten)}</td><td>${r.link ? '<a class="f" href="' + esc(r.link) + '" target="_blank" rel="noopener">Mở</a>' : ""}${vb ? ` ${vb} VB` : ""}</td><td><span class="${TINH_CLS[k]}">${TINH[k]}</span></td><td style="font-size:12.5px">${esc(ng)}</td><td class="note" style="font-size:12.5px">${esc(r.ghiChu)}</td></tr>`;
+    });
+  });
+  if (!groups.length) h += `<tr><td colspan="7" class="meta">Không có minh chứng nào khớp bộ lọc.</td></tr>`;
+  m.innerHTML = h + "</tbody></table></section>";
+  const set = (k, v) => { F[k] = v; renderMain(); };
+  document.getElementById("lTt").onchange = e => set("tt", e.target.value);
+  document.getElementById("lStd").onchange = e => set("std", e.target.value);
+  document.getElementById("lNhom").onchange = e => set("nhom", e.target.value);
+  document.getElementById("lDk").onchange = e => set("dk", e.target.checked);
+  m.querySelectorAll(".card[data-std]").forEach(c => c.onclick = () => set("std", F.std === c.dataset.std ? "" : c.dataset.std));
+  m.querySelectorAll("[data-go]").forEach(d => d.onclick = e => { e.preventDefault(); S.tab = "tc"; S.tcSel = d.dataset.go; render(); });
+  document.getElementById("csv").onclick = () => exportCsv(false);
+  document.getElementById("csvLoc").onclick = () => exportCsv(true);
+}
+function exportCsv(loc) {
   const q = v => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
-  const L = [["Số TT", "Mã minh chứng", "Tên minh chứng", "Số, ngày ban hành / Thời điểm khảo sát", "Nơi ban hành", "Dùng chung với tiêu chí", "Link tệp", "Trạng thái", "Ghi chú rà soát"]];
+  const L = [["Số TT", "Mã minh chứng", "Tên minh chứng", "Số, ngày ban hành / Thời điểm khảo sát", "Nơi ban hành", "Dùng chung với tiêu chí", "Link tệp", "Tình trạng", "Ghi chú rà soát"]];
   let last = 0, stt = 0;
-  S.tc.forEach(t => {
+  const groups = loc ? locDanhMuc() : S.tc.map(t => ({ t, rows: mcOf(t.ma).filter(r => r.trangThai !== TT.BO) }));
+  groups.forEach(({ t, rows }) => {
     if (t.tieuChuan !== last) { last = t.tieuChuan; L.push(["", "", `Tiêu chuẩn ${t.tieuChuan}. ${t.tenTieuChuan}`]); }
     L.push(["", "", `Tiêu chí ${t.ma}. ${t.ten}`]);
-    mcOf(t.ma).filter(r => r.trangThai !== TT.BO).forEach(r => {
-      L.push([++stt, r.ma, r.ten, r.soNgay, r.noi, r.dungChung, r.link, r.trangThai, r.ghiChu]);
+    rows.forEach(r => {
+      L.push([++stt, r.ma, r.ten, r.soNgay, r.noi, r.dungChung, r.link, TINH[tinhTrang(r)], r.ghiChu]);
       kids(r.id).filter(k => k.trangThai !== TT.BO).forEach(k => L.push(["", "", k.ten, k.soNgay, k.noi, k.dungChung, k.link, k.trangThai, k.ghiChu]));
     });
   });
   const blob = new Blob(["﻿" + L.map(r => r.map(q).join(",")).join("\r\n")], { type: "text/csv;charset=utf-8" });
-  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "Danh_muc_minh_chung_ThS_LHPLHC.csv"; document.body.appendChild(a); a.click(); a.remove();
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = loc ? "Minh_chung_dang_loc.csv" : "Danh_muc_minh_chung_ThS_LHPLHC.csv"; document.body.appendChild(a); a.click(); a.remove();
 }
 
 /* ---------- Tìm kiếm ---------- */
@@ -253,111 +323,223 @@ function renderSearch(m) {
 
 /* ---------- Thành viên (Ban Thư ký) ---------- */
 async function loadTv() { const s = await db.collection("kd_tv").get(); S.tvList = s.docs.map(d => Object.assign({ email: d.id }, d.data())).sort((a, b) => String(a.ten).localeCompare(String(b.ten), "vi")); }
+const NHOM = ["Hội đồng TĐG", "Ban Thư ký", "Nhóm 1 (TC 1–2)", "Nhóm 2 (TC 3–4)", "Nhóm 3 (TC 5)", "Nhóm 4 (TC 6)", "Nhóm 5 (TC 7)", "Nhóm 6 (TC 8)", "Khác"];
+const okEm = e => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e || "");
+const okUser = u => /^[a-z0-9._-]{3,40}$/.test(u || "");
+const randPw = () => { const a = "abcdefghjkmnpqrstuvwxyz23456789"; let p = ""; const r = new Uint32Array(8); (window.crypto || crypto).getRandomValues(r); r.forEach(x => p += a[x % a.length]); return p; };
+const driveRole = v => v === "xem" ? "reader" : "writer";
+/* Tạo tài khoản tên đăng nhập bằng một phiên Firebase phụ để không đăng xuất người đang thao tác */
+async function taoTaiKhoan(user, pw) {
+  const a2 = firebase.apps.find(x => x.name === "kd-acct") || firebase.initializeApp(C.FIREBASE, "kd-acct");
+  const au = a2.auth();
+  try { await au.createUserWithEmailAndPassword(user + "@" + ACCT_DOMAIN, pw); }
+  catch (e) {
+    if (e && e.code === "auth/email-already-in-use") throw new Error(`Tên đăng nhập “${user}” đã được dùng — chọn tên khác.`);
+    if (e && e.code === "auth/operation-not-allowed") throw new Error("Dự án Firebase chưa bật đăng nhập Email/Mật khẩu (Authentication → Sign-in method).");
+    throw e;
+  } finally { try { await au.signOut(); } catch (x) { /* bỏ qua */ } }
+}
+async function themThanhVien(r) {
+  const id = r.loai === "tk" ? r.user + "@" + ACCT_DOMAIN : r.email;
+  if (S.tvList.some(t => t.email === id)) throw new Error((r.user || r.email) + " đã có trong danh sách — dùng nút Sửa ở dòng đó.");
+  if (r.loai === "tk") await taoTaiKhoan(r.user, r.pw);
+  const gmail = r.loai === "tk" ? (r.gmail || "") : r.email;
+  await db.collection("kd_tv").doc(id).set({ ten: r.ten, chucVu: r.chucVu || "", vai: r.vai, nhom: r.nhom || "", khoa: false, tg: now(), boi: em(),
+    loai: r.loai, mkBanDau: r.loai === "tk" ? r.pw : "", gmail, gmailTT: gmail ? "duyet" : "", gmailTg: gmail ? now() : "" });
+  if (gmail) await shareUser(gmail, driveRole(r.vai));
+  await log("Thêm thành viên", id, r.vai);
+}
 async function renderThanhVien(m) {
   m.innerHTML = `<section class="content">Đang tải danh sách…</section>`;
   try { await loadTv(); } catch (e) { m.innerHTML = `<section class="content"><div class="err">${esc(errMsg(e))}</div></section>`; return; }
   if (S.tab !== "tv") return;
-  const NHOM = ["Hội đồng TĐG", "Ban Thư ký", "Nhóm 1 (TC 1–2)", "Nhóm 2 (TC 3–4)", "Nhóm 3 (TC 5)", "Nhóm 4 (TC 6)", "Nhóm 5 (TC 7)", "Nhóm 6 (TC 8)", "Khác"];
+  const cho = S.tvList.filter(t => t.gmailTT === "cho" && !t.khoa);
   let h = `<section class="content"><h2>Thành viên được truy cập</h2>
-    <div class="meta">Cần email Google vì mỗi người đăng nhập bằng tài khoản Google, và hệ thống chia sẻ thư mục minh chứng trên Drive theo email đó (Thành viên/Thư ký: quyền chỉnh sửa để tải tệp lên; Chỉ xem: quyền xem). Khóa → gỡ quyền Drive.</div>
+    <div class="meta">Cấp <b>tên đăng nhập + mật khẩu</b> (không cần Gmail để vào xem, nhập thông tin, thêm văn bản bằng link) hoặc cấp thẳng bằng <b>Gmail</b>. Muốn tải tệp lên phải có Gmail được duyệt: hệ thống chia sẻ thư mục minh chứng trên Drive cho Gmail đó.</div>
+    ${cho.length ? `<div class="panel" style="border-color:var(--warn)"><b>${cho.length} Gmail chờ duyệt</b> – ${cho.map(t => `${esc(t.ten)} (${esc(t.gmail)}) <button class="b pri" data-tv="duyet" data-em="${esc(t.email)}">Duyệt</button>`).join(" · ")}</div>` : ""}
     <div class="panel"><b>Thêm người</b>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 12px">
-        <div><label>Email Google *</label><input type="text" id="tvEm" placeholder="nguyenvana@gmail.com" autocomplete="off"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0 12px">
+        <div><label>Loại tài khoản *</label><select id="tvLoai"><option value="tk">Tên đăng nhập + mật khẩu</option><option value="gg">Gmail (đăng nhập Google)</option></select></div>
+        <div class="fTk"><label>Tên đăng nhập *</label><input type="text" id="tvUser" placeholder="vd: hangvtt" autocomplete="off"></div>
+        <div class="fTk"><label>Mật khẩu ban đầu *</label><input type="text" id="tvPw" value="${randPw()}" autocomplete="off"></div>
+        <div><label id="tvEmLb">Gmail để tải tệp (không bắt buộc)</label><input type="text" id="tvEm" placeholder="nguyenvana@gmail.com" autocomplete="off"></div>
         <div><label>Họ và tên *</label><input type="text" id="tvTen" placeholder="Nguyễn Văn A"></div>
         <div><label>Chức vụ, đơn vị</label><input type="text" id="tvCv" placeholder="Giảng viên, Khoa Luật"></div>
         <div><label>Vai *</label><select id="tvVai">${Object.keys(VAI).map(k => `<option value="${k}"${k === "thanhvien" ? " selected" : ""}>${VAI[k]}</option>`).join("")}</select></div>
         <div><label>Nhóm công tác</label><select id="tvNhom"><option value=""></option>${NHOM.map(n => `<option>${n}</option>`).join("")}</select></div>
       </div>
       <div class="err" id="tvErr"></div>
-      <div class="row" style="justify-content:flex-start"><button class="b pri" id="tvAdd">Thêm và chia sẻ thư mục</button></div>
+      <div class="row" style="justify-content:flex-start"><button class="b pri" id="tvAdd">Thêm thành viên</button></div>
       <details style="margin:8px 0 0"><summary>Dán nhiều người một lần (từ Excel)</summary>
-        <div class="meta" style="margin-top:6px">Mỗi dòng một người, các cột cách nhau bằng dấu | hoặc Tab (dán thẳng từ Excel): Email | Họ và tên | Vai (thanhvien, thuky, xem) | Nhóm | Chức vụ, đơn vị</div>
+        <div class="meta" style="margin-top:6px">Mỗi dòng một người, các cột cách nhau bằng Tab (dán thẳng từ Excel) hoặc dấu |: <b>Tên đăng nhập hoặc Gmail</b> | Họ và tên | Vai (thanhvien, thuky, xem) | Nhóm | Chức vụ, đơn vị. Cột đầu là tên đăng nhập thì hệ thống tự đặt mật khẩu ban đầu (xem ở bảng dưới).</div>
         <textarea id="tvBulk" rows="5"></textarea>
         <div class="row" style="justify-content:flex-start"><button class="b" id="tvBulkAdd">Thêm danh sách</button></div></details></div>
-    <table><thead><tr><th>Email</th><th>Họ và tên</th><th>Chức vụ, đơn vị</th><th>Vai</th><th>Nhóm</th><th>Tình trạng</th><th style="width:170px"></th></tr></thead><tbody>`;
+    <table><thead><tr><th>Đăng nhập</th><th>Họ và tên</th><th>Chức vụ, đơn vị</th><th>Vai</th><th>Nhóm</th><th>Gmail tải tệp</th><th>Mật khẩu ban đầu</th><th>Tình trạng</th><th style="width:150px"></th></tr></thead><tbody>`;
   S.tvList.forEach(t => {
-    h += `<tr><td>${esc(t.email)}</td><td>${esc(t.ten)}</td><td>${esc(t.chucVu)}</td><td>${esc(VAI[t.vai] || t.vai)}</td><td>${esc(t.nhom)}</td><td>${t.khoa ? '<span class="no">Đã khóa</span>' : '<span class="ok">Đang dùng</span>'}</td>
+    const gm = t.gmail ? `${esc(t.gmail)}<br>${t.gmailTT === "duyet" ? '<span class="ok">đã duyệt</span>' : `<span class="no">chờ duyệt</span> <button class="b pri" data-tv="duyet" data-em="${esc(t.email)}">Duyệt</button>`}` : '<span class="meta">chưa có</span>';
+    h += `<tr><td><b>${esc(tenDN(t.email) || t.email)}</b></td><td>${esc(t.ten)}</td><td>${esc(t.chucVu)}</td><td>${esc(VAI[t.vai] || t.vai)}</td><td>${esc(t.nhom)}</td><td>${gm}</td>
+      <td>${t.mkBanDau ? `<code>${esc(t.mkBanDau)}</code>` : (t.loai === "tk" ? '<span class="meta">đã đổi</span>' : "")}</td>
+      <td>${t.khoa ? '<span class="no">Đã khóa</span>' : '<span class="ok">Đang dùng</span>'}</td>
       <td><div class="act"><button class="b" data-tv="vai" data-em="${esc(t.email)}">Sửa</button><button class="b ${t.khoa ? "" : "red"}" data-tv="khoa" data-em="${esc(t.email)}">${t.khoa ? "Mở khóa" : "Khóa"}</button></div></td></tr>`;
   });
   m.innerHTML = h + "</tbody></table></section>";
   const box = document.getElementById("tvErr");
-  const okEm = e => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e || "");
-  const addRows = async (rows, btn) => {
+  const doiLoai = () => { const tk = val(m, "tvLoai") === "tk"; m.querySelectorAll(".fTk").forEach(x => x.style.display = tk ? "" : "none"); document.getElementById("tvEmLb").textContent = tk ? "Gmail để tải tệp (không bắt buộc)" : "Gmail *"; };
+  document.getElementById("tvLoai").onchange = doiLoai; doiLoai();
+  const run = async (rows, btn) => {
     btn.disabled = true; box.textContent = "";
-    try {
-      for (let i = 0; i < rows.length; i++) {
-        const r = rows[i]; busy(`Đang thêm ${i + 1}/${rows.length}: ${r.email}`);
-        await db.collection("kd_tv").doc(r.email).set({ ten: r.ten, chucVu: r.chucVu, vai: r.vai, nhom: r.nhom, khoa: false, tg: now(), boi: em() });
-        await shareUser(r.email, r.vai === "xem" ? "reader" : "writer");
-        await log("Thêm thành viên", r.email, r.vai);
-      }
-      busy(); renderMain();
-    } catch (e) { busy(); btn.disabled = false; box.textContent = errMsg(e); }
+    try { for (let i = 0; i < rows.length; i++) { busy(`Đang thêm ${i + 1}/${rows.length}: ${rows[i].user || rows[i].email}`); await themThanhVien(rows[i]); } busy(); renderMain(); }
+    catch (e) { busy(); btn.disabled = false; box.textContent = errMsg(e); try { await loadTv(); } catch (x) { /* */ } }
   };
   document.getElementById("tvAdd").onclick = () => {
-    const r = { email: val(m, "tvEm").toLowerCase(), ten: val(m, "tvTen"), chucVu: val(m, "tvCv"), vai: val(m, "tvVai"), nhom: val(m, "tvNhom") };
-    if (!okEm(r.email)) { box.textContent = "Email chưa đúng."; return; }
+    const loai = val(m, "tvLoai"), r = { loai, user: val(m, "tvUser").toLowerCase(), pw: val(m, "tvPw"), email: val(m, "tvEm").toLowerCase(), ten: val(m, "tvTen"), chucVu: val(m, "tvCv"), vai: val(m, "tvVai"), nhom: val(m, "tvNhom") };
+    if (loai === "tk") {
+      if (!okUser(r.user)) { box.textContent = "Tên đăng nhập 3–40 ký tự: chữ không dấu, số, dấu chấm, gạch."; return; }
+      if (r.pw.length < 6) { box.textContent = "Mật khẩu ban đầu tối thiểu 6 ký tự."; return; }
+      if (r.email && !okEm(r.email)) { box.textContent = "Gmail chưa đúng."; return; }
+      r.gmail = r.email;
+    } else if (!okEm(r.email)) { box.textContent = "Gmail chưa đúng."; return; }
     if (!r.ten) { box.textContent = "Nhập họ và tên."; return; }
-    if (S.tvList.some(t => t.email === r.email)) { box.textContent = r.email + " đã có trong danh sách — dùng nút Sửa ở dòng đó."; return; }
-    addRows([r], document.getElementById("tvAdd"));
+    run([r], document.getElementById("tvAdd"));
   };
   document.getElementById("tvBulkAdd").onclick = () => {
     const rows = [], bad = [];
     document.getElementById("tvBulk").value.split("\n").map(l => l.trim()).filter(Boolean).forEach(l => {
-      const [e, ten, vai, nhom, cv] = l.split(/\||\t/).map(x => (x || "").trim());
-      const v = (vai || "thanhvien").toLowerCase();
-      if (!okEm(e) || !VAI[v]) bad.push(l); else rows.push({ email: e.toLowerCase(), ten: ten || e, vai: v, nhom: nhom || "", chucVu: cv || "" });
+      const [a, ten, vai, nhom, cv] = l.split(/\||\t/).map(x => (x || "").trim());
+      const v = (vai || "thanhvien").toLowerCase(), id = (a || "").toLowerCase();
+      if (!VAI[v]) return bad.push(l);
+      if (okEm(id)) rows.push({ loai: "gg", email: id, ten: ten || id, vai: v, nhom: nhom || "", chucVu: cv || "" });
+      else if (okUser(id)) rows.push({ loai: "tk", user: id, pw: randPw(), email: "", ten: ten || id, vai: v, nhom: nhom || "", chucVu: cv || "" });
+      else bad.push(l);
     });
     if (bad.length) { box.textContent = "Dòng chưa đúng mẫu: " + bad.join(" ; "); return; }
     if (!rows.length) { box.textContent = "Chưa nhập người nào."; return; }
-    addRows(rows, document.getElementById("tvBulkAdd"));
+    run(rows, document.getElementById("tvBulkAdd"));
   };
   m.querySelectorAll("[data-tv]").forEach(b => b.onclick = () => {
-    const t = S.tvList.find(x => x.email === b.dataset.em);
-    if (b.dataset.tv === "vai") {
-      modal("Sửa thông tin thành viên", t.email, `<label>Họ và tên</label><input type="text" id="fT" value="${esc(t.ten)}">
+    const t = S.tvList.find(x => x.email === b.dataset.em), k = b.dataset.tv;
+    if (k === "duyet") modal("Duyệt Gmail tải tệp", `${t.ten} – ${t.gmail}`, `<div class="meta">Hệ thống chia sẻ thư mục minh chứng trên Drive cho ${esc(t.gmail)} (${t.vai === "xem" ? "quyền xem" : "quyền chỉnh sửa để tải tệp lên"}).</div>`, async () => {
+      await shareUser(t.gmail, driveRole(t.vai));
+      await db.collection("kd_tv").doc(t.email).update({ gmailTT: "duyet" });
+      await log("Duyệt Gmail", t.email, t.gmail);
+    }, "Duyệt");
+    else if (k === "vai") modal("Sửa thông tin thành viên", tenDN(t.email) || t.email, `<label>Họ và tên</label><input type="text" id="fT" value="${esc(t.ten)}">
         <label>Chức vụ, đơn vị</label><input type="text" id="fC" value="${esc(t.chucVu)}">
-        <label>Vai</label><select id="fV">${Object.keys(VAI).map(k => `<option value="${k}"${k === t.vai ? " selected" : ""}>${VAI[k]}</option>`).join("")}</select>
-        <label>Nhóm công tác</label><select id="fN"><option value=""></option>${NHOM.map(n => `<option${n === t.nhom ? " selected" : ""}>${n}</option>`).join("")}</select>`, async w => {
-        const v = val(w, "fV"), ten = val(w, "fT"); if (!ten) throw new Error("Nhập họ và tên.");
-        await db.collection("kd_tv").doc(t.email).update({ ten, chucVu: val(w, "fC"), vai: v, nhom: val(w, "fN") });
-        if (!t.khoa && v !== t.vai) await shareUser(t.email, v === "xem" ? "reader" : "writer");
-        await log("Sửa thành viên", t.email, v); return true;
+        <label>Vai</label><select id="fV">${Object.keys(VAI).map(x => `<option value="${x}"${x === t.vai ? " selected" : ""}>${VAI[x]}</option>`).join("")}</select>
+        <label>Nhóm công tác</label><select id="fN"><option value=""></option>${NHOM.map(n => `<option${n === t.nhom ? " selected" : ""}>${n}</option>`).join("")}</select>
+        ${t.loai === "tk" ? `<label>Gmail tải tệp (để trống = gỡ)</label><input type="text" id="fG" value="${esc(t.gmail)}">` : ""}`, async w => {
+        const v = val(w, "fV"), ten = val(w, "fT"), g = t.loai === "tk" ? val(w, "fG").toLowerCase() : t.gmail;
+        if (!ten) throw new Error("Nhập họ và tên."); if (g && !okEm(g)) throw new Error("Gmail chưa đúng.");
+        const up = { ten, chucVu: val(w, "fC"), vai: v, nhom: val(w, "fN") };
+        if (t.loai === "tk" && g !== (t.gmail || "")) { if (t.gmail && t.gmailTT === "duyet") await unshareUser(t.gmail); Object.assign(up, { gmail: g, gmailTT: g ? "duyet" : "", gmailTg: g ? now() : "" }); }
+        await db.collection("kd_tv").doc(t.email).update(up);
+        if (!t.khoa && g && ((g !== t.gmail) || v !== t.vai || t.gmailTT !== "duyet")) await shareUser(g, driveRole(v));
+        await log("Sửa thành viên", t.email, v);
       });
-    } else {
-      modal(t.khoa ? "Mở khóa tài khoản?" : "Khóa tài khoản?", t.email + (t.khoa ? " – chia sẻ lại thư mục Drive." : " – gỡ quyền thư mục Drive; tệp đã tải lên vẫn giữ."), "", async () => {
-        await db.collection("kd_tv").doc(t.email).update({ khoa: !t.khoa });
-        if (t.khoa) await shareUser(t.email, t.vai === "xem" ? "reader" : "writer"); else await unshareUser(t.email);
-        await log(t.khoa ? "Mở khóa" : "Khóa", t.email, ""); return true;
-      }, t.khoa ? "Mở khóa" : "Khóa");
-    }
+    else modal(t.khoa ? "Mở khóa tài khoản?" : "Khóa tài khoản?", (tenDN(t.email) || t.email) + (t.khoa ? " – đăng nhập lại được, chia sẻ lại thư mục Drive." : " – không đăng nhập được nữa, gỡ quyền thư mục Drive; tệp đã tải lên vẫn giữ."), "", async () => {
+      await db.collection("kd_tv").doc(t.email).update({ khoa: !t.khoa });
+      if (t.gmail && t.gmailTT === "duyet") { if (t.khoa) await shareUser(t.gmail, driveRole(t.vai)); else await unshareUser(t.gmail); }
+      await log(t.khoa ? "Mở khóa" : "Khóa", t.email, "");
+    }, t.khoa ? "Mở khóa" : "Khóa");
   });
 }
 
+/* ---------- Tài khoản của tôi ---------- */
+async function renderTaiKhoan(m) {
+  const tv = S.tv || {}, tk = isTkAcct();
+  const gmTT = tv.gmail ? (tv.gmailTT === "duyet" ? '<span class="ok">đã duyệt – tải tệp được</span>' : '<span class="no">chờ Ban Thư ký duyệt</span>') : '<span class="meta">chưa đăng ký</span>';
+  m.innerHTML = `<section class="content"><h2>Tài khoản của tôi</h2>
+    <div class="panel"><table style="border:0"><tbody>
+      <tr><td style="width:180px">Đăng nhập</td><td><b>${esc(tk ? tenDN(em()) : em())}</b> ${tk ? "(tên đăng nhập)" : "(Google)"}</td></tr>
+      <tr><td>Họ và tên</td><td>${esc(tv.ten || nguoi())}</td></tr><tr><td>Chức vụ, đơn vị</td><td>${esc(tv.chucVu)}</td></tr>
+      <tr><td>Vai</td><td>${S.admin ? "Quản trị" : esc(VAI[S.role] || S.role)}</td></tr><tr><td>Nhóm</td><td>${esc(tv.nhom)}</td></tr>
+      ${tk ? `<tr><td>Gmail tải tệp</td><td>${esc(tv.gmail || "")} ${gmTT}</td></tr>` : ""}</tbody></table></div>
+    ${tk && !S.admin ? `<div class="panel"><b>Đăng ký Gmail để tải tệp lên</b>
+      <div class="meta">Bấm nút, chọn Gmail của bạn và cho phép truy cập Google Drive. Sau khi Ban Thư ký duyệt, bạn tải tệp lên được và có thể đăng nhập trang này bằng Google.</div>
+      <button class="b pri" id="tkGm">${tv.gmail ? "Đổi Gmail" : "Đăng ký Gmail"}</button></div>
+    <div class="panel"><b>Đổi mật khẩu</b>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 12px">
+        <div><label>Mật khẩu hiện tại</label><input type="password" id="pw0" style="width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:6px"></div>
+        <div><label>Mật khẩu mới (tối thiểu 8 ký tự)</label><input type="password" id="pw1" style="width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:6px"></div>
+        <div><label>Nhập lại mật khẩu mới</label><input type="password" id="pw2" style="width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:6px"></div></div>
+      <div class="row" style="justify-content:flex-start"><button class="b pri" id="tkPw">Đổi mật khẩu</button></div></div>` : ""}
+    <div class="err" id="tkMsg"></div></section>`;
+  const msg = (t, ok) => { const e = document.getElementById("tkMsg"); e.textContent = t; e.style.color = ok ? "var(--ok)" : ""; };
+  const bGm = document.getElementById("tkGm");
+  if (bGm) bGm.onclick = async () => {
+    bGm.disabled = true; msg("");
+    try { const g = await dangKyGmail(); msg(`Đã gửi đăng ký Gmail ${g}. Chờ Ban Thư ký duyệt.`, true); renderTaiKhoan(m); msg(`Đã gửi đăng ký Gmail ${g}. Chờ Ban Thư ký duyệt.`, true); }
+    catch (e) { bGm.disabled = false; msg(errMsg(e)); }
+  };
+  const bPw = document.getElementById("tkPw");
+  if (bPw) bPw.onclick = async () => {
+    const p0 = val(m, "pw0"), p1 = val(m, "pw1"), p2 = val(m, "pw2");
+    if (p1.length < 8) return msg("Mật khẩu mới tối thiểu 8 ký tự.");
+    if (p1 !== p2) return msg("Hai lần nhập mật khẩu mới chưa khớp.");
+    bPw.disabled = true; busy("Đang đổi mật khẩu…");
+    try {
+      const u = auth.currentUser;
+      await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email, p0));
+      await u.updatePassword(p1);
+      if (S.tv && S.tv.mkBanDau) { await db.collection("kd_tv").doc(em()).update({ mkBanDau: "" }); S.tv.mkBanDau = ""; }
+      busy(); bPw.disabled = false; ["pw0", "pw1", "pw2"].forEach(i => { document.getElementById(i).value = ""; }); msg("Đã đổi mật khẩu.", true);
+    } catch (e) { busy(); bPw.disabled = false; msg(/wrong-password|invalid-credential|invalid-login/.test(e && e.code || "") ? "Mật khẩu hiện tại không đúng." : errMsg(e)); }
+  };
+}
+/* Liên kết Gmail với tài khoản tên đăng nhập (để sau này đăng nhập Google vào cùng hồ sơ); nếu Gmail đã gắn tài khoản khác thì chỉ ghi nhận Gmail */
+async function dangKyGmail() {
+  const u = auth.currentUser; let g = "", tok = null;
+  try {
+    const r = await u.linkWithPopup(provider(true));
+    g = ((r.additionalUserInfo && r.additionalUserInfo.profile && r.additionalUserInfo.profile.email) || (r.user.providerData.find(p => p.providerId === "google.com") || {}).email || "").toLowerCase();
+    tok = r.credential && r.credential.accessToken;
+  } catch (e) {
+    const c = e && e.code || "";
+    if (c === "auth/credential-already-in-use" || c === "auth/email-already-in-use" || c === "auth/provider-already-linked") {
+      const r = await gisToken("select_account", "");
+      const who = await fetch("https://www.googleapis.com/drive/v3/about?fields=user(emailAddress)", { headers: { Authorization: "Bearer " + r.access_token } }).then(x => x.json()).catch(() => ({}));
+      g = (who.user && who.user.emailAddress || "").toLowerCase(); tok = r.access_token;
+    } else throw e;
+  }
+  if (!okEm(g)) throw new Error("Không đọc được địa chỉ Gmail. Thử lại.");
+  await db.collection("kd_tv").doc(em()).update({ gmail: g, gmailTT: "cho", gmailTg: now() });
+  S.tv = Object.assign({}, S.tv, { gmail: g, gmailTT: "cho", gmailTg: now() });
+  if (tok) saveTok(tok);
+  await log("Đăng ký Gmail", em(), g);
+  return g;
+}
+
 /* ---------- Google Drive ---------- */
-function gisToken(prompt) {
+/* Gmail dùng cho Drive: tài khoản Google = chính email; tài khoản tên đăng nhập = Gmail đã được duyệt */
+function driveEm() {
+  if (!isTkAcct()) return em();
+  return S.tv && S.tv.gmailTT === "duyet" ? S.tv.gmail : "";
+}
+function gisToken(prompt, hint) {
   return new Promise((res, rej) => {
     if (!(window.google && google.accounts && google.accounts.oauth2)) return rej(new Error("gis"));
     const c = google.accounts.oauth2.initTokenClient({
-      client_id: C.CLIENT_ID, scope: DRIVE_SCOPE, prompt, login_hint: em(), hint: em(),
+      client_id: C.CLIENT_ID, scope: DRIVE_SCOPE, prompt, login_hint: hint, hint,
       callback: r => r && r.access_token ? res(r) : rej(new Error((r && r.error) || "token")),
       error_callback: e => rej(new Error((e && e.type) || "popup"))
     });
-    c.requestAccessToken({ prompt, login_hint: em(), hint: em() });
+    c.requestAccessToken({ prompt, login_hint: hint, hint });
   });
 }
 async function ensureDrive(force) {
   if (!force && S.tok && Date.now() < S.tokExp) return S.tok;
+  const want = driveEm();
+  if (!want) throw new Error(S.tv && S.tv.gmail ? `Gmail ${S.tv.gmail} đang chờ Ban Thư ký duyệt — duyệt xong mới tải tệp lên được.` : "Tài khoản chưa có Gmail để tải tệp. Vào “Tài khoản của tôi” → Đăng ký Gmail, chờ Ban Thư ký duyệt.");
   for (const pr of ["", "select_account"]) {
     try {
-      const r = await gisToken(pr);
+      const r = await gisToken(pr, want);
       const who = await fetch("https://www.googleapis.com/drive/v3/about?fields=user(emailAddress)", { headers: { Authorization: "Bearer " + r.access_token } }).then(x => x.json()).catch(() => ({}));
       const wEm = (who.user && who.user.emailAddress || "").toLowerCase();
-      if (wEm && wEm !== em()) { if (pr) throw new Error(`Đã chọn tài khoản Google ${wEm}, khác tài khoản đăng nhập ${em()}. Bấm lại và chọn đúng ${em()}.`); continue; }
+      if (wEm && wEm !== want) { if (pr) throw new Error(`Đã chọn tài khoản Google ${wEm}, khác Gmail đã đăng ký ${want}. Bấm lại và chọn đúng ${want}.`); continue; }
       saveTok(r.access_token, r.expires_in); return S.tok;
     } catch (e) { if (pr && !/^(gis|token|popup)/.test(e.message)) throw e; }
   }
-  // dự phòng: đăng nhập lại qua Firebase để lấy quyền Drive
+  if (isTkAcct()) throw new Error("Chưa kết nối được Google Drive. Cho phép cửa sổ bật lên rồi bấm lại.");
   const r = await auth.currentUser.reauthenticateWithPopup(provider(true));
   if (!(r.credential && r.credential.accessToken)) throw new Error("Chưa kết nối được Google Drive. Cho phép cửa sổ bật lên rồi bấm lại.");
   saveTok(r.credential.accessToken); return S.tok;
@@ -490,15 +672,15 @@ function bindActions(root) {
     else if (a === "gocc") modal("Gỡ tệp bản chính thức?", r.ten, "", async () => {
       await db.collection("kd_cc").doc(r.id).update({ link: "", fileId: "", nguoi: "", email: "", tg: "" }); await log("Gỡ tệp căn cứ", r.id, "");
     }, "Gỡ");
-    else if (a === "newmc") modal("Thêm minh chứng cho tiêu chí " + S.tcSel, "Mã minh chứng sinh tự động theo thứ tự tiếp theo.", `<label>Tên minh chứng *</label><textarea id="fTen" rows="3"></textarea>`, async w => {
+    else if (a === "newmc") { const maTc = b.dataset.tc || S.tcSel; modal("Thêm minh chứng cho tiêu chí " + maTc, "Mã minh chứng sinh tự động theo thứ tự tiếp theo.", `<label>Tên minh chứng *</label><textarea id="fTen" rows="3"></textarea>`, async w => {
       const ten = val(w, "fTen"); if (!ten) throw new Error("Nhập tên minh chứng.");
-      const list = mcOf(S.tcSel), [t, c] = S.tcSel.split(".").map(Number), pad = n => String(n).padStart(2, "0");
+      const list = mcOf(maTc), [t, c] = maTc.split(".").map(Number), pad = n => String(n).padStart(2, "0");
       const last = list[list.length - 1], prefix = last ? String(last.ma).replace(/\d+$/, "") : `H${t}.${pad(t)}.${pad(c)}.`;
       const ma = prefix + pad((last ? efOf(last) : 0) + 1);
-      await db.collection("kd_mc").add({ tieuChi: S.tcSel, loai: "MC", ma, ten: ten.slice(0, 400), soNgay: "", noi: "", dungChung: "", link: "", fileId: "", nguoi: "", email: "", tg: "",
+      await db.collection("kd_mc").add({ tieuChi: maTc, loai: "MC", ma, ten: ten.slice(0, 400), soNgay: "", noi: "", dungChung: "", link: "", fileId: "", nguoi: "", email: "", tg: "",
         trangThai: TT.CHUA, ghiChu: "", cha: "", taoLuc: Date.now() });
       await log("Thêm minh chứng", ma, ten);
-    });
+    }); }
   });
 }
 
