@@ -257,47 +257,72 @@ async function renderThanhVien(m) {
   m.innerHTML = `<section class="content">Đang tải danh sách…</section>`;
   try { await loadTv(); } catch (e) { m.innerHTML = `<section class="content"><div class="err">${esc(errMsg(e))}</div></section>`; return; }
   if (S.tab !== "tv") return;
+  const NHOM = ["Hội đồng TĐG", "Ban Thư ký", "Nhóm 1 (TC 1–2)", "Nhóm 2 (TC 3–4)", "Nhóm 3 (TC 5)", "Nhóm 4 (TC 6)", "Nhóm 5 (TC 7)", "Nhóm 6 (TC 8)", "Khác"];
   let h = `<section class="content"><h2>Thành viên được truy cập</h2>
-    <div class="meta">Thêm người → hệ thống tự chia sẻ thư mục minh chứng trên Drive (Thành viên/Thư ký: quyền chỉnh sửa; Chỉ xem: quyền xem). Khóa → gỡ quyền Drive.</div>
-    <div class="panel"><b>Thêm nhiều người</b> – mỗi dòng: <code>email | Họ và tên | vai | nhóm</code> (vai: <code>thanhvien</code>, <code>thuky</code> hoặc <code>xem</code>; bỏ trống = thanhvien)
-    <textarea id="tvBulk" rows="5" placeholder="nguyenvana@gmail.com | Nguyễn Văn A | thanhvien | Nhóm 2"></textarea>
-    <div class="err" id="tvErr"></div><div class="row" style="justify-content:flex-start"><button class="b pri" id="tvAdd">Thêm và chia sẻ thư mục</button></div></div>
-    <table><thead><tr><th>Email</th><th>Họ và tên</th><th>Vai</th><th>Nhóm</th><th>Tình trạng</th><th style="width:170px"></th></tr></thead><tbody>`;
+    <div class="meta">Cần email Google vì mỗi người đăng nhập bằng tài khoản Google, và hệ thống chia sẻ thư mục minh chứng trên Drive theo email đó (Thành viên/Thư ký: quyền chỉnh sửa để tải tệp lên; Chỉ xem: quyền xem). Khóa → gỡ quyền Drive.</div>
+    <div class="panel"><b>Thêm người</b>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 12px">
+        <div><label>Email Google *</label><input type="text" id="tvEm" placeholder="nguyenvana@gmail.com" autocomplete="off"></div>
+        <div><label>Họ và tên *</label><input type="text" id="tvTen" placeholder="Nguyễn Văn A"></div>
+        <div><label>Chức vụ, đơn vị</label><input type="text" id="tvCv" placeholder="Giảng viên, Khoa Luật"></div>
+        <div><label>Vai *</label><select id="tvVai">${Object.keys(VAI).map(k => `<option value="${k}"${k === "thanhvien" ? " selected" : ""}>${VAI[k]}</option>`).join("")}</select></div>
+        <div><label>Nhóm công tác</label><select id="tvNhom"><option value=""></option>${NHOM.map(n => `<option>${n}</option>`).join("")}</select></div>
+      </div>
+      <div class="err" id="tvErr"></div>
+      <div class="row" style="justify-content:flex-start"><button class="b pri" id="tvAdd">Thêm và chia sẻ thư mục</button></div>
+      <details style="margin:8px 0 0"><summary>Dán nhiều người một lần (từ Excel)</summary>
+        <div class="meta" style="margin-top:6px">Mỗi dòng một người, các cột cách nhau bằng dấu | hoặc Tab (dán thẳng từ Excel): Email | Họ và tên | Vai (thanhvien, thuky, xem) | Nhóm | Chức vụ, đơn vị</div>
+        <textarea id="tvBulk" rows="5"></textarea>
+        <div class="row" style="justify-content:flex-start"><button class="b" id="tvBulkAdd">Thêm danh sách</button></div></details></div>
+    <table><thead><tr><th>Email</th><th>Họ và tên</th><th>Chức vụ, đơn vị</th><th>Vai</th><th>Nhóm</th><th>Tình trạng</th><th style="width:170px"></th></tr></thead><tbody>`;
   S.tvList.forEach(t => {
-    h += `<tr><td>${esc(t.email)}</td><td>${esc(t.ten)}</td><td>${esc(VAI[t.vai] || t.vai)}</td><td>${esc(t.nhom)}</td><td>${t.khoa ? '<span class="no">Đã khóa</span>' : '<span class="ok">Đang dùng</span>'}</td>
-      <td><div class="act"><button class="b" data-tv="vai" data-em="${esc(t.email)}">Đổi vai</button><button class="b ${t.khoa ? "" : "red"}" data-tv="khoa" data-em="${esc(t.email)}">${t.khoa ? "Mở khóa" : "Khóa"}</button></div></td></tr>`;
+    h += `<tr><td>${esc(t.email)}</td><td>${esc(t.ten)}</td><td>${esc(t.chucVu)}</td><td>${esc(VAI[t.vai] || t.vai)}</td><td>${esc(t.nhom)}</td><td>${t.khoa ? '<span class="no">Đã khóa</span>' : '<span class="ok">Đang dùng</span>'}</td>
+      <td><div class="act"><button class="b" data-tv="vai" data-em="${esc(t.email)}">Sửa</button><button class="b ${t.khoa ? "" : "red"}" data-tv="khoa" data-em="${esc(t.email)}">${t.khoa ? "Mở khóa" : "Khóa"}</button></div></td></tr>`;
   });
   m.innerHTML = h + "</tbody></table></section>";
-  document.getElementById("tvAdd").onclick = async () => {
-    const box = document.getElementById("tvErr"), btn = document.getElementById("tvAdd");
-    const lines = document.getElementById("tvBulk").value.split("\n").map(s => s.trim()).filter(Boolean);
-    const rows = [], bad = [];
-    lines.forEach(l => {
-      const [e, ten, vai, nhom] = l.split("|").map(s => (s || "").trim());
-      const v = (vai || "thanhvien").toLowerCase();
-      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e || "") || !VAI[v]) bad.push(l); else rows.push({ email: e.toLowerCase(), ten: ten || e, vai: v, nhom: nhom || "" });
-    });
-    if (bad.length) { box.textContent = "Dòng chưa đúng mẫu: " + bad.join(" ; "); return; }
-    if (!rows.length) { box.textContent = "Chưa nhập người nào."; return; }
+  const box = document.getElementById("tvErr");
+  const okEm = e => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e || "");
+  const addRows = async (rows, btn) => {
     btn.disabled = true; box.textContent = "";
     try {
       for (let i = 0; i < rows.length; i++) {
         const r = rows[i]; busy(`Đang thêm ${i + 1}/${rows.length}: ${r.email}`);
-        await db.collection("kd_tv").doc(r.email).set({ ten: r.ten, vai: r.vai, nhom: r.nhom, khoa: false, tg: now(), boi: em() });
+        await db.collection("kd_tv").doc(r.email).set({ ten: r.ten, chucVu: r.chucVu, vai: r.vai, nhom: r.nhom, khoa: false, tg: now(), boi: em() });
         await shareUser(r.email, r.vai === "xem" ? "reader" : "writer");
         await log("Thêm thành viên", r.email, r.vai);
       }
       busy(); renderMain();
     } catch (e) { busy(); btn.disabled = false; box.textContent = errMsg(e); }
   };
+  document.getElementById("tvAdd").onclick = () => {
+    const r = { email: val(m, "tvEm").toLowerCase(), ten: val(m, "tvTen"), chucVu: val(m, "tvCv"), vai: val(m, "tvVai"), nhom: val(m, "tvNhom") };
+    if (!okEm(r.email)) { box.textContent = "Email chưa đúng."; return; }
+    if (!r.ten) { box.textContent = "Nhập họ và tên."; return; }
+    if (S.tvList.some(t => t.email === r.email)) { box.textContent = r.email + " đã có trong danh sách — dùng nút Sửa ở dòng đó."; return; }
+    addRows([r], document.getElementById("tvAdd"));
+  };
+  document.getElementById("tvBulkAdd").onclick = () => {
+    const rows = [], bad = [];
+    document.getElementById("tvBulk").value.split("\n").map(l => l.trim()).filter(Boolean).forEach(l => {
+      const [e, ten, vai, nhom, cv] = l.split(/\||\t/).map(x => (x || "").trim());
+      const v = (vai || "thanhvien").toLowerCase();
+      if (!okEm(e) || !VAI[v]) bad.push(l); else rows.push({ email: e.toLowerCase(), ten: ten || e, vai: v, nhom: nhom || "", chucVu: cv || "" });
+    });
+    if (bad.length) { box.textContent = "Dòng chưa đúng mẫu: " + bad.join(" ; "); return; }
+    if (!rows.length) { box.textContent = "Chưa nhập người nào."; return; }
+    addRows(rows, document.getElementById("tvBulkAdd"));
+  };
   m.querySelectorAll("[data-tv]").forEach(b => b.onclick = () => {
     const t = S.tvList.find(x => x.email === b.dataset.em);
     if (b.dataset.tv === "vai") {
-      modal("Đổi vai", t.email, `<label>Vai</label><select id="fV">${Object.keys(VAI).map(k => `<option value="${k}"${k === t.vai ? " selected" : ""}>${VAI[k]}</option>`).join("")}</select>`, async w => {
-        const v = w.querySelector("#fV").value;
-        await db.collection("kd_tv").doc(t.email).update({ vai: v });
-        if (!t.khoa) await shareUser(t.email, v === "xem" ? "reader" : "writer");
-        await log("Đổi vai", t.email, v); return true;
+      modal("Sửa thông tin thành viên", t.email, `<label>Họ và tên</label><input type="text" id="fT" value="${esc(t.ten)}">
+        <label>Chức vụ, đơn vị</label><input type="text" id="fC" value="${esc(t.chucVu)}">
+        <label>Vai</label><select id="fV">${Object.keys(VAI).map(k => `<option value="${k}"${k === t.vai ? " selected" : ""}>${VAI[k]}</option>`).join("")}</select>
+        <label>Nhóm công tác</label><select id="fN"><option value=""></option>${NHOM.map(n => `<option${n === t.nhom ? " selected" : ""}>${n}</option>`).join("")}</select>`, async w => {
+        const v = val(w, "fV"), ten = val(w, "fT"); if (!ten) throw new Error("Nhập họ và tên.");
+        await db.collection("kd_tv").doc(t.email).update({ ten, chucVu: val(w, "fC"), vai: v, nhom: val(w, "fN") });
+        if (!t.khoa && v !== t.vai) await shareUser(t.email, v === "xem" ? "reader" : "writer");
+        await log("Sửa thành viên", t.email, v); return true;
       });
     } else {
       modal(t.khoa ? "Mở khóa tài khoản?" : "Khóa tài khoản?", t.email + (t.khoa ? " – chia sẻ lại thư mục Drive." : " – gỡ quyền thư mục Drive; tệp đã tải lên vẫn giữ."), "", async () => {
