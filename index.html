@@ -59,6 +59,8 @@
   .hit:hover{border-color:var(--blue)}
   .panel{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:12px}
   .ok{color:var(--ok);font-weight:600} .no{color:var(--bad);font-weight:600}
+  .drop{border:2px dashed var(--line);border-radius:10px;padding:16px;text-align:center;background:#fafcff;cursor:pointer;margin-top:6px}
+  .drop:hover,.drop.on{border-color:var(--blue);background:var(--pale)}
   @media(max-width:800px){main{display:block}aside{width:auto;max-height:240px;position:static}}
 </style>
 </head>
@@ -69,6 +71,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="config.js"></script>
+<script src="vanban.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

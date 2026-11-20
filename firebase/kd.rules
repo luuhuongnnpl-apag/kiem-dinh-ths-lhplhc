@@ -1,7 +1,7 @@
     // ===== KDTHS - Kiểm định CTĐT ThS Luật HP&LHC (19/11/2026) =====
     // Khối này do trang kiem-dinh-ths-lhplhc tự chèn/thay qua Firebase Rules API (nút "Cập nhật quy tắc" trong Cài đặt).
     // Dùng hàm chung isAdmin(), signedIn() ở đầu tệp; không đụng phần PNW, PND, PNL. Đổi quy tắc thì tăng số phiên bản dưới đây.
-    match /kd_rules_v/{v} { allow get: if v == '20261120c'; }
+    match /kd_rules_v/{v} { allow get: if v == '20261120d'; }
     function kdEm() { return request.auth.token.get('email', '').lower(); }
     function kdTvPath() { return /databases/$(database)/documents/kd_tv/$(kdEm()); }
     function kdTv() {
@@ -45,6 +45,12 @@
         && kdTTOk()
         && (resource.data.get('link', '') == '' || !kdDiff().hasAny(['link', 'fileId'])));
       allow delete: if kdTk();
+    }
+    match /kd_kho/{id} {
+      allow read: if kdDoc();
+      allow create: if kdUp() && request.resource.data.email == kdEm();
+      allow update: if kdTk() || (kdUp() && kdDiff().hasOnly(['ganVao', 'trangThai', 'tieuDe', 'so', 'ngay', 'noi']));
+      allow delete: if kdTk() || (kdUp() && resource.data.email == kdEm());
     }
     match /kd_log/{id} {
       allow create: if kdDoc() && request.resource.data.email == kdEm();

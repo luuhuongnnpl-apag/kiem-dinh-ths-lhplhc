@@ -9,6 +9,7 @@ Thông tư 04/2025/TT-BGDĐT (8 tiêu chuẩn, 52 tiêu chí, 10 tiêu chí đi�
 ## Tệp
 - `index.html`, `app.js` – giao diện và chức năng; `config.js` – cấu hình công khai
 - `data/seed.json` – 52 tiêu chí (yêu cầu, minh chứng gợi ý theo Phụ lục II), 15 văn bản căn cứ, 257 minh chứng gợi ý mã Hn.ab.cd.ef
+- `vanban.js` – đọc PDF có lớp chữ/Word trên trình duyệt, trích số hiệu, ngày, cơ quan ban hành, trích yếu; `vendor/` – pdf.js 3.11.174 (Apache-2.0), mammoth 1.6.0 (BSD-2)
 - `firebase/kd.rules` – khối quy tắc Firestore `KDTHS`, được trang tự chèn vào quy tắc chung (giữ nguyên PNL, PNW, PND)
 
 ## Lần đầu (quản trị)
@@ -24,5 +25,5 @@ Thông tư 04/2025/TT-BGDĐT (8 tiêu chuẩn, 52 tiêu chí, 10 tiêu chí đi�
 | `thanhvien` | ✓ | ✓ | |
 | `thuky` / quản trị | ✓ | ✓ | ✓ |
 
-Firestore: `kd_cfg`, `kd_tc`, `kd_cc`, `kd_mc`, `kd_tv`, `kd_log`, `kd_rules_v`. Đổi quy tắc thì tăng số phiên bản ở
+Firestore: `kd_kho` (kho chung), `kd_cfg`, `kd_tc`, `kd_cc`, `kd_mc`, `kd_tv`, `kd_log`, `kd_rules_v`. Đổi quy tắc thì tăng số phiên bản ở
 `firebase/kd.rules` và `config.js` (RULES_V), rồi bấm lại **Cập nhật quy tắc**.

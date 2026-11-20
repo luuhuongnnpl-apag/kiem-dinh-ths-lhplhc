@@ -108,6 +108,8 @@ async function start() {
   const tc = await db.collection("kd_tc").get();
   S.tc = tc.docs.map(d => Object.assign({ id: d.id }, d.data())).sort((a, b) => cmpMa(a.ma, b.ma));
   S.unsub.push(db.collection("kd_cc").onSnapshot(s => { S.cc = s.docs.map(d => Object.assign({ id: d.id }, d.data())).sort((a, b) => a.tt - b.tt); if (S.loaded) renderMain(); }, e => busy(errMsg(e))));
+  S.unsub.push(db.collection("kd_kho").onSnapshot(s => { S.kho = s.docs.map(d => Object.assign({ id: d.id }, d.data())); S.khoLoi = ""; if (S.loaded && S.tab === "kc") renderMain(); },
+    e => { S.kho = []; S.khoLoi = errMsg(e); }));
   S.unsub.push(db.collection("kd_mc").onSnapshot(s => {
     S.mc = s.docs.map(d => Object.assign({ id: d.id }, d.data()));
     const first = !S.loaded; S.loaded = true; busy();
@@ -134,7 +136,11 @@ const STOPW = new Set("cua va cac ve cho theo voi trong duoc co tu den nhung mot
 const normVN = x => String(x || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/[^a-z0-9/]+/g, " ").trim();
 const MEMO = new Map();
 const memo = (k, f) => { if (!MEMO.has(k)) { if (MEMO.size > 5000) MEMO.clear(); MEMO.set(k, f()); } return MEMO.get(k); };
-const tokSet = x => memo("t" + x, () => new Set(normVN(x).split(" ").filter(w => w.length > 1 && !STOPW.has(w))));
+const VIET_TAT = [["de cuong chi tiet hoc phan", "dccthp"], ["de cuong hoc phan", "dccthp"], ["chuong trinh dao tao", "ctdt"], ["chuan dau ra", "cdr"], ["giang vien", "gv"],
+  ["nghien cuu vien", "ncv"], ["nguoi hoc", "nh"], ["ben lien quan", "blq"], ["co so dao tao", "csdt"], ["co so vat chat", "csvc"], ["nghien cuu khoa hoc", "nckh"],
+  ["co so du lieu", "csdl"], ["khung trinh do quoc gia", "ktqg"], ["giao duc dai hoc", "gddh"], ["cong nghe thong tin", "cntt"]];
+const vietTat = x => VIET_TAT.reduce((a, [k, v]) => a.replace(new RegExp("\\b" + k + "\\b", "g"), v), x);
+const tokSet = x => memo("t" + x, () => new Set(vietTat(normVN(x)).split(" ").filter(w => w.length > 1 && !STOPW.has(w))));
 const soHieu = x => memo("s" + x, () => (normVN(x).match(/\b\d{1,5}\/[a-z0-9/-]*[a-z][a-z0-9/-]*/g) || []));
 function tuongDong(a, b) {
   const A = new Set([...soHieu(a.soNgay), ...soHieu(a.ten)]), B = [...soHieu(b.soNgay), ...soHieu(b.ten)];
@@ -170,7 +176,7 @@ const stCls = s => "st st" + Math.max(0, DS_TT.indexOf(s));
 
 /* ---------- Khung ---------- */
 function render() {
-  const tabs = [["tc", "Tiêu chí & minh chứng"], ["th", "Danh mục tổng"], ["cc", "Căn cứ pháp lý"]];
+  const tabs = [["tc", "Tiêu chí & minh chứng"], ["kc", "Kho chung"], ["th", "Danh mục tổng"], ["cc", "Căn cứ pháp lý"]];
   if (isTk()) tabs.push(["tv", "Thành viên"]);
   if (S.admin) tabs.push(["cd", "Cài đặt"]);
   tabs.push(["tk", "Tài khoản của tôi"]);
@@ -195,6 +201,7 @@ function renderMain() {
   if (S.tab === "cc") return renderCanCu(m);
   if (S.tab === "th") return renderTongHop(m);
   if (S.tab === "tv") return renderThanhVien(m);
+  if (S.tab === "kc") return renderKho(m);
   renderTieuChiTab(m);
 }
 
@@ -658,11 +665,19 @@ async function upMeta(file, folder, prefix) {
   const f = await uploadFile(file, folder, (prefix ? prefix + "_" : "") + file.name);
   return { link: f.webViewLink || `https://drive.google.com/file/d/${f.id}/view`, fileId: f.id, nguoi: nguoi(), email: em(), tg: now() };
 }
-async function ganTep(r, file) {
-  const t = tcOf(r.tieuChi), meta = await upMeta(file, t.folderId, r.ma || r.id);
+async function ganTep(r, file, extra) {
+  extra = extra || {};
+  let meta;
+  if (file) meta = await upMeta(file, tcOf(r.tieuChi).folderId, r.ma || r.id);
+  else if (/^https?:\/\//i.test(extra.link || "")) meta = { link: extra.link.trim(), fileId: "", nguoi: nguoi(), email: em(), tg: now() };
+  else throw new Error("Chọn tệp, kéo – thả tệp vào ô hoặc dán đường link (bắt đầu bằng http).");
+  const up = Object.assign(meta, { trangThai: TT.CHO });
+  if (extra.soNgay !== undefined) up.soNgay = String(extra.soNgay).slice(0, 200);
+  if (extra.noi !== undefined) up.noi = String(extra.noi).slice(0, 200);
+  if (extra.ten && extra.ten !== r.ten) { up.ten = extra.ten.slice(0, 400); if (r.loai === "MC" && !r.tenGoiY) up.tenGoiY = r.ten; }
   busy("Đang ghi danh mục…");
-  await db.collection("kd_mc").doc(r.id).update(Object.assign(meta, { trangThai: TT.CHO }));
-  await log("Tải tệp", r.id, r.ma + " – " + file.name);
+  await db.collection("kd_mc").doc(r.id).update(up);
+  await log("Tải tệp", r.id, (r.ma || "") + " – " + (file ? file.name : extra.link));
 }
 async function themVanBan(cha, v, file) {
   if (!v.ten) throw new Error("Nhập tên văn bản.");
@@ -691,8 +706,165 @@ function modal(title, sub, body, onOk, okText) {
   };
   return w;
 }
-const fileField = note => `<label>Tệp (PDF, Word, Excel, ảnh… tối đa ${C.MAX_MB} MB)</label><input type="file" id="fFile">${note ? `<div class="meta" style="margin-top:4px">${note}</div>` : ""}`;
-const fileOf = w => { const i = w.querySelector("#fFile"); return i && i.files && i.files[0] || null; };
+const fileField = (note, multi) => `<div class="drop" id="fDrop" tabindex="0" role="button"><input type="file" id="fFile"${multi ? " multiple" : ""} style="display:none">
+  <b>Kéo – thả tệp vào đây</b> hoặc <u>bấm để chọn tệp</u><div class="meta" id="fChon" style="margin:4px 0 0">PDF, Word, Excel, ảnh… tối đa ${C.MAX_MB} MB${multi ? " · chọn được nhiều tệp" : ""}</div></div>
+  ${note ? `<div class="meta" style="margin-top:4px">${note}</div>` : ""}`;
+const filesOf = w => { if (w._files && w._files.length) return w._files; const i = w.querySelector("#fFile"); return i && i.files ? [...i.files] : []; };
+const fileOf = w => filesOf(w)[0] || null;
+/* Gắn kéo–thả cho ô #fDrop; onPick(files) chạy khi có tệp */
+function upBind(w, onPick) {
+  const dz = w.querySelector("#fDrop"), inp = w.querySelector("#fFile"); if (!dz) return;
+  const pick = fl => { w._files = [...fl]; const c = w.querySelector("#fChon"); if (c) c.textContent = "Đã chọn: " + w._files.map(f => f.name).join("; "); if (onPick) onPick(w._files); };
+  dz.onclick = () => inp.click();
+  dz.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); inp.click(); } };
+  inp.onchange = () => { if (inp.files && inp.files.length) pick(inp.files); };
+  ["dragenter", "dragover"].forEach(t => dz.addEventListener(t, e => { e.preventDefault(); dz.classList.add("on"); }));
+  ["dragleave", "drop"].forEach(t => dz.addEventListener(t, e => { e.preventDefault(); dz.classList.remove("on"); }));
+  dz.addEventListener("drop", e => { const fl = e.dataTransfer && e.dataTransfer.files; if (fl && fl.length) pick(fl); });
+}
+/* Đọc văn bản vừa chọn và điền số hiệu, ngày, nơi ban hành (và tên) vào các ô còn trống hoặc do máy điền */
+async function tuDien(w, file, opt) {
+  opt = opt || {};
+  const c = w.querySelector("#fChon"), name = file.name;
+  if (!window.VB) return null;
+  if (c) c.textContent = "Đã chọn: " + name + " – đang đọc văn bản…";
+  const m = await window.VB.doc(file);
+  if (w._files && w._files[0] !== file) return m;
+  const set = (id, v) => { const e = w.querySelector("#" + id); if (e && v && (!e.value.trim() || e.dataset.auto === "1")) { e.value = v; e.dataset.auto = "1"; } };
+  set("fSo", m.soNgay); set("fNoi", m.noi); if (opt.ten) set("fTen", m.tieuDe);
+  const tm = w.querySelector("#fTenMoi"); if (tm && m.loai) { tm.textContent = m.tieuDe; w.querySelector("#fDoiTenBox").style.display = ""; }
+  if (c) c.innerHTML = esc("Đã chọn: " + name) + "<br>" + (m.loai || m.so || m.noi
+    ? `<span class="ok">Đã nhận diện:</span> ${esc([m.loai, m.so, m.ngay, m.noi].filter(Boolean).join(" · "))} <span class="meta">– kiểm tra lại các ô bên dưới</span>`
+    : `<span class="meta">${m.quet ? "Tệp scan dạng ảnh, không đọc được chữ — nhập tay số, ngày, nơi ban hành." : m.khongDoc ? "Loại tệp này không tự đọc được — nhập tay." : "Không nhận diện được thông tin ban hành — nhập tay."}</span>`);
+  return m;
+}
+
+/* ---------- Kho chung: tải lên một chỗ, hệ thống gợi ý minh chứng phù hợp ---------- */
+let khoFolderId = "";
+async function khoFolder() { if (!khoFolderId) khoFolderId = (await folderIn("00. KHO CHUNG", S.cfg.rootId)).id; return khoFolderId; }
+function goiYKho(k, lim) {
+  const T = tokSet([k.tieuDe, k.trichYeu, k.ten].join(" ")), B = tokSet(String(k.noiDung || "").slice(0, 2500));
+  const so = normVN(k.so || ""), da = new Set(k.ganVao || []);
+  return S.mc.filter(r => r.loai === "MC" && !r.goc && r.trangThai !== TT.BO && !da.has(r.id)).map(r => {
+    let d = 0;
+    [r.ten, r.tenGoiY].filter(Boolean).forEach(t => {
+      // so cả tên đầy đủ và từng vế (tên gợi ý thường liệt kê nhiều loại: “Phiếu khảo sát, biên bản tọa đàm, …”)
+      [[t, 1]].concat(String(t).split(/[,;/]| và | hoặc /).map(x => [x, 0.95])).forEach(([part, w]) => {
+        const M = tokSet(part); if (M.size < 2) return;
+        let a = 0, b = 0; M.forEach(x => { if (T.has(x)) a++; if (B.has(x)) b++; });
+        d = Math.max(d, (M.size < 3 && w < 1 ? 0.75 : w) * (0.7 * a / M.size + 0.3 * Math.max(a, b) / M.size));
+      });
+    });
+    if (so && so.length > 4 && normVN(r.soNgay || "").includes(so)) d = 1;
+    return { r, d };
+  }).filter(o => o.d >= 0.4).sort((p, q) => (q.d - p.d) || cmpMa(p.r.tieuChi, q.r.tieuChi) || efOf(p.r) - efOf(q.r)).slice(0, lim || 3);
+}
+async function ganKho(k, mc) {
+  const g = goc(mc), soNgay = [k.so, k.ngay].filter(Boolean).join(", ");
+  if (!g.link && !kids(g.id).length) {
+    const up = { link: k.link, fileId: k.fileId || "", nguoi: k.nguoi || nguoi(), email: em(), tg: now(), trangThai: TT.CHO };
+    if (!g.soNgay && soNgay) up.soNgay = soNgay.slice(0, 200);
+    if (!g.noi && k.noi) up.noi = k.noi.slice(0, 200);
+    await db.collection("kd_mc").doc(g.id).update(up);
+  } else {
+    await db.collection("kd_mc").add({ tieuChi: g.tieuChi, loai: "TP", ma: "", ten: String(k.tieuDe || k.ten).slice(0, 400), soNgay: soNgay.slice(0, 200), noi: String(k.noi || "").slice(0, 200), dungChung: "",
+      link: k.link, fileId: k.fileId || "", nguoi: k.nguoi || nguoi(), email: em(), tg: now(), trangThai: TT.CHO, ghiChu: "", cha: g.id, taoLuc: Date.now(), tuKho: k.id });
+    if (g.trangThai === TT.CHUA) await db.collection("kd_mc").doc(g.id).update({ trangThai: TT.CHO });
+  }
+  const ds = [...new Set([...(k.ganVao || []), g.id])];
+  await db.collection("kd_kho").doc(k.id).update({ ganVao: ds, trangThai: "dagan" });
+  k.ganVao = ds;
+  await log("Gán từ kho chung", g.id, `${g.ma} ← ${k.ten}`);
+}
+function renderKho(m) {
+  const F = S.locKho || (S.locKho = "cho");
+  const all = (S.kho || []).slice().sort((a, b) => (b.taoLuc || 0) - (a.taoLuc || 0));
+  const list = all.filter(k => F === "all" || (F === "cho" ? !(k.ganVao || []).length : (k.ganVao || []).length));
+  const nCho = all.filter(k => !(k.ganVao || []).length).length;
+  const tenMc = id => { const r = findMc(id); return r ? `<b>${esc(r.ma)}</b> (${esc(r.tieuChi)})` : esc(id); };
+  let h = `<section class="content"><h2>Kho chung</h2>
+    <div class="meta">Tải tài liệu lên một chỗ, không cần biết thuộc tiêu chí nào: hệ thống đọc tên và nội dung văn bản (PDF có chữ, Word), tự nhận số hiệu, ngày, nơi ban hành và gợi ý minh chứng phù hợp. Bấm <b>Gán</b> để đưa vào minh chứng; một tài liệu gán được cho nhiều minh chứng.</div>
+    ${S.khoLoi ? `<div class="err">${esc(S.khoLoi)} — quản trị cần bấm “Cập nhật quy tắc” trong Cài đặt.</div>` : ""}
+    ${canUp() ? `<div class="panel">${fileField("", true)}
+      <details style="margin-top:8px"><summary>Hoặc thêm bằng đường link (website, Google Drive…)</summary>
+        <div style="display:grid;grid-template-columns:2fr 3fr auto;gap:8px;align-items:end;margin-top:6px">
+          <div><label>Tên tài liệu *</label><input type="text" id="kTen" placeholder="VD: Trang công bố chuẩn đầu ra CTĐT"></div>
+          <div><label>Đường link *</label><input type="text" id="kLink" placeholder="https://…"></div>
+          <button class="b pri" id="kLinkAdd" style="margin-bottom:2px">Thêm</button></div></details>
+      <div class="err" id="kErr"></div></div>` : ""}
+    <div class="row" style="justify-content:flex-start;align-items:center;margin:0 0 8px">
+      <select id="kLoc" style="width:auto"><option value="cho"${F === "cho" ? " selected" : ""}>Chưa gán (${nCho})</option><option value="da"${F === "da" ? " selected" : ""}>Đã gán (${all.length - nCho})</option><option value="all"${F === "all" ? " selected" : ""}>Tất cả (${all.length})</option></select>
+      ${isTk() && nCho ? `<button class="b" id="kAuto">Gán tất cả gợi ý khớp từ 80%</button>` : ""}</div>
+    <table><thead><tr><th style="width:24%">Tài liệu</th><th style="width:26%">Thông tin nhận diện</th><th>Gợi ý minh chứng</th><th style="width:120px"></th></tr></thead><tbody>`;
+  list.forEach(k => {
+    const gy = goiYKho(k, 3), id = esc(k.id);
+    h += `<tr><td><a class="f" href="${esc(k.link)}" target="_blank" rel="noopener" style="white-space:normal">${esc(k.ten)}</a><div class="meta" style="font-size:11.5px;margin:2px 0 0">${esc(k.nguoi)} · ${esc(k.tg)}</div></td>
+      <td style="font-size:13px">${k.tieuDe && k.tieuDe !== k.ten ? `<b>${esc(k.tieuDe)}</b><br>` : ""}${esc([k.so, k.ngay].filter(Boolean).join(", ")) || '<span class="meta">chưa có số, ngày</span>'}${k.noi ? "<br>" + esc(k.noi) : ""}${k.quet ? '<br><span class="meta">tệp scan – nhập tay thông tin</span>' : ""}</td>
+      <td style="font-size:13px">${(k.ganVao || []).length ? `<div class="ok" style="margin-bottom:4px">Đã gán: ${(k.ganVao || []).map(tenMc).join(", ")}</div>` : ""}
+        ${gy.map(o => `<div style="margin:2px 0">${canUp() ? `<button class="b pri" data-k="gan" data-id="${id}" data-mc="${esc(o.r.id)}">Gán</button> ` : ""}<b>${esc(o.r.ma)}</b> (${esc(o.r.tieuChi)}) ${esc(o.r.ten)} <span class="meta">${Math.round(o.d * 100)}%</span></div>`).join("") || '<span class="meta">Chưa tìm được minh chứng phù hợp — bấm “Chọn minh chứng”.</span>'}</td>
+      <td><div class="act">${canUp() ? `<button class="b" data-k="chon" data-id="${id}">Chọn minh chứng</button><button class="b" data-k="sua" data-id="${id}">Sửa thông tin</button>` : ""}
+        ${isTk() || k.email === em() ? `<button class="b red" data-k="xoa" data-id="${id}">Xóa</button>` : ""}</div></td></tr>`;
+  });
+  if (!list.length) h += `<tr><td colspan="4" class="meta">${F === "cho" ? "Không còn tài liệu chờ gán." : "Chưa có tài liệu."}</td></tr>`;
+  m.innerHTML = h + "</tbody></table></section>";
+  document.getElementById("kLoc").onchange = e => { S.locKho = e.target.value; renderMain(); };
+  const err = t => { const e = document.getElementById("kErr"); if (e) e.textContent = t; };
+  if (canUp()) {
+    upBind(m, async files => {
+      try {
+        const folder = await khoFolder();
+        for (let i = 0; i < files.length; i++) {
+          const f = files[i];
+          if (f.size > C.MAX_MB * 1048576) throw new Error(`${f.name} vượt ${C.MAX_MB} MB.`);
+          busy(`Đang đọc văn bản ${i + 1}/${files.length}: ${f.name}`);
+          const mt = window.VB ? await window.VB.doc(f) : { tieuDe: f.name };
+          busy(`Đang tải lên ${i + 1}/${files.length}: ${f.name}`);
+          const up = await uploadFile(f, folder, f.name);
+          await db.collection("kd_kho").add({ ten: f.name, link: up.webViewLink || `https://drive.google.com/file/d/${up.id}/view`, fileId: up.id, nguoi: nguoi(), email: em(), tg: now(), taoLuc: Date.now(),
+            loaiVB: mt.loai || "", so: mt.so || "", ngay: mt.ngay || "", noi: mt.noi || "", trichYeu: mt.trichYeu || "", tieuDe: mt.tieuDe || f.name, noiDung: String(mt.noiDung || "").slice(0, 3000), quet: !!mt.quet, ganVao: [], trangThai: "cho" });
+        }
+        busy(); m._files = null; S.locKho = "cho"; renderMain();
+      } catch (e) { busy(); m._files = null; err(errMsg(e)); }
+    });
+    document.getElementById("kLinkAdd").onclick = async () => {
+      const ten = val(m, "kTen"), link = val(m, "kLink");
+      if (!ten) return err("Nhập tên tài liệu."); if (!/^https?:\/\//i.test(link)) return err("Đường link phải bắt đầu bằng http.");
+      try { await db.collection("kd_kho").add({ ten, link, fileId: "", nguoi: nguoi(), email: em(), tg: now(), taoLuc: Date.now(), loaiVB: "", so: "", ngay: "", noi: "", trichYeu: "", tieuDe: ten, noiDung: "", quet: false, ganVao: [], trangThai: "cho" }); }
+      catch (e) { err(errMsg(e)); }
+    };
+  }
+  const kAuto = document.getElementById("kAuto");
+  if (kAuto) kAuto.onclick = () => {
+    const ds = all.filter(k => !(k.ganVao || []).length).map(k => ({ k, o: goiYKho(k, 1)[0] })).filter(x => x.o && x.o.d >= 0.8);
+    if (!ds.length) return err("Không có tài liệu nào khớp từ 80% trở lên.");
+    modal(`Gán tự động ${ds.length} tài liệu?`, "Chỉ gán những tài liệu có gợi ý khớp từ 80% trở lên; kiểm tra lại ở từng tiêu chí sau khi gán.",
+      `<ul style="font-size:13px">${ds.map(x => `<li>${esc(x.k.ten)} → <b>${esc(x.o.r.ma)}</b> (${esc(x.o.r.tieuChi)}) ${Math.round(x.o.d * 100)}%</li>`).join("")}</ul>`, async () => {
+        for (let i = 0; i < ds.length; i++) { busy(`Đang gán ${i + 1}/${ds.length}…`); await ganKho(ds[i].k, ds[i].o.r); }
+      }, "Gán tất cả");
+  };
+  m.querySelectorAll("[data-k]").forEach(b => b.onclick = () => {
+    const k = (S.kho || []).find(x => x.id === b.dataset.id), a = b.dataset.k;
+    if (a === "gan") { const r = findMc(b.dataset.mc); modal("Gán vào minh chứng?", `${k.ten}`, `<div class="panel" style="margin:6px 0">→ <b>${esc(goc(r).ma)}</b> (tiêu chí ${esc(goc(r).tieuChi)}) – ${esc(goc(r).ten)}</div><div class="meta">${goc(r).link || kids(goc(r).id).length ? "Minh chứng đã có văn bản: tài liệu được thêm thành văn bản thành phần." : "Minh chứng chưa có tệp: tài liệu gắn thẳng vào minh chứng, điền số, ngày, nơi ban hành nếu còn trống."}</div>`, async () => { await ganKho(k, r); }, "Gán"); }
+    else if (a === "chon") {
+      const ds = goiYKho(k, 300).concat(S.mc.filter(r => r.loai === "MC" && !r.goc && r.trangThai !== TT.BO).map(r => ({ r, d: 0 }))).filter((o, i, arr) => arr.findIndex(z => z.r.id === o.r.id) === i);
+      const opt = l => l.slice(0, 80).map(o => `<option value="${esc(o.r.id)}">${esc(o.r.ma)} (${esc(o.r.tieuChi)})${coTep(o.r) ? " ✓" : ""} – ${esc(o.r.ten).slice(0, 90)}${o.d ? ` · ${Math.round(o.d * 100)}%` : ""}</option>`).join("");
+      const w0 = modal("Chọn minh chứng để gán", k.ten, `<label>Tìm theo mã, tiêu chí, tên</label><input type="text" id="fQ" placeholder="VD: 4.5, phổ điểm, H2.02.01">
+        <label>Minh chứng (gợi ý giống nhất xếp trên)</label><select id="fD" size="9" style="height:auto">${opt(ds)}</select>`, async w => {
+        const r = findMc(val(w, "fD")); if (!r) throw new Error("Chọn một minh chứng."); await ganKho(k, r);
+      }, "Gán");
+      const fq = w0.querySelector("#fQ"), fd = w0.querySelector("#fD");
+      fq.oninput = () => { const q = normVN(fq.value); fd.innerHTML = opt(q ? ds.filter(o => normVN([o.r.ma, o.r.tieuChi, o.r.ten, o.r.tenGoiY].join(" ")).includes(q)) : ds); };
+    }
+    else if (a === "sua") modal("Sửa thông tin tài liệu", k.ten, `<label>Tên văn bản (dùng khi gán)</label><textarea id="fT" rows="2">${esc(k.tieuDe || k.ten)}</textarea>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 10px"><div><label>Số hiệu</label><input type="text" id="fS" value="${esc(k.so)}"></div><div><label>Ngày ban hành</label><input type="text" id="fN" value="${esc(k.ngay)}"></div></div>
+      <label>Nơi ban hành</label><input type="text" id="fNo" value="${esc(k.noi)}">`, async w => {
+      await db.collection("kd_kho").doc(k.id).update({ tieuDe: val(w, "fT").slice(0, 400), so: val(w, "fS").slice(0, 100), ngay: val(w, "fN").slice(0, 50), noi: val(w, "fNo").slice(0, 200) });
+    });
+    else if (a === "xoa") modal("Xóa khỏi kho chung?", k.ten, `<div class="meta">Chỉ xóa khỏi danh sách kho chung; tệp vẫn giữ trên Drive, các minh chứng đã gán không bị ảnh hưởng.</div>`, async () => {
+      await db.collection("kd_kho").doc(k.id).delete();
+    }, "Xóa");
+  });
+}
 const val = (w, id) => { const e = w.querySelector("#" + id); return e ? e.value.trim() : ""; };
 
 function bindActions(root) {
@@ -700,16 +872,28 @@ function bindActions(root) {
   root.querySelectorAll("[data-a]").forEach(b => b.onclick = () => {
     const a = b.dataset.a, id = b.dataset.id;
     const r = id ? (findMc(id) || findCc(id)) : null;
-    if (a === "gan") modal("Tải tệp cho minh chứng " + r.ma, r.ten, fileField("Minh chứng gồm nhiều văn bản (nhiều quyết định, nhiều năm…)? Dùng nút “+ Văn bản” để tải từng văn bản kèm số, ngày ban hành."), async w => {
-      const f = fileOf(w); if (!f) throw new Error("Chưa chọn tệp."); await ganTep(r, f);
-    }, "Tải lên");
-    else if (a === "them") modal("Thêm văn bản cho minh chứng " + r.ma, r.ten,
-      `<label>Tên văn bản *</label><input type="text" id="fTen" placeholder="VD: Quyết định ban hành CTĐT năm 2023">
-       <label>Số, ngày ban hành / thời điểm khảo sát</label><input type="text" id="fSo" placeholder="VD: 4364/QĐ-HCQG, 18/9/2023">
-       <label>Nơi ban hành</label><input type="text" id="fNoi" placeholder="VD: Học viện Hành chính và Quản trị công">
-       ${fileField()}<label>hoặc dán đường link (website, Drive)</label><input type="text" id="fLink" placeholder="https://…">`, async w => {
-      await themVanBan(r, { ten: val(w, "fTen"), soNgay: val(w, "fSo"), noi: val(w, "fNoi"), link: val(w, "fLink") }, fileOf(w));
-    }, "Lưu văn bản");
+    if (a === "gan") {
+      const w0 = modal("Tải tệp cho minh chứng " + r.ma, r.ten, fileField("Minh chứng gồm nhiều văn bản (nhiều quyết định, nhiều năm…)? Dùng nút “+ Văn bản” để tải từng văn bản.") +
+        `<label>hoặc dán đường link (Google Drive, website)</label><input type="text" id="fLink" placeholder="https://…">
+         <label>Số, ngày ban hành / thời điểm khảo sát <span style="font-weight:400">(tự điền khi đọc được văn bản)</span></label><input type="text" id="fSo" value="${esc(r.soNgay)}">
+         <label>Nơi ban hành</label><input type="text" id="fNoi" value="${esc(r.noi)}">
+         <label id="fDoiTenBox" style="display:none;margin-top:8px;color:var(--ink)"><input type="checkbox" id="fDoiTen"> Đổi tên minh chứng theo tên văn bản: <i id="fTenMoi"></i></label>`, async w => {
+        const f = fileOf(w), link = val(w, "fLink"), dt = w.querySelector("#fDoiTen");
+        if (!f && !link) throw new Error("Chọn tệp, kéo – thả tệp vào ô hoặc dán đường link.");
+        await ganTep(r, f, { link, soNgay: val(w, "fSo"), noi: val(w, "fNoi"), ten: dt && dt.checked ? w.querySelector("#fTenMoi").textContent : "" });
+      }, "Tải lên");
+      upBind(w0, fl => tuDien(w0, fl[0]));
+    }
+    else if (a === "them") {
+      const w0 = modal("Thêm văn bản cho minh chứng " + r.ma, r.ten,
+      `${fileField()}<label>hoặc dán đường link (website, Google Drive)</label><input type="text" id="fLink" placeholder="https://…">
+       <label>Tên văn bản * <span style="font-weight:400">(tự điền khi đọc được văn bản)</span></label><input type="text" id="fTen" placeholder="VD: Quyết định ban hành CTĐT năm 2023">
+       <label>Số, ngày ban hành / thời điểm khảo sát</label><input type="text" id="fSo" placeholder="VD: 4364/QĐ-HCQG, 18/09/2023">
+       <label>Nơi ban hành</label><input type="text" id="fNoi" placeholder="VD: Học viện Hành chính và Quản trị công">`, async w => {
+        await themVanBan(r, { ten: val(w, "fTen"), soNgay: val(w, "fSo"), noi: val(w, "fNoi"), link: val(w, "fLink") }, fileOf(w));
+      }, "Lưu văn bản");
+      upBind(w0, fl => tuDien(w0, fl[0], { ten: true }));
+    }
     else if (a === "sua") modal("Sửa thông tin", r.ma || "Văn bản thành phần",
       `<label>Tên minh chứng / văn bản * <span style="font-weight:400">(sửa theo đúng tên văn bản thực tế)</span></label><textarea id="fTen" rows="3">${esc(r.ten)}</textarea>
        ${r.loai === "MC" ? `<div class="meta" style="margin:2px 0 0">Tên gợi ý theo Phụ lục II: ${esc(r.tenGoiY || r.ten)} (được giữ lại để đối chiếu)</div>` : ""}
@@ -757,11 +941,11 @@ function bindActions(root) {
     else if (a === "xoa") modal("Xóa văn bản thành phần?", r.ten + " (tệp vẫn giữ trong Drive)", "", async () => {
       await db.collection("kd_mc").doc(r.id).delete(); await log("Xóa văn bản", r.id, r.ten);
     }, "Xóa");
-    else if (a === "cc") modal("Tải bản chính thức", r.so + " – " + r.ten, fileField("Ưu tiên bản PDF có dấu tải từ Cổng thông tin điện tử Chính phủ / Bộ GDĐT."), async w => {
+    else if (a === "cc") upBind(modal("Tải bản chính thức", r.so + " – " + r.ten, fileField("Ưu tiên bản PDF có dấu tải từ Cổng thông tin điện tử Chính phủ / Bộ GDĐT."), async w => {
       const f = fileOf(w); if (!f) throw new Error("Chưa chọn tệp.");
       const meta = await upMeta(f, S.cfg.ccFolderId, r.id); busy("Đang ghi danh mục…");
       await db.collection("kd_cc").doc(r.id).update(meta); await log("Tải văn bản căn cứ", r.id, f.name);
-    }, "Tải lên");
+    }, "Tải lên"));
     else if (a === "gocc") modal("Gỡ tệp bản chính thức?", r.ten, "", async () => {
       await db.collection("kd_cc").doc(r.id).update({ link: "", fileId: "", nguoi: "", email: "", tg: "" }); await log("Gỡ tệp căn cứ", r.id, "");
     }, "Gỡ");
