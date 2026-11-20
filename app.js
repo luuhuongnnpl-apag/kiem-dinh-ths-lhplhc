@@ -46,12 +46,29 @@ function provider(scopeDrive) {
   return p;
 }
 function saveTok(t, sec) { S.tok = t || null; S.tokExp = t ? Date.now() + ((sec || 3500) - 120) * 1000 : 0; }
+/* Trình duyệt nhúng trong Zalo, Facebook, Messenger… : Google chặn đăng nhập ở đây */
+const IN_APP = /Zalo|FBAN|FBAV|FB_IAB|FBIOS|Messenger|Instagram|Line\/|MicroMessenger|TikTok|; wv\)/i.test(navigator.userAgent || "");
+const LOGIN_SCOPE = "openid email profile " + DRIVE_SCOPE;
+/* Đăng nhập Google bằng cửa sổ của chính Google (GIS) rồi chuyển sang Firebase — tránh lỗi "missing initial state"
+   do Safari/trình duyệt di động chặn lưu trữ của trang firebaseapp.com. Không được thì mới dùng cửa sổ Firebase. */
 async function login() {
   const errBox = document.getElementById("lgErr");
+  if (IN_APP) { if (errBox) errBox.textContent = "Google không cho đăng nhập trong trình duyệt của Zalo/Facebook. Mở trang bằng Safari hoặc Chrome, hoặc đăng nhập bằng tên đăng nhập."; return; }
   try {
-    const r = await auth.signInWithPopup(provider(true));
-    if (r.credential && r.credential.accessToken) saveTok(r.credential.accessToken);
-  } catch (e) { if (errBox) errBox.textContent = errMsg(e); }
+    let r = null;
+    try { r = await gisToken("select_account", "", LOGIN_SCOPE); } catch (e) { if (!/^(gis)/.test(e.message)) throw e; }
+    if (r) {
+      busy("Đang đăng nhập…");
+      await auth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(null, r.access_token));
+      saveTok(r.access_token, r.expires_in);
+      return;
+    }
+    const p = await auth.signInWithPopup(provider(true));
+    if (p.credential && p.credential.accessToken) saveTok(p.credential.accessToken);
+  } catch (e) {
+    busy();
+    if (errBox) errBox.textContent = /popup_closed|popup_failed|access_denied/.test(e && e.message || "") ? "Cửa sổ đăng nhập Google đã đóng hoặc bị chặn — cho phép cửa sổ bật lên rồi bấm lại." : errMsg(e);
+  }
 }
 async function loginTk() {
   const errBox = document.getElementById("lgErr");
@@ -75,8 +92,12 @@ function renderLogin(msg) {
     <div class="row" style="justify-content:flex-start"><button class="b pri" id="lgTk">Đăng nhập</button>
       <span class="meta" style="margin:4px 6px">hoặc</span><button class="b" id="lgBtn">Đăng nhập bằng Google</button>
       ${S.user ? `<button class="b" id="lgOut">Thoát ${esc(em())}</button>` : ""}</div>
+    ${IN_APP ? `<div class="panel" style="border-color:var(--warn);background:#fff8e6;margin-top:10px"><b>Bạn đang mở trang trong ứng dụng (Zalo, Facebook…).</b> Google không cho đăng nhập ở đây. Bấm <b>⋯</b> ở góc màn hình → <b>Mở bằng trình duyệt</b> (Safari/Chrome), hoặc dùng tên đăng nhập ở trên.
+      <div class="row" style="justify-content:flex-start;margin-top:6px"><button class="b" id="lgCopy">Sao chép đường link trang</button></div></div>` : ""}
     <div class="meta" style="margin-top:10px">Đăng nhập Google dành cho người được cấp quyền bằng Gmail hoặc đã liên kết Gmail trong mục Tài khoản. Lần đầu Google có thể báo “ứng dụng chưa được xác minh”: bấm <b>Nâng cao</b> → <b>Đi tới…</b>.</div></div>`;
   document.getElementById("lgBtn").onclick = login;
+  const cp = document.getElementById("lgCopy");
+  if (cp) cp.onclick = async () => { try { await navigator.clipboard.writeText(location.href.split("#")[0]); cp.textContent = "Đã sao chép – dán vào Safari/Chrome"; } catch (e) { prompt("Sao chép đường link này rồi mở bằng Safari/Chrome:", location.href.split("#")[0]); } };
   document.getElementById("lgTk").onclick = loginTk;
   document.getElementById("lgPass").onkeydown = e => { if (e.key === "Enter") loginTk(); };
   const o = document.getElementById("lgOut"); if (o) o.onclick = () => auth.signOut();
@@ -562,15 +583,20 @@ async function renderTaiKhoan(m) {
 }
 /* Liên kết Gmail với tài khoản tên đăng nhập (để sau này đăng nhập Google vào cùng hồ sơ); nếu Gmail đã gắn tài khoản khác thì chỉ ghi nhận Gmail */
 async function dangKyGmail() {
-  const u = auth.currentUser; let g = "", tok = null;
+  const u = auth.currentUser; let g = "", tok = null, t = null;
   try {
-    const r = await u.linkWithPopup(provider(true));
+    let r;
+    try {
+      t = await gisToken("select_account", "", LOGIN_SCOPE);
+      r = await u.linkWithCredential(firebase.auth.GoogleAuthProvider.credential(null, t.access_token));
+      if (!r.credential) r.credential = { accessToken: t.access_token };
+    } catch (e1) { if (!/^gis/.test(e1.message || "")) throw e1; r = await u.linkWithPopup(provider(true)); }
     g = ((r.additionalUserInfo && r.additionalUserInfo.profile && r.additionalUserInfo.profile.email) || (r.user.providerData.find(p => p.providerId === "google.com") || {}).email || "").toLowerCase();
     tok = r.credential && r.credential.accessToken;
   } catch (e) {
     const c = e && e.code || "";
     if (c === "auth/credential-already-in-use" || c === "auth/email-already-in-use" || c === "auth/provider-already-linked") {
-      const r = await gisToken("select_account", "");
+      const r = t || await gisToken("select_account", "");
       const who = await fetch("https://www.googleapis.com/drive/v3/about?fields=user(emailAddress)", { headers: { Authorization: "Bearer " + r.access_token } }).then(x => x.json()).catch(() => ({}));
       g = (who.user && who.user.emailAddress || "").toLowerCase(); tok = r.access_token;
     } else throw e;
@@ -589,11 +615,11 @@ function driveEm() {
   if (!isTkAcct()) return em();
   return S.tv && S.tv.gmailTT === "duyet" ? S.tv.gmail : "";
 }
-function gisToken(prompt, hint) {
+function gisToken(prompt, hint, scope) {
   return new Promise((res, rej) => {
     if (!(window.google && google.accounts && google.accounts.oauth2)) return rej(new Error("gis"));
     const c = google.accounts.oauth2.initTokenClient({
-      client_id: C.CLIENT_ID, scope: DRIVE_SCOPE, prompt, login_hint: hint, hint,
+      client_id: C.CLIENT_ID, scope: scope || DRIVE_SCOPE, prompt, login_hint: hint, hint,
       callback: r => r && r.access_token ? res(r) : rej(new Error((r && r.error) || "token")),
       error_callback: e => rej(new Error((e && e.type) || "popup"))
     });
