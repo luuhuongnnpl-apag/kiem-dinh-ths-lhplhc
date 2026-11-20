@@ -121,10 +121,49 @@ const efOf = r => Number(String(r.ma || "").split(".").pop()) || 0;
 const tcOf = ma => S.tc.find(t => t.ma === ma);
 const mcOf = ma => S.mc.filter(r => r.tieuChi === ma && r.loai === "MC").sort((a, b) => efOf(a) - efOf(b));
 const kids = id => S.mc.filter(r => r.cha === id).sort((a, b) => (a.taoLuc || 0) - (b.taoLuc || 0));
-const coTep = r => !!r.link || kids(r.id).some(k => !!k.link);
+/* Minh chứng dùng chung: dòng B có goc = id dòng A → B dùng tệp, văn bản, trạng thái của A (mã hóa một lần) */
+function goc(r) { let x = r, n = 0; while (x && x.goc && n < 6) { const y = S.mc.find(z => z.id === x.goc); if (!y || y === r) break; x = y; n++; } return x; }
+const phu = id => S.mc.filter(r => r.goc === id && r.loai === "MC");
+const coTep = r => { const g = goc(r); return !!g.link || kids(g.id).some(k => !!k.link); };
 function tienDo(ma) {
   const m = mcOf(ma).filter(r => r.trangThai !== TT.BO);
-  return { co: m.filter(coTep).length, tong: m.length, dat: m.filter(r => r.trangThai === TT.DAT).length };
+  return { co: m.filter(coTep).length, tong: m.length, dat: m.filter(r => goc(r).trangThai === TT.DAT).length };
+}
+/* Nhận diện trùng lặp: so khớp tên (bỏ dấu, bỏ từ nối) và số hiệu văn bản */
+const STOPW = new Set("cua va cac ve cho theo voi trong duoc co tu den nhung mot la hoac thuc hien nhu tai tren bang ban hanh nam".split(" "));
+const normVN = x => String(x || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/[^a-z0-9/]+/g, " ").trim();
+const MEMO = new Map();
+const memo = (k, f) => { if (!MEMO.has(k)) { if (MEMO.size > 5000) MEMO.clear(); MEMO.set(k, f()); } return MEMO.get(k); };
+const tokSet = x => memo("t" + x, () => new Set(normVN(x).split(" ").filter(w => w.length > 1 && !STOPW.has(w))));
+const soHieu = x => memo("s" + x, () => (normVN(x).match(/\b\d{1,5}\/[a-z0-9/-]*[a-z][a-z0-9/-]*/g) || []));
+function tuongDong(a, b) {
+  const A = new Set([...soHieu(a.soNgay), ...soHieu(a.ten)]), B = [...soHieu(b.soNgay), ...soHieu(b.ten)];
+  if (B.some(x => A.has(x))) return 1;
+  let best = 0;
+  [a.ten, a.tenGoiY].filter(Boolean).forEach(ta => [b.ten, b.tenGoiY].filter(Boolean).forEach(tb => {
+    const X = tokSet(ta), Y = tokSet(tb); if (X.size < 3 || Y.size < 3) return;
+    let i = 0; X.forEach(w => { if (Y.has(w)) i++; });
+    best = Math.max(best, (i / (X.size + Y.size - i) + i / Math.min(X.size, Y.size)) / 2);
+  }));
+  return best;
+}
+const NGUONG_TRUNG = 0.75;
+/* Gợi ý cho một minh chứng chưa có tệp: minh chứng ở tiêu chí khác đã có tệp, tên/số hiệu tương đồng */
+function goiYTrung(r, lim) {
+  if (r.loai !== "MC" || r.goc || coTep(r) || r.trangThai === TT.BO) return [];
+  const bo = new Set(r.khongTrung || []);
+  return S.mc.filter(x => x.loai === "MC" && x.id !== r.id && !x.goc && x.tieuChi !== r.tieuChi && !bo.has(x.id) && x.trangThai !== TT.BO && coTep(x))
+    .map(x => ({ x, d: tuongDong(r, x) })).filter(o => o.d >= NGUONG_TRUNG).sort((p, q) => q.d - p.d).slice(0, lim || 3);
+}
+async function noiMinhChung(r, dich) {
+  const g = goc(dich);
+  if (g.id === r.id) throw new Error("Không thể nối minh chứng với chính nó.");
+  if (r.link || kids(r.id).length) throw new Error("Minh chứng này đã có tệp/văn bản riêng. Gỡ tệp hoặc chuyển văn bản trước khi nối, hoặc nối theo chiều ngược lại.");
+  const b = db.batch();
+  b.update(db.collection("kd_mc").doc(r.id), { goc: g.id });
+  phu(r.id).forEach(x => b.update(db.collection("kd_mc").doc(x.id), { goc: g.id }));
+  await b.commit();
+  await log("Nối dùng chung", r.id, `${r.ma} → ${g.ma} (${g.tieuChi})`);
 }
 function tienDoStd(n) { const o = { co: 0, tong: 0, dat: 0 }; S.tc.filter(t => t.tieuChuan === n).forEach(t => { const p = tienDo(t.ma); o.co += p.co; o.tong += p.tong; o.dat += p.dat; }); return o; }
 const stCls = s => "st st" + Math.max(0, DS_TT.indexOf(s));
@@ -200,29 +239,38 @@ function critBlock(t, single) {
     ${isTk() ? `<div class="row" style="justify-content:flex-start;margin-top:8px"><button class="b pri" data-a="newmc" data-tc="${esc(t.ma)}">+ Thêm minh chứng cho tiêu chí ${esc(t.ma)}</button></div>` : ""}`;
 }
 function tableMC(mcs) {
-  let h = `<table><thead><tr><th style="width:110px">Mã minh chứng</th><th>Tên minh chứng / văn bản</th><th style="width:150px">Số, ngày ban hành / thời điểm</th><th style="width:130px">Nơi ban hành</th><th style="width:80px">Dùng chung</th><th style="width:50px">Tệp</th><th style="width:120px">Trạng thái</th><th style="width:210px">Ghi chú / Tải lên</th></tr></thead><tbody>`;
-  mcs.forEach(r => { h += rowHtml(r, true); kids(r.id).forEach(k => { h += rowHtml(k, false); }); });
+  let h = `<table><thead><tr><th style="width:110px">Mã minh chứng</th><th>Tên minh chứng / văn bản</th><th style="width:150px">Số, ngày ban hành / thời điểm</th><th style="width:130px">Nơi ban hành</th><th style="width:90px">Dùng chung</th><th style="width:50px">Tệp</th><th style="width:120px">Trạng thái</th><th style="width:220px">Ghi chú / Tải lên</th></tr></thead><tbody>`;
+  mcs.forEach(r => { h += rowHtml(r, true); const g = goc(r); kids(g.id).forEach(k => { h += rowHtml(k, false, g !== r); }); });
   return h + "</tbody></table>";
 }
-function rowHtml(r, isMc) {
-  const id = esc(r.id); let act = "";
-  if (canUp()) {
-    if (isMc && !r.link && !kids(r.id).length) act += `<button class="b pri" data-a="gan" data-id="${id}">⬆ Tải tệp</button>`;
-    if (isMc) act += `<button class="b" data-a="them" data-id="${id}">+ Văn bản</button>`;
+function rowHtml(r, isMc, quaNoi) {
+  const id = esc(r.id), g = isMc ? goc(r) : r, noi = isMc && g !== r;
+  let act = "";
+  if (canUp() && !quaNoi) {
+    if (isMc && !g.link && !kids(g.id).length) act += `<button class="b pri" data-a="gan" data-id="${esc(g.id)}">⬆ Tải tệp</button>`;
+    if (isMc) act += `<button class="b" data-a="them" data-id="${esc(g.id)}">+ Văn bản</button>`;
     act += `<button class="b" data-a="sua" data-id="${id}">Sửa</button>`;
+    if (isMc) act += noi ? `<button class="b" data-a="bonoi" data-id="${id}">Bỏ nối</button>` : (!r.link && !kids(r.id).length ? `<button class="b" data-a="noi" data-id="${id}">⇄ Nối</button>` : "");
   }
-  if (isTk()) {
-    act += `<button class="b" data-a="ra" data-id="${id}">Rà soát</button>`;
-    if (r.link) act += `<button class="b red" data-a="go" data-id="${id}">Gỡ tệp</button>`;
+  if (isTk() && !quaNoi) {
+    act += `<button class="b" data-a="ra" data-id="${esc(g.id)}">Rà soát</button>`;
+    if (g.link) act += `<button class="b red" data-a="go" data-id="${esc(g.id)}">Gỡ tệp</button>`;
     if (!isMc) act += `<button class="b red" data-a="xoa" data-id="${id}">Xóa</button>`;
   }
-  return `<tr class="${isMc ? "mc" : "tp"}${r.trangThai === TT.BO ? " bo" : ""}">
-    <td class="ma">${esc(r.ma || "")}</td>
-    <td class="ten">${esc(r.ten)}${r.nguoi ? `<div class="meta" style="margin:2px 0 0;font-size:11.5px">${esc(r.nguoi)} · ${esc(r.tg)}</div>` : ""}</td>
-    <td>${esc(r.soNgay)}</td><td>${esc(r.noi)}</td><td>${esc(r.dungChung)}</td>
-    <td>${r.link ? `<a class="f" href="${esc(r.link)}" target="_blank" rel="noopener">Mở</a>` : ""}</td>
-    <td><span class="${stCls(r.trangThai)}">${esc(r.trangThai || "")}</span></td>
-    <td><div class="act">${act}</div>${r.ghiChu ? `<div class="note">${esc(r.ghiChu)}</div>` : ""}</td></tr>`;
+  const dsPhu = isMc && !noi ? phu(r.id).map(x => x.tieuChi) : [];
+  const dungChung = [r.dungChung, dsPhu.length ? "⇄ " + dsPhu.join("; ") : ""].filter(Boolean).join(" ");
+  const tenGY = isMc && r.tenGoiY && r.tenGoiY !== r.ten ? `<div class="meta" style="margin:2px 0 0;font-size:11.5px">Gợi ý PL II: ${esc(r.tenGoiY)}</div>` : "";
+  const noiInfo = noi ? `<div style="margin-top:3px;font-size:12.5px;color:var(--blue)">⇄ Dùng chung minh chứng <b>${esc(g.ma)}</b> (tiêu chí <a class="f" href="#" data-go2="${esc(g.tieuChi)}">${esc(g.tieuChi)}</a>) – ${esc(g.ten)}</div>` : "";
+  const gy = isMc && canUp() && !noi ? goiYTrung(r, 2) : [];
+  const gyHtml = gy.length ? `<div style="margin-top:4px;font-size:12px;background:#fff8e6;border:1px dashed var(--warn);border-radius:6px;padding:3px 6px">Có thể trùng với ${gy.map(o => `<b>${esc(o.x.ma)}</b> (${esc(o.x.tieuChi)}) đã có tệp <button class="b" data-a="noinhanh" data-id="${id}" data-dich="${esc(o.x.id)}">Nối</button>`).join(" · ")} <button class="b" data-a="ktrung" data-id="${id}" data-dich="${esc(gy.map(o => o.x.id).join(","))}">Không trùng</button></div>` : "";
+  const st = isMc ? g.trangThai : r.trangThai;
+  return `<tr class="${isMc ? "mc" : "tp"}${st === TT.BO || r.trangThai === TT.BO ? " bo" : ""}">
+    <td class="ma">${noi ? `<s style="opacity:.55">${esc(r.ma)}</s><br>${esc(g.ma)}` : esc(r.ma || "")}</td>
+    <td class="ten">${esc(r.ten)}${tenGY}${noiInfo}${!noi && r.nguoi ? `<div class="meta" style="margin:2px 0 0;font-size:11.5px">${esc(r.nguoi)} · ${esc(r.tg)}</div>` : ""}${gyHtml}</td>
+    <td>${esc(noi ? g.soNgay : r.soNgay)}</td><td>${esc(noi ? g.noi : r.noi)}</td><td>${esc(dungChung)}</td>
+    <td>${g.link ? `<a class="f" href="${esc(g.link)}" target="_blank" rel="noopener">Mở</a>` : ""}</td>
+    <td><span class="${stCls(st)}">${esc(st || "")}</span></td>
+    <td><div class="act">${act}</div>${g.ghiChu ? `<div class="note">${esc(g.ghiChu)}</div>` : ""}</td></tr>`;
 }
 
 /* ---------- Căn cứ ---------- */
@@ -245,9 +293,10 @@ function renderCanCu(m) {
 const TINH = { thieu: "Chưa tải lên", cho: "Chờ rà soát", bosung: "Cần bổ sung", dat: "Đạt", bo: "Không dùng" };
 function tinhTrang(r) {
   if (r.trangThai === TT.BO) return "bo";
-  if (r.trangThai === TT.BOSUNG) return "bosung";
+  const g = goc(r);
+  if (g.trangThai === TT.BOSUNG) return "bosung";
   if (!coTep(r)) return "thieu";
-  return r.trangThai === TT.DAT ? "dat" : "cho";
+  return g.trangThai === TT.DAT ? "dat" : "cho";
 }
 const TINH_CLS = { thieu: "st st3", cho: "st st1", bosung: "st st3", dat: "st st2", bo: "st st4" };
 function locDanhMuc() {
@@ -273,13 +322,15 @@ function renderTongHop(m) {
       <div><label>Nhóm phụ trách</label><select id="lNhom"><option value="">Tất cả</option>${nhoms.map(x => `<option${F.nhom === x ? " selected" : ""}>${esc(x)}</option>`).join("")}</select></div>
       <label style="display:flex;gap:6px;align-items:center;margin:0 0 8px"><input type="checkbox" id="lDk"${F.dk ? " checked" : ""}> Chỉ 10 tiêu chí điều kiện</label>
       <div style="margin-left:auto" class="act"><button class="b" id="csvLoc">⬇ Xuất danh sách đang lọc</button><button class="b pri" id="csv">⬇ Xuất toàn bộ danh mục</button></div></div>
+    ${goiYPanel()}
     <div class="meta">Đang hiện <b>${n}</b> minh chứng${F.tt !== "all" ? ` “${TINH[F.tt]}”` : ""} thuộc ${groups.length} tiêu chí. Bấm mã tiêu chí để mở và tải tệp.</div>
     <table><thead><tr><th style="width:70px">Tiêu chí</th><th style="width:110px">Mã minh chứng</th><th>Tên minh chứng</th><th style="width:80px">Văn bản</th><th style="width:130px">Tình trạng</th><th style="width:170px">Người tải / thời gian</th><th style="width:180px">Ghi chú rà soát</th></tr></thead><tbody>`;
   groups.forEach(g => {
     h += `<tr class="mc"><td colspan="7"><a class="f" href="#" data-go="${esc(g.t.ma)}">Tiêu chí ${esc(g.t.ma)}</a> ${g.t.dieuKien ? '<span class="badge">ĐK</span>' : ""} <span class="meta">– ${esc(g.t.ten)} · ${g.rows.length} minh chứng</span></td></tr>`;
     g.rows.forEach(r => {
-      const k = tinhTrang(r), vb = kids(r.id).length, ng = r.nguoi ? r.nguoi + " · " + r.tg : (kids(r.id).filter(x => x.nguoi).map(x => x.nguoi).slice(-1)[0] || "");
-      h += `<tr><td>${esc(r.tieuChi)}</td><td class="ma" style="font-weight:600">${esc(r.ma)}</td><td>${esc(r.ten)}</td><td>${r.link ? '<a class="f" href="' + esc(r.link) + '" target="_blank" rel="noopener">Mở</a>' : ""}${vb ? ` ${vb} VB` : ""}</td><td><span class="${TINH_CLS[k]}">${TINH[k]}</span></td><td style="font-size:12.5px">${esc(ng)}</td><td class="note" style="font-size:12.5px">${esc(r.ghiChu)}</td></tr>`;
+      const o = goc(r), k = tinhTrang(r), vb = kids(o.id).length, ng = o.nguoi ? o.nguoi + " · " + o.tg : (kids(o.id).filter(x => x.nguoi).map(x => x.nguoi).slice(-1)[0] || "");
+      const gy = k === "thieu" ? goiYTrung(r, 1) : [];
+      h += `<tr><td>${esc(r.tieuChi)}</td><td class="ma" style="font-weight:600">${esc(o.ma)}${o !== r ? `<div class="meta" style="font-weight:400;font-size:11.5px">dùng chung ${esc(o.tieuChi)}</div>` : ""}</td><td>${esc(r.ten)}${gy.length ? `<div style="font-size:12px;color:var(--warn)">≈ có thể trùng ${esc(gy[0].x.ma)} (${esc(gy[0].x.tieuChi)}) đã có tệp</div>` : ""}</td><td>${o.link ? '<a class="f" href="' + esc(o.link) + '" target="_blank" rel="noopener">Mở</a>' : ""}${vb ? ` ${vb} VB` : ""}</td><td><span class="${TINH_CLS[k]}">${TINH[k]}</span></td><td style="font-size:12.5px">${esc(ng)}</td><td class="note" style="font-size:12.5px">${esc(o.ghiChu)}</td></tr>`;
     });
   });
   if (!groups.length) h += `<tr><td colspan="7" class="meta">Không có minh chứng nào khớp bộ lọc.</td></tr>`;
@@ -293,6 +344,19 @@ function renderTongHop(m) {
   m.querySelectorAll("[data-go]").forEach(d => d.onclick = e => { e.preventDefault(); S.tab = "tc"; S.tcSel = d.dataset.go; render(); });
   document.getElementById("csv").onclick = () => exportCsv(false);
   document.getElementById("csvLoc").onclick = () => exportCsv(true);
+  const gb = document.getElementById("gyBox"); if (gb) gb.ontoggle = () => { S.moGY = gb.open; };
+  bindActions(m);
+}
+function goiYPanel() {
+  if (!canUp()) return "";
+  const ds = S.mc.filter(r => r.loai === "MC").map(r => ({ r, gy: goiYTrung(r, 1) })).filter(o => o.gy.length)
+    .sort((a, b) => cmpMa(a.r.tieuChi, b.r.tieuChi) || efOf(a.r) - efOf(b.r));
+  if (!ds.length) return "";
+  return `<details class="panel" style="border-color:var(--warn)"${S.moGY ? " open" : ""} id="gyBox"><summary><b>${ds.length} minh chứng chưa có tệp có thể trùng với minh chứng đã tải ở tiêu chí khác</b> – nối để dùng chung một mã, tải một lần</summary>
+    <table style="margin-top:8px"><thead><tr><th style="width:150px">Minh chứng chưa có tệp</th><th>Tên</th><th style="width:150px">Trùng với (đã có tệp)</th><th>Tên</th><th style="width:60px">Khớp</th><th style="width:160px"></th></tr></thead><tbody>
+    ${ds.map(({ r, gy }) => `<tr><td><b>${esc(r.ma)}</b> (${esc(r.tieuChi)})</td><td>${esc(r.ten)}</td><td><b>${esc(gy[0].x.ma)}</b> (${esc(gy[0].x.tieuChi)})</td><td>${esc(gy[0].x.ten)}</td><td>${Math.round(gy[0].d * 100)}%</td>
+      <td><div class="act"><button class="b pri" data-a="noinhanh" data-id="${esc(r.id)}" data-dich="${esc(gy[0].x.id)}">Nối</button><button class="b" data-a="ktrung" data-id="${esc(r.id)}" data-dich="${esc(gy[0].x.id)}">Không trùng</button></div></td></tr>`).join("")}
+    </tbody></table></details>`;
 }
 function exportCsv(loc) {
   const q = v => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
@@ -303,7 +367,10 @@ function exportCsv(loc) {
     if (t.tieuChuan !== last) { last = t.tieuChuan; L.push(["", "", `Tiêu chuẩn ${t.tieuChuan}. ${t.tenTieuChuan}`]); }
     L.push(["", "", `Tiêu chí ${t.ma}. ${t.ten}`]);
     rows.forEach(r => {
-      L.push([++stt, r.ma, r.ten, r.soNgay, r.noi, r.dungChung, r.link, TINH[tinhTrang(r)], r.ghiChu]);
+      const o = goc(r);
+      if (o !== r) { L.push([++stt, o.ma, r.ten, o.soNgay, o.noi, `Dùng chung với tiêu chí ${o.tieuChi}`, o.link, TINH[tinhTrang(r)], o.ghiChu]); return; }
+      const dc = [r.dungChung, phu(r.id).map(x => x.tieuChi).join("; ")].filter(Boolean).join("; ");
+      L.push([++stt, r.ma, r.ten, r.soNgay, r.noi, dc, r.link, TINH[tinhTrang(r)], r.ghiChu]);
       kids(r.id).filter(k => k.trangThai !== TT.BO).forEach(k => L.push(["", "", k.ten, k.soNgay, k.noi, k.dungChung, k.link, k.trangThai, k.ghiChu]));
     });
   });
@@ -629,6 +696,7 @@ const fileOf = w => { const i = w.querySelector("#fFile"); return i && i.files &
 const val = (w, id) => { const e = w.querySelector("#" + id); return e ? e.value.trim() : ""; };
 
 function bindActions(root) {
+  root.querySelectorAll("[data-go2]").forEach(x => x.onclick = e => { e.preventDefault(); S.tab = "tc"; S.tcSel = x.dataset.go2; S.q = ""; render(); });
   root.querySelectorAll("[data-a]").forEach(b => b.onclick = () => {
     const a = b.dataset.a, id = b.dataset.id;
     const r = id ? (findMc(id) || findCc(id)) : null;
@@ -643,14 +711,39 @@ function bindActions(root) {
       await themVanBan(r, { ten: val(w, "fTen"), soNgay: val(w, "fSo"), noi: val(w, "fNoi"), link: val(w, "fLink") }, fileOf(w));
     }, "Lưu văn bản");
     else if (a === "sua") modal("Sửa thông tin", r.ma || "Văn bản thành phần",
-      `<label>Tên minh chứng / văn bản *</label><textarea id="fTen" rows="3">${esc(r.ten)}</textarea>
+      `<label>Tên minh chứng / văn bản * <span style="font-weight:400">(sửa theo đúng tên văn bản thực tế)</span></label><textarea id="fTen" rows="3">${esc(r.ten)}</textarea>
+       ${r.loai === "MC" ? `<div class="meta" style="margin:2px 0 0">Tên gợi ý theo Phụ lục II: ${esc(r.tenGoiY || r.ten)} (được giữ lại để đối chiếu)</div>` : ""}
        <label>Số, ngày ban hành / thời điểm khảo sát</label><input type="text" id="fSo" value="${esc(r.soNgay)}">
        <label>Nơi ban hành</label><input type="text" id="fNoi" value="${esc(r.noi)}">
        <label>Dùng chung với tiêu chí</label><input type="text" id="fDc" value="${esc(r.dungChung)}" placeholder="VD: 2.2; 4.5">`, async w => {
       const ten = val(w, "fTen"); if (!ten) throw new Error("Tên không được để trống.");
-      await db.collection("kd_mc").doc(r.id).update({ ten: ten.slice(0, 400), soNgay: val(w, "fSo").slice(0, 200), noi: val(w, "fNoi").slice(0, 200), dungChung: val(w, "fDc").slice(0, 100) });
+      const up = { ten: ten.slice(0, 400), soNgay: val(w, "fSo").slice(0, 200), noi: val(w, "fNoi").slice(0, 200), dungChung: val(w, "fDc").slice(0, 100) };
+      if (r.loai === "MC" && !r.tenGoiY && ten !== r.ten) up.tenGoiY = r.ten;
+      await db.collection("kd_mc").doc(r.id).update(up);
       await log("Sửa thông tin", r.id, ten);
     });
+    else if (a === "noinhanh") { const d2 = findMc(b.dataset.dich); modal("Nối dùng chung minh chứng?", `${r.ma} (tiêu chí ${r.tieuChi}) sẽ dùng tệp, văn bản và trạng thái của ${d2.ma} (tiêu chí ${d2.tieuChi}).`,
+      `<div class="panel" style="margin:6px 0"><b>${esc(r.ma)}</b> – ${esc(r.ten)}<br>⇄ <b>${esc(d2.ma)}</b> – ${esc(d2.ten)}</div><div class="meta">Tải lên hay bổ sung văn bản ở một bên là bên kia cập nhật theo. Có thể “Bỏ nối” bất cứ lúc nào.</div>`, async () => { await noiMinhChung(r, d2); }, "Nối"); }
+    else if (a === "ktrung") modal("Đánh dấu không trùng?", `${r.ma} – ${r.ten}`, `<div class="meta">Hệ thống sẽ không gợi ý nối minh chứng này với minh chứng vừa nêu nữa.</div>`, async () => {
+      const ds = [...new Set([...(r.khongTrung || []), ...b.dataset.dich.split(",").filter(Boolean)])];
+      await db.collection("kd_mc").doc(r.id).update({ khongTrung: ds });
+    }, "Không trùng");
+    else if (a === "bonoi") modal("Bỏ nối dùng chung?", `${r.ma} – ${r.ten}`, `<div class="meta">Minh chứng trở lại chưa có tệp riêng; tệp vẫn thuộc ${esc(goc(r).ma)}.</div>`, async () => {
+      await db.collection("kd_mc").doc(r.id).update({ goc: "" }); await log("Bỏ nối dùng chung", r.id, r.ma);
+    }, "Bỏ nối");
+    else if (a === "noi") {
+      const goiY = S.mc.filter(x => x.loai === "MC" && x.id !== r.id && x.tieuChi !== r.tieuChi && x.trangThai !== TT.BO && goc(x).id !== r.id)
+        .map(x => ({ x, d: tuongDong(r, x), co: coTep(x) })).sort((p, q) => (q.d - p.d) || (q.co - p.co));
+      const opt = list => list.slice(0, 60).map(o => `<option value="${esc(o.x.id)}">${esc(o.x.ma)} (${esc(o.x.tieuChi)})${o.co ? " ✓ có tệp" : ""} – ${esc(o.x.ten).slice(0, 90)}</option>`).join("");
+      const w0 = modal("Nối dùng chung minh chứng", `${r.ma} (tiêu chí ${r.tieuChi}) – ${r.ten}`,
+        `<label>Tìm minh chứng ở tiêu chí khác (mã, tên, số hiệu)</label><input type="text" id="fQ" placeholder="VD: H1.01.01, quy trình xây dựng, 4364/QĐ">
+         <label>Chọn minh chứng để dùng chung (gợi ý giống nhất xếp trên)</label><select id="fD" size="8" style="height:auto">${opt(goiY)}</select>
+         <div class="meta" style="margin-top:6px">Sau khi nối, ${esc(r.ma)} dùng chung mã, tệp, văn bản và trạng thái của minh chứng được chọn (mã hóa một lần theo Kế hoạch TĐG).</div>`, async w => {
+        const d2 = findMc(val(w, "fD")); if (!d2) throw new Error("Chọn một minh chứng."); await noiMinhChung(r, d2);
+      }, "Nối");
+      const fq = w0.querySelector("#fQ"), fd = w0.querySelector("#fD");
+      fq.oninput = () => { const k = normVN(fq.value); fd.innerHTML = opt(k ? goiY.filter(o => normVN([o.x.ma, o.x.ten, o.x.soNgay, o.x.tieuChi].join(" ")).includes(k)) : goiY); };
+    }
     else if (a === "ra") modal("Rà soát", (r.ma || "") + " " + r.ten,
       `<label>Trạng thái</label><select id="fSt">${DS_TT.map(s => `<option${s === r.trangThai ? " selected" : ""}>${esc(s)}</option>`).join("")}</select>
        <label>Ghi chú rà soát (VD: thiếu dấu, sai năm, ngoài giai đoạn đánh giá)</label><textarea id="fGc" rows="3">${esc(r.ghiChu)}</textarea>`, async w => {
