@@ -123,14 +123,80 @@
     return r;
   };
 
+  /* ---------- Rà soát tự động hình thức: chữ ký số, dấu đỏ, ảnh chữ ký cạnh khối người ký ---------- */
+  const KHOI_KY = /(^|\s)(KT\.|TM\.|TL\.|TUQ\.|Q\.\s|GIÁM ĐỐC|TRƯỞNG KHOA|TRƯỞNG PHÒNG|TRƯỞNG BAN|CHỦ TỊCH|HIỆU TRƯỞNG|BỘ TRƯỞNG|THỨ TRƯỞNG|BÍ THƯ|NGƯỜI LẬP|THƯ KÝ|CHỦ NHIỆM|TRƯỞNG BỘ MÔN|XÁC NHẬN CỦA)/;
+  // Đếm điểm ảnh đỏ (mực dấu) trên canvas; trả về tỉ lệ
+  function tiLeDo(ctx, w, h) {
+    const d = ctx.getImageData(0, 0, w, h).data; let n = 0;
+    for (let i = 0; i < d.length; i += 16) { const r = d[i], g = d[i + 1], b = d[i + 2]; if (r > 140 && r - g > 60 && r - b > 45) n++; }
+    return n / (d.length / 16);
+  }
+  const NGUONG_DO = 0.0008;
+  async function doTrang(page) {
+    const vp = page.getViewport({ scale: 0.9 }), cv = document.createElement("canvas");
+    cv.width = Math.ceil(vp.width); cv.height = Math.ceil(vp.height);
+    const ctx = cv.getContext("2d", { willReadFrequently: true });
+    await page.render({ canvasContext: ctx, viewport: vp }).promise;
+    return tiLeDo(ctx, cv.width, cv.height);
+  }
+  async function kiemTraPdf(buf, doc) {
+    const kt = { loai: "pdf", soTrang: doc.numPages, chuKySo: false, dauDo: false, anhKy: false, khoiKy: false, quet: false };
+    // Chữ ký số: từ điển chữ ký /ByteRange, /Type /Sig, gói PKCS#7
+    const raw = new TextDecoder("latin1").decode(buf.byteLength > 30e6 ? buf.slice(buf.byteLength - 15e6) : buf);
+    kt.chuKySo = /\/ByteRange\s*\[|\/Type\s*\/Sig\b|adbe\.pkcs7|ETSI\.CAdES/.test(raw);
+    // Trang cần xem: 3 trang đầu (quyết định kèm phụ lục ký ở đầu) và trang cuối
+    const ps = [...new Set([1, 2, 3, doc.numPages].filter(p => p >= 1 && p <= doc.numPages))];
+    const OPS = root.pdfjsLib.OPS, IMG = [OPS.paintImageXObject, OPS.paintInlineImageXObject, OPS.paintImageMaskXObject, OPS.paintImageXObjectRepeat].filter(x => x != null);
+    let chu = 0;
+    for (const p of ps) {
+      const page = await doc.getPage(p);
+      const tc = await page.getTextContent(), txt = tc.items.map(i => i.str).join(" ");
+      chu += txt.replace(/\s/g, "").length;
+      const coKhoi = KHOI_KY.test(txt); if (coKhoi) kt.khoiKy = true;
+      const ol = await page.getOperatorList();
+      if (coKhoi && ol.fnArray.some(f => IMG.includes(f))) kt.anhKy = true;
+      if (!kt.dauDo && (await doTrang(page)) >= NGUONG_DO) kt.dauDo = true;
+    }
+    kt.quet = chu < 40 * ps.length;
+    if (kt.quet) kt.anhKy = false;
+    return kt;
+  }
+  async function kiemTraAnh(file) {
+    const url = URL.createObjectURL(file);
+    try {
+      const img = await new Promise((ok, fail) => { const i = new Image(); i.onload = () => ok(i); i.onerror = fail; i.src = url; });
+      const k = Math.min(1, 900 / Math.max(img.width, img.height)), w = Math.max(1, Math.round(img.width * k)), h = Math.max(1, Math.round(img.height * k));
+      const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+      const ctx = cv.getContext("2d", { willReadFrequently: true }); ctx.drawImage(img, 0, 0, w, h);
+      return { loai: "anh", quet: true, dauDo: tiLeDo(ctx, w, h) >= NGUONG_DO };
+    } finally { URL.revokeObjectURL(url); }
+  }
+  VB.kiemTra = async function (file) {
+    const name = file.name || "", ext = (name.split(".").pop() || "").toLowerCase(), tg = Date.now();
+    try {
+      if (ext === "pdf" || file.type === "application/pdf") {
+        if (!root.pdfjsLib) await loadScript(LIB.pdf);
+        root.pdfjsLib.GlobalWorkerOptions.workerSrc = LIB.worker;
+        const buf = new Uint8Array(await file.arrayBuffer());
+        const doc = await root.pdfjsLib.getDocument({ data: buf.slice() }).promise;
+        return Object.assign(await kiemTraPdf(buf, doc), { tg });
+      }
+      if (ext === "docx" || ext === "doc") return { loai: "word", tg };
+      if (/^(jpe?g|png|webp|bmp|gif)$/.test(ext) || /^image\//.test(file.type)) return Object.assign(await kiemTraAnh(file), { tg });
+      return { loai: "khac", tg };
+    } catch (e) { return { loai: "loi", loi: String(e.message || e).slice(0, 200), tg }; }
+  };
+
   VB.doc = async function (file) {
+    let p;
     try {
       const x = await VB.readFile(file);
-      const p = VB.parse(x.lines, file.name);
-      return Object.assign(p, { quet: x.quet, khongDoc: !!x.khongDoc });
+      p = Object.assign(VB.parse(x.lines, file.name), { quet: x.quet, khongDoc: !!x.khongDoc });
     } catch (e) {
-      return Object.assign(VB.parse([], file.name), { loi: e.message || String(e) });
+      p = Object.assign(VB.parse([], file.name), { loi: e.message || String(e) });
     }
+    p.kt = await VB.kiemTra(file);
+    return p;
   };
   root.VB = VB;
 })(typeof window !== "undefined" ? window : globalThis);

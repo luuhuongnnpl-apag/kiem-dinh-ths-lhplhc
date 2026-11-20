@@ -1,7 +1,7 @@
     // ===== KDTHS - Kiểm định CTĐT ThS Luật HP&LHC (19/11/2026) =====
     // Khối này do trang kiem-dinh-ths-lhplhc tự chèn/thay qua Firebase Rules API (nút "Cập nhật quy tắc" trong Cài đặt).
     // Dùng hàm chung isAdmin(), signedIn() ở đầu tệp; không đụng phần PNW, PND, PNL. Đổi quy tắc thì tăng số phiên bản dưới đây.
-    match /kd_rules_v/{v} { allow get: if v == '20261120d'; }
+    match /kd_rules_v/{v} { allow get: if v == '20261120e'; }
     function kdEm() { return request.auth.token.get('email', '').lower(); }
     function kdTvPath() { return /databases/$(database)/documents/kd_tv/$(kdEm()); }
     function kdTv() {
@@ -40,10 +40,12 @@
       allow create: if kdTk() || (kdUp() && request.resource.data.loai == 'TP'
         && request.resource.data.trangThai == 'Đã tải – chờ rà soát'
         && request.resource.data.email == kdEm());
-      allow update: if kdTk() || (kdUp()
-        && kdDiff().hasOnly(['ten', 'soNgay', 'noi', 'dungChung', 'link', 'fileId', 'nguoi', 'email', 'tg', 'trangThai', 'goc', 'tenGoiY', 'khongTrung'])
-        && kdTTOk()
-        && (resource.data.get('link', '') == '' || !kdDiff().hasAny(['link', 'fileId'])));
+      // Thành viên: sửa thông tin, tải tệp vào chỗ trống; tệp do chính mình tải thì được gỡ/chuyển đi (tải nhầm mục)
+      allow update: if kdTk() || (kdUp() && kdTTOk() && (
+        (kdDiff().hasOnly(['ten', 'soNgay', 'noi', 'dungChung', 'link', 'fileId', 'nguoi', 'email', 'tg', 'trangThai', 'goc', 'tenGoiY', 'khongTrung', 'tenVB', 'kt'])
+          && (resource.data.get('link', '') == '' || !kdDiff().hasAny(['link', 'fileId']) || resource.data.get('email', '') == kdEm()))
+        || (resource.data.get('loai', '') == 'TP' && resource.data.get('email', '') == kdEm()
+          && kdDiff().hasOnly(['cha', 'tieuChi', 'taoLuc']))));
       allow delete: if kdTk();
     }
     match /kd_kho/{id} {
